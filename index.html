@@ -120,16 +120,24 @@
   .modal-backdrop{ position:fixed; inset:0; background: rgba(15,20,17,0.72); backdrop-filter: blur(3px); display:flex; align-items:flex-start; justify-content:center; padding: 40px 20px; z-index:50; overflow-y:auto; }
   .modal{ background: var(--bg-alt); border:1px solid var(--line); border-radius: var(--radius); max-width: 720px; width:100%; box-shadow: var(--shadow); animation: pop .18s ease-out; }
   @keyframes pop{ from{ transform: scale(0.97); opacity:0;} to{ transform:scale(1); opacity:1; } }
-  .modal-head{ padding: 26px 28px 18px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }
-  .modal-head h2{ font-family: var(--font-display); font-size: 26px; margin:0; font-weight:600; flex:1; }
-  .modal-head-actions{ display:flex; align-items:center; gap:6px; flex:none; }
+  .modal-head{ padding: 26px 28px 16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }
+  .modal-head-titles{ flex:1; min-width:0; }
+  .modal-head h2{ font-family: var(--font-display); font-size: 26px; margin:0; font-weight:600; }
+  .modal-tags-line{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .modal-tags-line .tag-chip{ font-size:11.5px; padding:4px 10px; }
+  .modal-head-actions{ display:flex; align-items:center; gap:4px; flex:none; padding-top:2px; }
   .modal-close{ background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:22px; line-height:1; padding:4px; }
-  .modal-fav-btn{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:4px; display:flex; }
+  .icon-btn{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:5px; display:flex; border-radius:6px; }
+  .icon-btn:hover{ color:var(--text); background:var(--surface); }
+  .icon-btn.active{ color:var(--mustard); }
+  .icon-btn svg{ width:18px; height:18px; }
+  .modal-fav-btn{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:5px; display:flex; border-radius:6px; }
+  .modal-fav-btn:hover{ background:var(--surface); }
   .modal-fav-btn.active{ color:var(--mustard); }
-  .modal-fav-btn svg{ width:20px; height:20px; }
+  .modal-fav-btn svg{ width:18px; height:18px; }
   .modal-body{ padding: 22px 28px 30px; }
+  .modal-tags-edit{ margin-bottom:22px; padding:16px; background:var(--surface); border:1px solid var(--line); border-radius:10px; }
   .modal-tags-row{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px; }
-  .modal-tags-block{ margin-bottom:22px; }
   .tag-editable{ display:flex; align-items:center; gap:6px; font-size:12.5px; padding:5px 6px 5px 11px; border-radius:100px; background: var(--surface); border:1px solid var(--line); color:var(--text-dim); }
   .tag-editable button{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:0 4px; font-size:14px; }
   .tag-add-input{ background:var(--surface); border:1px dashed var(--line); color:var(--text); padding:6px 12px; border-radius:100px; font-size:12.5px; width:150px; font-family:inherit; }
@@ -770,16 +778,22 @@
     backdrop.innerHTML = `
       <div class="modal" role="dialog" aria-modal="true">
         <div class="modal-head">
-          <h2>${escapeHtml(titleFromFilename(recipe.name))}</h2>
+          <div class="modal-head-titles">
+            <h2>${escapeHtml(titleFromFilename(recipe.name))}</h2>
+            <div class="modal-tags-line" id="modalTagsLine"></div>
+          </div>
           <div class="modal-head-actions">
-            <button class="modal-fav-btn ${recipe.favorite ? 'active' : ''}" aria-label="Favorit">
+            <button class="icon-btn" id="modalEditToggle" aria-label="Tags bearbeiten" title="Tags bearbeiten">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </button>
+            <button class="modal-fav-btn ${recipe.favorite ? 'active' : ''}" aria-label="Favorit" title="Favorit">
               <svg viewBox="0 0 24 24" fill="${recipe.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.63 22 9.24 16.5 14.14 18.18 21 12 17.27 5.82 21 7.5 14.14 2 9.24 8.91 8.63 12 2"/></svg>
             </button>
             <button class="modal-close" aria-label="Schließen">&times;</button>
           </div>
         </div>
         <div class="modal-body">
-          <div class="modal-tags-block" id="modalTags"></div>
+          <div class="modal-tags-edit" id="modalTagsEdit" style="display:none;"></div>
           <div class="rendered-content" id="modalContent">Lade Inhalt…</div>
         </div>
       </div>`;
@@ -796,44 +810,53 @@
       favBtn.querySelector('svg').setAttribute('fill', recipe.favorite ? 'currentColor' : 'none');
     };
 
-    renderTagsView(recipe, backdrop.querySelector('#modalTags'));
-    // recipe content opens immediately alongside the tags; no extra click needed
+    const tagsLine = backdrop.querySelector('#modalTagsLine');
+    const editPanel = backdrop.querySelector('#modalTagsEdit');
+    const editToggle = backdrop.querySelector('#modalEditToggle');
+    renderTagsLine(recipe, tagsLine);
+    editToggle.onclick = () => {
+      if (!pat){ toast('Zum Bearbeiten wird ein Token benötigt.', true); openSettingsModal(); return; }
+      const opening = editPanel.style.display === 'none';
+      if (opening){
+        tagsLine.style.display = 'none';
+        editPanel.style.display = 'block';
+        editToggle.classList.add('active');
+        renderTagsEdit(recipe, editPanel, () => {
+          editPanel.style.display = 'none'; editPanel.innerHTML = '';
+          editToggle.classList.remove('active');
+          tagsLine.style.display = 'flex';
+          renderTagsLine(recipe, tagsLine);
+        });
+      } else {
+        editPanel.style.display = 'none'; editPanel.innerHTML = '';
+        editToggle.classList.remove('active');
+        tagsLine.style.display = 'flex';
+        renderTagsLine(recipe, tagsLine);
+      }
+    };
+
+    // recipe content opens immediately; tags stay a quiet single line, editing is opt-in
     await renderModalContent(recipe, backdrop.querySelector('#modalContent'));
   }
 
-  function renderTagsView(recipe, container){
+  function renderTagsLine(recipe, container){
     container.innerHTML = '';
-    const row = document.createElement('div'); row.className = 'modal-tags-row';
-    if (!recipe.tags.length){
-      const p = document.createElement('span'); p.style.cssText = 'color:var(--text-faint);font-size:13px;'; p.textContent = 'Keine Tags vergeben.';
-      row.appendChild(p);
-    } else {
-      recipe.tags.forEach(tag => {
-        const chip = document.createElement('button');
-        chip.type = 'button'; chip.className = 'tag-chip' + (activeTags.has(tag) ? ' active' : '');
-        chip.style.setProperty('--tab-color', tagColor(tag));
-        chip.textContent = tag;
-        chip.title = 'Als Filter an-/abwählen';
-        chip.onclick = () => { toggleTagFilter(tag); chip.classList.toggle('active', activeTags.has(tag)); };
-        row.appendChild(chip);
-      });
-    }
-    container.appendChild(row);
-
-    const editBtn = document.createElement('button');
-    editBtn.type = 'button'; editBtn.className = 'btn small ghost';
-    editBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Tags bearbeiten`;
-    editBtn.onclick = () => {
-      if (!pat){ toast('Zum Bearbeiten wird ein Token benötigt.', true); openSettingsModal(); return; }
-      renderTagsEdit(recipe, container);
-    };
-    container.appendChild(editBtn);
+    if (!recipe.tags.length) return;
+    recipe.tags.forEach(tag => {
+      const chip = document.createElement('button');
+      chip.type = 'button'; chip.className = 'tag-chip' + (activeTags.has(tag) ? ' active' : '');
+      chip.style.setProperty('--tab-color', tagColor(tag));
+      chip.textContent = tag;
+      chip.title = 'Als Filter an-/abwählen';
+      chip.onclick = () => { toggleTagFilter(tag); chip.classList.toggle('active', activeTags.has(tag)); };
+      container.appendChild(chip);
+    });
   }
 
-  function renderTagsEdit(recipe, container){
+  function renderTagsEdit(recipe, container, onDone){
     container.innerHTML = '';
     const row = document.createElement('div'); row.className = 'modal-tags-row';
-    const rerender = () => renderTagsEdit(recipe, container);
+    const rerender = () => renderTagsEdit(recipe, container, onDone);
 
     recipe.tags.forEach(tag => {
       const el = document.createElement('span'); el.className = 'tag-editable';
@@ -845,7 +868,7 @@
     const input = document.createElement('input');
     input.className = 'tag-add-input'; input.placeholder = '+ Tag hinzufügen';
     input.onkeydown = (ev) => {
-      if (ev.key === 'Enter' && input.value.trim()) addTagToRecipeAndKeepEditing(recipe, input.value, container);
+      if (ev.key === 'Enter' && input.value.trim()) addTagToRecipeAndKeepEditing(recipe, input.value, container, onDone);
     };
     input.oninput = () => renderSuggestions(input.value);
     row.appendChild(input);
@@ -871,7 +894,7 @@
         const chip = document.createElement('button');
         chip.type = 'button'; chip.className = 'tag-suggestion';
         chip.textContent = t;
-        chip.onclick = () => addTagToRecipeAndKeepEditing(recipe, t, container);
+        chip.onclick = () => addTagToRecipeAndKeepEditing(recipe, t, container, onDone);
         suggBox.appendChild(chip);
       });
       const trimmed = filterText.trim();
@@ -879,7 +902,7 @@
         const newChip = document.createElement('button');
         newChip.type = 'button'; newChip.className = 'tag-suggestion new';
         newChip.textContent = `+ „${trimmed}“ als neuen Tag`;
-        newChip.onclick = () => addTagToRecipeAndKeepEditing(recipe, trimmed, container);
+        newChip.onclick = () => addTagToRecipeAndKeepEditing(recipe, trimmed, container, onDone);
         suggBox.appendChild(newChip);
       }
     }
@@ -891,16 +914,16 @@
     openModalStatusRefs.push(status);
     const doneBtn = document.createElement('button');
     doneBtn.type = 'button'; doneBtn.className = 'btn small'; doneBtn.textContent = 'Fertig';
-    doneBtn.onclick = () => renderTagsView(recipe, container);
+    doneBtn.onclick = () => onDone();
     footer.appendChild(status); footer.appendChild(doneBtn);
     container.appendChild(footer);
 
     input.focus();
   }
 
-  function addTagToRecipeAndKeepEditing(recipe, val, container){
+  function addTagToRecipeAndKeepEditing(recipe, val, container, onDone){
     addTagToRecipe(recipe, val, () => {});
-    renderTagsEdit(recipe, container);
+    renderTagsEdit(recipe, container, onDone);
   }
 
   // ---------- settings modal ----------
