@@ -199,7 +199,10 @@
       "title": null
     },
     "Kaesekuchen.pdf": {
-      "tags": [],
+      "tags": [
+        "Backen",
+        "Deutsch"
+      ],
       "favorite": false,
       "title": "Käsekuchen"
     }
