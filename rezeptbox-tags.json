@@ -46,7 +46,9 @@
       "title": "Chinesische Nudeln mit Rind"
     },
     "Chicken_Teriyaki.pdf": {
-      "tags": [],
+      "tags": [
+        "Asiatisch"
+      ],
       "favorite": false,
       "title": null
     }
