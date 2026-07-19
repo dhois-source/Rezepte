@@ -24,7 +24,7 @@
   }
   a{color:inherit;} button{font-family:inherit;} ::selection{background:var(--mustard); color:#20281f;}
 
-  header.top{ padding: 28px 32px 20px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  header.top{ padding: 20px 32px 18px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
   .brand-eyebrow{ font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color: var(--mustard); font-weight:600; margin:0 0 6px; }
   .brand-title{ font-family: var(--font-display); font-weight:600; font-size: clamp(28px,4vw,42px); margin:0; line-height:1; letter-spacing:-0.01em; }
   .brand-title em{ font-style:italic; color: var(--sage); font-weight:500;}
@@ -89,7 +89,7 @@
   .filter-reset{ font-size:12px; color:var(--text-faint); background:none; border:none; cursor:pointer; text-decoration:underline; padding:5px 4px; }
   .filter-reset:hover{ color:var(--text); }
 
-  .toast-stack{ position:fixed; bottom:22px; right:22px; display:flex; flex-direction:column; gap:10px; z-index:60; }
+  .toast-stack{ position:fixed; bottom:22px; right:22px; left:22px; display:flex; flex-direction:column; align-items:flex-end; gap:10px; z-index:60; }
   .toast{ background: var(--surface-2); border:1px solid var(--mustard); color:var(--text); padding: 12px 18px; border-radius: var(--radius-sm); font-size:13.5px; box-shadow: var(--shadow); animation: slideIn .25s ease-out; max-width: 320px; }
   .toast.err{ border-color: var(--paprika); }
   @keyframes slideIn{ from{ transform:translateY(10px); opacity:0;} to{ transform:translateY(0); opacity:1; } }
@@ -117,12 +117,12 @@
     .card-tags{ max-width:none; }
   }
 
-  .modal-backdrop{ position:fixed; inset:0; background: rgba(15,20,17,0.72); backdrop-filter: blur(3px); display:flex; align-items:flex-start; justify-content:center; padding: 40px 20px; z-index:50; overflow-y:auto; }
+  .modal-backdrop{ position:fixed; inset:0; background: rgba(9,11,15,0.72); backdrop-filter: blur(3px); display:flex; align-items:flex-start; justify-content:center; padding: 40px 20px; z-index:50; overflow-y:auto; }
   .modal{ background: var(--bg-alt); border:1px solid var(--line); border-radius: var(--radius); max-width: 720px; width:100%; box-shadow: var(--shadow); animation: pop .18s ease-out; }
   @keyframes pop{ from{ transform: scale(0.97); opacity:0;} to{ transform:scale(1); opacity:1; } }
   .modal-head{ padding: 26px 28px 16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }
   .modal-head-titles{ flex:1; min-width:0; }
-  .modal-head h2{ font-family: var(--font-display); font-size: 26px; margin:0; font-weight:600; }
+  .modal-head h2{ font-family: var(--font-display); font-size: 26px; margin:0; font-weight:600; word-break:break-word; }
   .modal-tags-line{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
   .modal-tags-line .tag-chip{ font-size:11.5px; padding:4px 10px; }
   .modal-head-actions{ display:flex; align-items:center; gap:4px; flex:none; padding-top:2px; }
@@ -143,7 +143,7 @@
   .modal-tags-row{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px; }
   .tag-editable{ display:flex; align-items:center; gap:6px; font-size:12.5px; padding:5px 6px 5px 11px; border-radius:100px; background: var(--surface); border:1px solid var(--line); color:var(--text-dim); }
   .tag-editable button{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:0 4px; font-size:14px; }
-  .tag-add-input{ background:var(--surface); border:1px dashed var(--line); color:var(--text); padding:6px 12px; border-radius:100px; font-size:12.5px; width:150px; font-family:inherit; }
+  .tag-add-input{ background:var(--surface); border:1px dashed var(--line); color:var(--text); padding:6px 12px; border-radius:100px; font-size:12.5px; width:150px; max-width:100%; flex:1 1 150px; font-family:inherit; }
   .tag-add-input:focus{ outline:none; border-color:var(--mustard); }
   .tag-suggestions-label{ font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--text-faint); font-weight:600; margin: 4px 0 8px; }
   .tag-suggestions{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
@@ -162,6 +162,8 @@
   .rendered-content code{ background:var(--surface); padding:1px 6px; border-radius:4px; font-size:13px; }
   .rendered-content img{ max-width:100%; border-radius:10px; margin: 8px 0; }
   .attachment-open{ display:inline-flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--line); padding:12px 16px; border-radius:var(--radius-sm); color:var(--mustard); font-weight:600; font-size:13.5px; text-decoration:none; }
+  .pdf-actions{ margin: 0 0 12px; }
+  .pdf-frame{ height: 70vh; display:block; }
 
   .settings-copy{ color:var(--text-dim); font-size:13.5px; line-height:1.6; margin: 0 0 12px; }
   .settings-copy.faint{ color:var(--text-faint); font-size:12.5px; }
@@ -171,6 +173,47 @@
   footer.hint{ padding: 18px 32px 40px; color: var(--text-faint); font-size:12px; border-top:1px solid var(--line); margin-top: 10px; }
   code.inline{ background:var(--surface); padding:1px 6px; border-radius:4px; }
   :focus-visible{ outline: 2px solid var(--mustard); outline-offset:2px; }
+
+  /* ---------- mobile optimization ---------- */
+  @media (max-width: 640px){
+    header.top{ padding: 16px 16px 14px; gap:12px; }
+    .header-actions{ gap:8px; }
+    .btn{ padding:9px 13px; font-size:13px; }
+    .btn.icon-only{ padding:9px; }
+    #rescanBtn span, #rescanBtn{ font-size:13px; }
+
+    main{ padding: 18px 16px 40px; }
+    aside.sidebar{ padding: 18px 16px 28px; }
+    footer.hint{ padding: 16px 16px 32px; }
+
+    .info-banner{ padding:16px; }
+    .toast-stack{ bottom:14px; right:14px; left:14px; }
+    .toast{ max-width:none; width:100%; }
+
+    /* modal becomes a near full-screen sheet, so content starts high enough to skip scrolling */
+    .modal-backdrop{ padding: 0; align-items:flex-start; }
+    .modal{ max-width:none; width:100%; min-height:100vh; min-height:100dvh; border-radius:0; border-left:none; border-right:none; }
+    .modal-head{ padding: 16px 16px 14px; gap:10px; }
+    .modal-head h2{ font-size:20px; }
+    .modal-body{ padding: 16px 16px 32px; }
+    .modal-tags-edit{ padding:14px; }
+    .icon-btn, .modal-fav-btn{ padding:8px; }
+    .modal-close{ padding:6px; font-size:24px; }
+
+    .title-edit-input{ font-size:16px; }
+    .pdf-frame{ height: 58vh; height: 58dvh; }
+    .attachment-open{ width:100%; justify-content:center; }
+
+    .settings-input{ font-size:16px; } /* avoids iOS auto-zoom on focus */
+    .search-wrap input{ font-size:16px; }
+
+    .edit-footer{ flex-direction:column; align-items:stretch; }
+    .edit-footer .btn{ width:100%; justify-content:center; }
+
+    .fav-star{ padding:6px; }
+    .mode-toggle button{ padding:7px 12px; }
+    .card{ padding: 12px 14px; gap:10px; }
+  }
   @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
 </style>
 </head>
@@ -1048,8 +1091,8 @@
         container.innerHTML = 'Lade PDF…';
         const url = await blobUrlFor(recipe);
         container.innerHTML = `
-          <iframe src="${url}" style="width:100%;height:70vh;border:none;border-radius:10px;background:#fff;"></iframe>
-          <p style="margin-top:12px;"><a class="attachment-open" href="${url}" target="_blank" rel="noopener">In neuem Tab öffnen ↗</a></p>`;
+          <p class="pdf-actions"><a class="attachment-open" href="${url}" target="_blank" rel="noopener">In neuem Tab öffnen ↗</a></p>
+          <iframe src="${url}" class="pdf-frame" style="width:100%;border:none;border-radius:10px;background:#fff;"></iframe>`;
       } else {
         container.innerHTML = 'Lade Datei…';
         const url = await blobUrlFor(recipe);
