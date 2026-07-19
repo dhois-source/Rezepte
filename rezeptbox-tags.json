@@ -1,5 +1,12 @@
 {
   "version": 1,
   "custom_tags": [],
-  "recipes": {}
+  "recipes": {
+    "3-2-1_Ribs.pdf": {
+      "tags": [
+        "Deutsch"
+      ],
+      "favorite": false
+    }
+  }
 }
