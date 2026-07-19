@@ -357,7 +357,7 @@
   let tagsSha = null;
   let pat = null;
   let syncState = 'no-token';
-  let saveTimer = null, saveInFlight = false, saveQueued = false;
+  let saveTimer = null, retryTimer = null, saveInFlight = false, saveQueued = false;
   const dirty = { customTags:false, recipeIds:new Set() };
   let openModalStatusRefs = []; // elements to keep in sync with syncState while a modal is open
 
@@ -466,8 +466,17 @@
   function scheduleSave(){
     if (!pat){ setSyncState('no-token'); cacheTagsLocally(); return; }
     setSyncState('pending');
-    clearTimeout(saveTimer);
+    clearTimeout(saveTimer); clearTimeout(retryTimer);
     saveTimer = setTimeout(doSave, 900);
+  }
+
+  // saves immediately instead of waiting for the debounce — used when the user
+  // navigates away, closes the modal, or hides the tab, so edits aren't lost.
+  function flushSave(){
+    if (!pat) return;
+    if (!dirty.customTags && dirty.recipeIds.size === 0) return;
+    clearTimeout(saveTimer); clearTimeout(retryTimer);
+    doSave();
   }
 
   async function doSave(){
@@ -481,7 +490,12 @@
       cacheTagsLocally();
     }catch(e){
       setSyncState('error', e.message);
-      toast('Speichern fehlgeschlagen: ' + e.message, true);
+      toast('Speichern fehlgeschlagen, versuche es erneut: ' + e.message, true);
+      // don't leave failed edits stranded — retry automatically instead of waiting for the next edit
+      clearTimeout(retryTimer);
+      retryTimer = setTimeout(() => {
+        if (pat && (dirty.customTags || dirty.recipeIds.size)) doSave();
+      }, 5000);
     }
     saveInFlight = false;
     if (saveQueued){ saveQueued = false; scheduleSave(); }
@@ -505,7 +519,8 @@
       const res = await fetch(tagsApiUrl(), {
         method:'PUT',
         headers: { 'Accept':'application/vnd.github+json', 'Authorization': `token ${pat}` },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        keepalive: true
       });
       if (res.ok){ const j = await res.json(); tagsSha = j.content.sha; return; }
       if (res.status === 409 || res.status === 422){
@@ -861,7 +876,7 @@
         </div>
       </div>`;
     document.body.appendChild(backdrop);
-    const close = () => { backdrop.remove(); statusRefCleanup(); };
+    const close = () => { flushSave(); backdrop.remove(); statusRefCleanup(); };
     backdrop.querySelector('.modal-close').onclick = close;
     backdrop.onclick = (ev) => { if (ev.target === backdrop) close(); };
     document.addEventListener('keydown', function esc(ev){ if (ev.key === 'Escape'){ close(); document.removeEventListener('keydown', esc); } });
@@ -890,12 +905,14 @@
           editToggle.classList.remove('active');
           tagsLine.style.display = 'flex';
           renderTagsLine(recipe, tagsLine);
+          flushSave();
         }, titleHeading);
       } else {
         editPanel.style.display = 'none'; editPanel.innerHTML = '';
         editToggle.classList.remove('active');
         tagsLine.style.display = 'flex';
         renderTagsLine(recipe, tagsLine);
+        flushSave();
       }
     };
 
@@ -1114,6 +1131,17 @@
     pollTimer = setInterval(() => refresh({silent:true}), 30000);
     window.addEventListener('focus', () => refresh({silent:true}));
   }
+
+  // ---------- make sure unsaved edits aren't lost when the page is backgrounded/closed ----------
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushSave(); });
+  window.addEventListener('pagehide', flushSave);
+  window.addEventListener('beforeunload', (ev) => {
+    if (dirty.customTags || dirty.recipeIds.size){
+      flushSave();
+      ev.preventDefault();
+      ev.returnValue = '';
+    }
+  });
 
   rescanBtn.onclick = () => refresh({silent:false});
   searchInput.oninput = debounce(() => { renderGrid(); renderActiveFiltersBar(); }, 150);
