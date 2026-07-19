@@ -1,7 +1,8 @@
 {
   "version": 1,
   "custom_tags": [
-    "Reis"
+    "Reis",
+    "für"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -174,7 +175,9 @@
       "title": null
     },
     "tuerkisch_Cacik_Dip_Tsatsiki.pdf": {
-      "tags": [],
+      "tags": [
+        "für"
+      ],
       "favorite": false,
       "title": "Türkisches Tsatsiki Cacik"
     }
