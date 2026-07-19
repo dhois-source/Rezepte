@@ -175,7 +175,9 @@
       "title": null
     },
     "tuerkisch_Cacik_Dip_Tsatsiki.pdf": {
-      "tags": [],
+      "tags": [
+        "Türkisch"
+      ],
       "favorite": false,
       "title": "Türkisches Tsatsiki Cacik"
     }
