@@ -30,16 +30,25 @@
   .brand-title em{ font-style:italic; color: var(--sage); font-weight:500;}
   .header-actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .stat-pill{ font-size:12.5px; color:var(--text-dim); background:var(--surface); border:1px solid var(--line); padding:7px 12px; border-radius:100px; }
+  .stat-pill.sync-no-token{ color: var(--text-faint); }
+  .stat-pill.sync-synced{ color: var(--sage); border-color: var(--sage); }
+  .stat-pill.sync-pending, .stat-pill.sync-saving{ color: var(--mustard); border-color: var(--mustard); }
+  .stat-pill.sync-error, .stat-pill.sync-offline{ color: var(--paprika); border-color: var(--paprika); }
   .btn{ border:1px solid var(--line); background:var(--surface); color:var(--text); padding:10px 16px; border-radius:100px; font-size:13.5px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition: border-color .15s, background .15s, transform .1s; }
   .btn:hover{ border-color: var(--mustard); background:var(--surface-2); }
   .btn:active{ transform: scale(0.97); }
   .btn.ghost{ background:transparent; }
+  .btn.small{ padding:7px 12px; font-size:12.5px; }
   .btn svg{ width:15px; height:15px; flex:none; }
+  .btn.icon-only{ padding:10px; }
 
   .layout{ display:grid; grid-template-columns: 280px 1fr; }
   @media (max-width: 880px){ .layout{ grid-template-columns: 1fr; } }
   aside.sidebar{ padding: 24px 24px 40px; border-right: 1px solid var(--line); position: sticky; top:0; min-height: calc(100vh - 96px); }
-  @media (max-width: 880px){ aside.sidebar{ position:static; min-height:auto; border-right:none; border-bottom:1px solid var(--line);} }
+  @media (max-width: 880px){
+    aside.sidebar{ position:static; min-height:auto; border-right:none; border-bottom:1px solid var(--line); display:none; }
+    aside.sidebar.open{ display:block; }
+  }
 
   .search-wrap{ position:relative; margin-bottom:22px; }
   .search-wrap input{ width:100%; background: var(--surface); border:1px solid var(--line); color: var(--text); padding: 11px 14px 11px 38px; border-radius: var(--radius-sm); font-size:14px; font-family:inherit; }
@@ -47,24 +56,41 @@
   .search-wrap svg{ position:absolute; left:12px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--text-faint); }
 
   .side-section{ margin-bottom: 26px; }
-  .side-label{ font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--text-faint); font-weight:600; margin: 0 0 10px; }
+  .side-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin: 0 0 10px; }
+  .side-label{ font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--text-faint); font-weight:600; margin: 0; }
   .tag-cloud{ display:flex; flex-wrap:wrap; gap:7px; }
   .tag-chip{ font-size:12.5px; padding:6px 11px; border-radius:100px; background:var(--surface); border:1px solid var(--line); color:var(--text-dim); cursor:pointer; user-select:none; transition: all .15s; }
   .tag-chip:hover{ border-color:var(--sage); }
   .tag-chip.active{ background: var(--sage); color:#182119; border-color:var(--sage); font-weight:600; }
   .tag-chip .n{ opacity:.6; margin-left:4px; }
   select.sort-select{ width:100%; background:var(--surface); border:1px solid var(--line); color:var(--text); padding:9px 12px; border-radius: var(--radius-sm); font-size:13.5px; font-family:inherit; }
-  .fav-toggle{ display:flex; align-items:center; gap:8px; font-size:13.5px; color:var(--text-dim); cursor:pointer; user-select:none; }
+  .fav-toggle{ display:flex; align-items:center; gap:8px; font-size:13.5px; color:var(--text-dim); cursor:pointer; user-select:none; margin-bottom:10px; }
+  .fav-toggle:last-child{ margin-bottom:0; }
   .fav-toggle input{ accent-color: var(--mustard); width:15px; height:15px; }
 
+  .mode-toggle{ display:inline-flex; background:var(--surface); border:1px solid var(--line); border-radius:100px; padding:2px; gap:2px; }
+  .mode-toggle button{ border:none; background:none; color:var(--text-faint); font-size:11px; font-weight:600; padding:5px 10px; border-radius:100px; cursor:pointer; }
+  .mode-toggle button.active{ background:var(--sage); color:#182119; }
+
   main{ padding: 28px 32px 60px; }
+  #mobileFilterToggle{ display:none; margin-bottom:18px; }
+  @media (max-width:880px){ #mobileFilterToggle{ display:inline-flex; } }
+  .filter-count-badge{ background:var(--mustard); color:#20281f; font-size:10.5px; font-weight:700; border-radius:100px; padding:1px 7px; margin-left:4px; }
+
   .info-banner{ border:1px dashed var(--line); border-radius: var(--radius); padding: 20px 22px; background: var(--surface); margin-bottom: 26px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
   .info-banner h3{ font-family:var(--font-display); font-weight:600; font-size:18px; margin:0 0 4px; }
   .info-banner p{ margin:0; color:var(--text-dim); font-size:13px; max-width:60ch; }
   .info-banner.err{ border-color: var(--paprika); }
 
+  .active-filters-bar{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:18px; }
+  .filter-chip{ display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:5px 6px 5px 12px; border-radius:100px; background:var(--surface-2); border:1px solid var(--sage); color:var(--text); }
+  .filter-chip button{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:0 4px; font-size:14px; line-height:1; }
+  .filter-chip button:hover{ color:var(--paprika); }
+  .filter-reset{ font-size:12px; color:var(--text-faint); background:none; border:none; cursor:pointer; text-decoration:underline; padding:5px 4px; }
+  .filter-reset:hover{ color:var(--text); }
+
   .toast-stack{ position:fixed; bottom:22px; right:22px; display:flex; flex-direction:column; gap:10px; z-index:60; }
-  .toast{ background: var(--surface-2); border:1px solid var(--mustard); color:var(--text); padding: 12px 18px; border-radius: var(--radius-sm); font-size:13.5px; box-shadow: var(--shadow); animation: slideIn .25s ease-out; }
+  .toast{ background: var(--surface-2); border:1px solid var(--mustard); color:var(--text); padding: 12px 18px; border-radius: var(--radius-sm); font-size:13.5px; box-shadow: var(--shadow); animation: slideIn .25s ease-out; max-width: 320px; }
   .toast.err{ border-color: var(--paprika); }
   @keyframes slideIn{ from{ transform:translateY(10px); opacity:0;} to{ transform:translateY(0); opacity:1; } }
 
@@ -77,7 +103,9 @@
   .card-title{ font-family: var(--font-display); font-weight:600; font-size:15.5px; line-height:1.25; margin:0; flex:0 1 auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:38%; }
   .card-snippet{ font-size:12.5px; color: var(--text-faint); flex:1 1 auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
   .card-tags{ display:flex; flex-wrap:nowrap; gap:6px; flex:none; overflow:hidden; max-width:32%; }
-  .mini-tag{ font-size:10.5px; padding:3px 9px; border-radius:100px; background: var(--surface-2); color: var(--text-dim); border:1px solid var(--line); white-space:nowrap; flex:none; }
+  .mini-tag{ font-size:10.5px; padding:3px 9px; border-radius:100px; background: var(--surface-2); color: var(--text-dim); border:1px solid var(--line); white-space:nowrap; flex:none; cursor:pointer; }
+  .mini-tag:hover{ border-color:var(--sage); color:var(--text); }
+  .mini-tag.active{ background:var(--sage); color:#182119; border-color:var(--sage); font-weight:600; }
   .card-meta{ font-size:10.5px; color: var(--text-faint); flex:none; width:34px; text-align:right; }
   .fav-star{ background:none; border:none; cursor:pointer; color: var(--text-faint); flex:none; padding:2px; display:flex; }
   .fav-star.active{ color: var(--mustard); }
@@ -93,18 +121,28 @@
   .modal{ background: var(--bg-alt); border:1px solid var(--line); border-radius: var(--radius); max-width: 720px; width:100%; box-shadow: var(--shadow); animation: pop .18s ease-out; }
   @keyframes pop{ from{ transform: scale(0.97); opacity:0;} to{ transform:scale(1); opacity:1; } }
   .modal-head{ padding: 26px 28px 18px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }
-  .modal-head h2{ font-family: var(--font-display); font-size: 26px; margin:0; font-weight:600; }
+  .modal-head h2{ font-family: var(--font-display); font-size: 26px; margin:0; font-weight:600; flex:1; }
+  .modal-head-actions{ display:flex; align-items:center; gap:6px; flex:none; }
   .modal-close{ background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:22px; line-height:1; padding:4px; }
+  .modal-fav-btn{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:4px; display:flex; }
+  .modal-fav-btn.active{ color:var(--mustard); }
+  .modal-fav-btn svg{ width:20px; height:20px; }
   .modal-body{ padding: 22px 28px 30px; }
-  .modal-tags-row{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:20px; }
+  .modal-tags-row{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px; }
+  .modal-tags-block{ margin-bottom:22px; }
   .tag-editable{ display:flex; align-items:center; gap:6px; font-size:12.5px; padding:5px 6px 5px 11px; border-radius:100px; background: var(--surface); border:1px solid var(--line); color:var(--text-dim); }
   .tag-editable button{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:0 4px; font-size:14px; }
-  .tag-add-input{ background:var(--surface); border:1px dashed var(--line); color:var(--text); padding:6px 12px; border-radius:100px; font-size:12.5px; width:130px; font-family:inherit; }
+  .tag-add-input{ background:var(--surface); border:1px dashed var(--line); color:var(--text); padding:6px 12px; border-radius:100px; font-size:12.5px; width:150px; font-family:inherit; }
   .tag-add-input:focus{ outline:none; border-color:var(--mustard); }
   .tag-suggestions-label{ font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--text-faint); font-weight:600; margin: 4px 0 8px; }
-  .tag-suggestions{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+  .tag-suggestions{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
   .tag-suggestion{ font-size:12px; padding:5px 11px; border-radius:100px; background:transparent; border:1px dashed var(--line); color:var(--text-dim); cursor:pointer; }
   .tag-suggestion:hover{ border-color:var(--sage); border-style:solid; color:var(--text); }
+  .tag-suggestion.new{ border-color:var(--mustard); color:var(--mustard); border-style:solid; }
+  .tag-suggestion.new:hover{ background:var(--mustard); color:#20281f; }
+  .edit-footer{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .edit-footer .btn{ padding: 8px 16px; font-size:13px; }
+  .sync-status-text{ font-size:12px; color:var(--text-faint); }
   .rendered-content{ font-size:14.5px; line-height:1.7; color: var(--text); }
   .rendered-content h1,.rendered-content h2,.rendered-content h3{ font-family: var(--font-display); font-weight:600; }
   .rendered-content h1{font-size:22px;} .rendered-content h2{font-size:19px;} .rendered-content h3{font-size:16.5px;}
@@ -113,6 +151,11 @@
   .rendered-content code{ background:var(--surface); padding:1px 6px; border-radius:4px; font-size:13px; }
   .rendered-content img{ max-width:100%; border-radius:10px; margin: 8px 0; }
   .attachment-open{ display:inline-flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--line); padding:12px 16px; border-radius:var(--radius-sm); color:var(--mustard); font-weight:600; font-size:13.5px; text-decoration:none; }
+
+  .settings-copy{ color:var(--text-dim); font-size:13.5px; line-height:1.6; margin: 0 0 12px; }
+  .settings-copy.faint{ color:var(--text-faint); font-size:12.5px; }
+  .settings-input{ width:100%; background:var(--surface); border:1px solid var(--line); color:var(--text); padding:10px 14px; border-radius:8px; font-family:inherit; font-size:13.5px; }
+  .settings-input:focus{ outline:none; border-color:var(--mustard); }
 
   footer.hint{ padding: 18px 32px 40px; color: var(--text-faint); font-size:12px; border-top:1px solid var(--line); margin-top: 10px; }
   code.inline{ background:var(--surface); padding:1px 6px; border-radius:4px; }
@@ -129,6 +172,10 @@
   </div>
   <div class="header-actions">
     <span class="stat-pill" id="statPill">Lade…</span>
+    <span class="stat-pill" id="syncPill">–</span>
+    <button class="btn ghost icon-only" id="settingsBtn" aria-label="Einstellungen" title="Einstellungen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
     <button class="btn ghost" id="rescanBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
       Aktualisieren
@@ -137,7 +184,7 @@
 </header>
 
 <div class="layout">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="search-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
       <input type="text" id="searchInput" placeholder="Rezept, Zutat, Tag suchen…">
@@ -147,19 +194,36 @@
       <select class="sort-select" id="sortSelect">
         <option value="name-asc">Titel A–Z</option>
         <option value="name-desc">Titel Z–A</option>
+        <option value="fav-first">Favoriten zuerst</option>
+        <option value="tags-desc">Meiste Tags zuerst</option>
       </select>
     </div>
     <div class="side-section">
       <label class="fav-toggle"><input type="checkbox" id="favOnly"> Nur Favoriten</label>
+      <label class="fav-toggle"><input type="checkbox" id="untaggedOnly"> Nur unverschlagwortet</label>
     </div>
     <div class="side-section">
-      <p class="side-label">Tags <span id="tagCount" style="color:var(--text-faint);"></span></p>
+      <div class="side-head">
+        <p class="side-label">Tags <span id="tagCount" style="color:var(--text-faint);"></span></p>
+        <div class="mode-toggle" id="tagModeToggle">
+          <button type="button" data-mode="all" class="active">Alle</button><button type="button" data-mode="any">Beliebig</button>
+        </div>
+      </div>
       <div class="tag-cloud" id="tagCloud"></div>
+    </div>
+    <div class="side-section" id="extSection">
+      <p class="side-label">Dateityp</p>
+      <div class="tag-cloud" id="extCloud"></div>
     </div>
   </aside>
 
   <main>
+    <button class="btn ghost" id="mobileFilterToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+      Filter <span class="filter-count-badge" id="mobileFilterCount" style="display:none;"></span>
+    </button>
     <div class="info-banner" id="errorBanner" style="display:none;"></div>
+    <div class="active-filters-bar" id="activeFiltersBar" style="display:none;"></div>
     <div class="grid" id="grid"></div>
     <div class="empty-state" id="emptyState" style="display:none;">
       <p class="big">Noch keine Rezepte gefunden</p>
@@ -169,7 +233,7 @@
 </div>
 
 <footer class="hint">
-  Rezeptbox erkennt Besitzer und Repo automatisch aus der Adresse, unter der diese Seite läuft, und liest die Rezeptdateien direkt aus dem Repo über die GitHub-API – öffentlich, ohne Login. Tags werden lokal in diesem Browser gespeichert.
+  Rezeptbox erkennt Besitzer und Repo automatisch aus der Adresse, unter der diese Seite läuft, und liest die Rezeptdateien direkt aus dem Repo über die GitHub-API – öffentlich, ohne Login. Tags und Favoriten werden zentral im Repo gespeichert und stehen auf jedem Gerät zur Verfügung, das diese Seite öffnet. Zum Bearbeiten wird ein GitHub-Token benötigt (Einstellungen ⚙).
 </footer>
 
 <div class="toast-stack" id="toastStack"></div>
@@ -179,18 +243,28 @@
   const grid = document.getElementById('grid');
   const emptyState = document.getElementById('emptyState');
   const tagCloud = document.getElementById('tagCloud');
+  const extCloud = document.getElementById('extCloud');
   const tagCountEl = document.getElementById('tagCount');
   const statPill = document.getElementById('statPill');
+  const syncPill = document.getElementById('syncPill');
   const errorBanner = document.getElementById('errorBanner');
   const rescanBtn = document.getElementById('rescanBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
   const searchInput = document.getElementById('searchInput');
   const sortSelect = document.getElementById('sortSelect');
   const favOnly = document.getElementById('favOnly');
+  const untaggedOnly = document.getElementById('untaggedOnly');
+  const sidebar = document.getElementById('sidebar');
+  const mobileFilterToggle = document.getElementById('mobileFilterToggle');
+  const mobileFilterCount = document.getElementById('mobileFilterCount');
+  const activeFiltersBar = document.getElementById('activeFiltersBar');
+  const tagModeToggle = document.getElementById('tagModeToggle');
 
   const TEXT_EXT = ['md','markdown','txt'];
   const IMG_EXT = ['jpg','jpeg','png','gif','webp'];
   const TAG_COLORS = ['#E8A93B','#8FAE8B','#D1495B','#7AA6C2','#C48BD9','#D98C4A'];
   const IGNORE_NAMES = ['index.html','readme.md','license','license.md','.gitignore','.nojekyll','favicon.ico','style.css','styles.css','script.js','_config.yml','metadata.json'];
+  const TAGS_FILE_PATTERN = /^rezeptbox-tags(-.*)?\.json$/i;
   const PRESET_TAGS = [
     'Deutsch','Italienisch','Französisch','Griechisch','Spanisch','Türkisch','Balkan',
     'Asiatisch','Chinesisch','Japanisch','Thai','Vietnamesisch','Koreanisch','Indisch',
@@ -198,15 +272,41 @@
     'Frühstück','Hauptgericht','Vorspeise','Suppe','Salat','Dessert','Snack','Backen',
     'Brot','Grillen','Party','Meal Prep','Vegetarisch','Vegan','Glutenfrei','Low Carb','Schnell'
   ];
+  const EXT_GROUPS = [
+    { key:'md', label:'Rezepttext', exts:['md','markdown','txt'] },
+    { key:'img', label:'Bild', exts:['jpg','jpeg','png','gif','webp'] },
+    { key:'pdf', label:'PDF', exts:['pdf'] },
+  ];
   const BRANCH_CANDIDATES = ['main','master','gh-pages'];
   const FOLDER = new URLSearchParams(location.search).get('folder') || '';
+  const TAGS_FILE_NAME = 'rezeptbox-tags' + (FOLDER ? '-' + FOLDER.replace(/[^a-z0-9_-]/gi,'_') : '') + '.json';
+
+  const STATUS_TEXT = {
+    'no-token': '🔒 Nur Ansicht (kein Token)',
+    'pending': '⏳ Änderung ausstehend…',
+    'saving': '⏳ Speichert…',
+    'synced': '✓ Synchronisiert',
+    'error': '⚠ Fehler beim Speichern',
+    'offline': '⚠ Offline-Kopie',
+  };
 
   let owner = null, repo = null, branch = null;
   let recipes = [];
   let activeTags = new Set();
+  let tagMode = 'all'; // 'all' = AND, 'any' = OR
+  let activeExtGroups = new Set();
   let pollTimer = null;
   const contentCache = {};
 
+  let tagsData = { version:1, custom_tags:[], recipes:{} };
+  let tagsSha = null;
+  let pat = null;
+  let syncState = 'no-token';
+  let saveTimer = null, saveInFlight = false, saveQueued = false;
+  const dirty = { customTags:false, recipeIds:new Set() };
+  let openModalStatusRefs = []; // elements to keep in sync with syncState while a modal is open
+
+  // ---------- helpers ----------
   function toast(msg, isErr){
     const el = document.createElement('div');
     el.className = 'toast' + (isErr ? ' err' : '');
@@ -223,6 +323,11 @@
   function extOf(name){ const p = name.split('.'); return p.length>1 ? p.pop().toLowerCase() : ''; }
   function titleFromFilename(name){ return name.replace(/\.[^.]+$/, '').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim(); }
   function tagColor(tag){ let h=0; for(const c of tag) h=(h*31+c.charCodeAt(0))%997; return TAG_COLORS[h % TAG_COLORS.length]; }
+  function extGroupKey(ext){ for (const g of EXT_GROUPS) if (g.exts.includes(ext)) return g.key; return 'other'; }
+  function extGroupLabel(key){ const g = EXT_GROUPS.find(g => g.key === key); return g ? g.label : 'Sonstige'; }
+  function debounce(fn, wait){ let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), wait); }; }
+  function b64EncodeUnicode(str){ return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m,p) => String.fromCharCode('0x'+p))); }
+  function b64DecodeUnicode(str){ return decodeURIComponent(atob(str).split('').map(c => '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')); }
 
   // ---------- Auto-detect owner/repo from the page's own GitHub Pages URL ----------
   function detectRepo(){
@@ -236,16 +341,176 @@
     return null;
   }
 
-  function ghTagsKey(){ return `rezeptbox_tags_${owner}_${repo}`; }
-  function loadLocalTags(){ try{ return JSON.parse(localStorage.getItem(ghTagsKey()) || '{}'); }catch(e){ return {}; } }
-  function saveLocalTags(m){ localStorage.setItem(ghTagsKey(), JSON.stringify(m)); }
-  let localTags = {};
-
   function apiBase(){
     const folderPart = FOLDER ? '/' + FOLDER.split('/').map(encodeURIComponent).join('/') : '';
     return `https://api.github.com/repos/${owner}/${repo}/contents${folderPart}`;
   }
+  function tagsApiUrl(){ return `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(TAGS_FILE_NAME)}`; }
 
+  // ---------- PAT (personal access token) management ----------
+  function patKey(){ return `rezeptbox_pat_${owner}_${repo}`; }
+  function loadPat(){ try{ return localStorage.getItem(patKey()) || null; }catch(e){ return null; } }
+  function savePat(v){ try{ localStorage.setItem(patKey(), v); }catch(e){} }
+  function clearPat(){ try{ localStorage.removeItem(patKey()); }catch(e){} }
+
+  function cacheKey(){ return `rezeptbox_tags_cache_${owner}_${repo}${FOLDER ? '_'+FOLDER : ''}`; }
+  function cacheTagsLocally(){ try{ localStorage.setItem(cacheKey(), JSON.stringify(tagsData)); }catch(e){} }
+  function readCachedTags(){ try{ const raw = localStorage.getItem(cacheKey()); return raw ? JSON.parse(raw) : null; }catch(e){ return null; } }
+  function emptyTagsData(){ return { version:1, custom_tags:[], recipes:{} }; }
+
+  // ---------- remote tags file ----------
+  async function fetchTagsFile(){
+    const res = await fetch(tagsApiUrl(), { headers: { 'Accept':'application/vnd.github+json' } });
+    if (res.status === 404) return { data: emptyTagsData(), sha: null };
+    if (!res.ok) throw new Error(`GitHub-Fehler ${res.status}`);
+    const j = await res.json();
+    let data;
+    try{ data = JSON.parse(b64DecodeUnicode(j.content.replace(/\n/g,''))); }
+    catch(e){ data = emptyTagsData(); }
+    if (!data.recipes) data.recipes = {};
+    if (!data.custom_tags) data.custom_tags = [];
+    return { data, sha: j.sha };
+  }
+
+  async function loadTagsData(){
+    try{
+      const { data, sha } = await fetchTagsFile();
+      tagsData = data; tagsSha = sha;
+      cacheTagsLocally();
+      setSyncState(pat ? 'synced' : 'no-token');
+    }catch(e){
+      const cached = readCachedTags();
+      if (cached){ tagsData = cached; tagsSha = null; setSyncState('offline'); toast('Keine Verbindung zu GitHub – zeige zwischengespeicherte Tags.', true); }
+      else { tagsData = emptyTagsData(); tagsSha = null; setSyncState('offline'); toast('Tags konnten nicht geladen werden.', true); }
+    }
+  }
+
+  function getRecipeMeta(id){
+    if (!tagsData.recipes[id]) tagsData.recipes[id] = { tags:[], favorite:false };
+    return tagsData.recipes[id];
+  }
+  function syncRecipeMirrors(){
+    recipes.forEach(r => {
+      const meta = tagsData.recipes[r.id] || { tags:[], favorite:false };
+      r.tags = meta.tags || []; r.favorite = !!meta.favorite;
+    });
+  }
+
+  function markDirty(recipeId){
+    if (recipeId) dirty.recipeIds.add(recipeId);
+    scheduleSave();
+  }
+  function markCustomTagsDirty(){ dirty.customTags = true; scheduleSave(); }
+
+  function scheduleSave(){
+    if (!pat){ setSyncState('no-token'); cacheTagsLocally(); return; }
+    setSyncState('pending');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(doSave, 900);
+  }
+
+  async function doSave(){
+    if (saveInFlight){ saveQueued = true; return; }
+    saveInFlight = true;
+    setSyncState('saving');
+    try{
+      await commitTagsFile();
+      dirty.customTags = false; dirty.recipeIds.clear();
+      setSyncState('synced');
+      cacheTagsLocally();
+    }catch(e){
+      setSyncState('error', e.message);
+      toast('Speichern fehlgeschlagen: ' + e.message, true);
+    }
+    saveInFlight = false;
+    if (saveQueued){ saveQueued = false; scheduleSave(); }
+  }
+
+  function mergeTags(remoteData, localData, dirtySet){
+    const merged = { version:1, custom_tags: [...remoteData.custom_tags], recipes: {...remoteData.recipes} };
+    if (dirtySet.customTags){
+      merged.custom_tags = [...new Set([...merged.custom_tags, ...localData.custom_tags])];
+    }
+    dirtySet.recipeIds.forEach(id => { merged.recipes[id] = localData.recipes[id]; });
+    return merged;
+  }
+
+  async function commitTagsFile(){
+    let attempt = 0;
+    while (attempt < 2){
+      attempt++;
+      const body = { message: 'Rezeptbox: Tags aktualisiert', content: b64EncodeUnicode(JSON.stringify(tagsData, null, 2)), branch };
+      if (tagsSha) body.sha = tagsSha;
+      const res = await fetch(tagsApiUrl(), {
+        method:'PUT',
+        headers: { 'Accept':'application/vnd.github+json', 'Authorization': `token ${pat}` },
+        body: JSON.stringify(body)
+      });
+      if (res.ok){ const j = await res.json(); tagsSha = j.content.sha; return; }
+      if (res.status === 409 || res.status === 422){
+        const remote = await fetchTagsFile();
+        tagsData = mergeTags(remote.data, tagsData, dirty);
+        tagsSha = remote.sha;
+        continue;
+      }
+      if (res.status === 401 || res.status === 403){
+        throw new Error('Token ungültig oder ohne Schreibrechte für dieses Repo.');
+      }
+      throw new Error(`GitHub-Fehler (${res.status})`);
+    }
+    throw new Error('Konflikt beim Speichern konnte nicht aufgelöst werden. Seite neu laden.');
+  }
+
+  function setSyncState(state, msg){
+    syncState = state;
+    const text = STATUS_TEXT[state] || STATUS_TEXT['no-token'];
+    syncPill.textContent = text;
+    syncPill.title = msg || '';
+    syncPill.className = 'stat-pill sync-' + state;
+    openModalStatusRefs.forEach(el => { if (document.body.contains(el)) el.textContent = text; });
+  }
+
+  // ---------- tag / favorite mutations ----------
+  function toggleFavorite(r){
+    const meta = getRecipeMeta(r.id);
+    meta.favorite = !meta.favorite;
+    r.favorite = meta.favorite;
+    if (!pat){ toast('Zum dauerhaften Speichern wird ein Token benötigt (⚙ Einstellungen).', true); }
+    markDirty(r.id);
+    updateStatPill(); renderGrid();
+  }
+
+  function addTagToRecipe(recipe, val, rerender){
+    val = val.trim();
+    if (!val) return;
+    if (recipe.tags.some(t => t.toLowerCase() === val.toLowerCase())) return;
+    const meta = getRecipeMeta(recipe.id);
+    meta.tags.push(val);
+    recipe.tags = meta.tags;
+    if (!PRESET_TAGS.includes(val) && !tagsData.custom_tags.includes(val)){
+      tagsData.custom_tags.push(val);
+      markCustomTagsDirty();
+    }
+    markDirty(recipe.id);
+    rerender();
+    renderTagCloud(); renderExtCloud(); renderGrid(); renderActiveFiltersBar();
+  }
+
+  function removeTagFromRecipe(recipe, tag, rerender){
+    const meta = getRecipeMeta(recipe.id);
+    meta.tags = meta.tags.filter(t => t !== tag);
+    recipe.tags = meta.tags;
+    markDirty(recipe.id);
+    rerender();
+    renderTagCloud(); renderGrid(); renderActiveFiltersBar();
+  }
+
+  function toggleTagFilter(tag){
+    activeTags.has(tag) ? activeTags.delete(tag) : activeTags.add(tag);
+    renderTagCloud(); renderGrid(); renderActiveFiltersBar();
+  }
+
+  // ---------- data fetch ----------
   async function detectBranch(){
     for (const b of BRANCH_CANDIDATES){
       try{
@@ -257,17 +522,21 @@
     return null;
   }
 
+  function filterEntries(list){
+    return list.filter(e => e.type === 'file' && !IGNORE_NAMES.includes(e.name.toLowerCase()) && !e.name.startsWith('.') && !e.name.startsWith('_') && !TAGS_FILE_PATTERN.test(e.name));
+  }
+
   async function fetchFileList(){
     const res = await fetch(`${apiBase()}?ref=${branch}`, { headers: { 'Accept':'application/vnd.github+json' } });
     if (res.status === 403) throw new Error('GitHub-Rate-Limit erreicht (60 Anfragen/Stunde ohne Login). Kurz warten und erneut versuchen.');
     if (!res.ok) throw new Error(`GitHub-Fehler ${res.status}`);
     const data = await res.json();
     if (!Array.isArray(data)) throw new Error('Der Pfad zeigt auf eine Datei, keinen Ordner.');
-    return data.filter(e => e.type === 'file' && !IGNORE_NAMES.includes(e.name.toLowerCase()) && !e.name.startsWith('.') && !e.name.startsWith('_'));
+    return filterEntries(data);
   }
 
   function buildRecipe(entry){
-    const meta = localTags[entry.name] || { tags: [], favorite:false };
+    const meta = tagsData.recipes[entry.name] || { tags:[], favorite:false };
     return {
       id: entry.name, name: entry.name, ext: extOf(entry.name),
       sha: entry.sha, download_url: entry.download_url,
@@ -283,14 +552,16 @@
     errorBanner.style.display = 'none';
 
     const prevIds = new Set(recipes.map(r => r.id));
-    const newIds = new Set(entries.map(e => e.name));
     const added = entries.filter(e => !prevIds.has(e.name));
 
-    let changed = false;
-    for (const key of Object.keys(localTags)){
-      if (!newIds.has(key)){ delete localTags[key]; changed = true; }
+    // pull in tag changes made from other devices, but only when nothing is unsaved locally
+    if (!saveInFlight && dirty.recipeIds.size === 0 && !dirty.customTags){
+      try{
+        const { data, sha } = await fetchTagsFile();
+        tagsData = data; tagsSha = sha; cacheTagsLocally();
+        if (pat && syncState !== 'saving') setSyncState('synced');
+      }catch(e){ /* keep last known tagsData on failure */ }
     }
-    if (changed) saveLocalTags(localTags);
 
     recipes = entries.map(buildRecipe);
 
@@ -299,7 +570,7 @@
         ? `Neues Rezept erkannt: „${titleFromFilename(added[0].name)}“`
         : `${added.length} neue Rezepte erkannt`);
     }
-    updateStatPill(); renderTagCloud(); renderGrid();
+    updateStatPill(); renderTagCloud(); renderExtCloud(); renderGrid(); renderActiveFiltersBar();
   }
 
   function updateStatPill(){
@@ -332,6 +603,7 @@
     return recipe._preview;
   }
 
+  // ---------- sidebar: tag cloud & extension filter ----------
   function renderTagCloud(){
     const tags = allTags();
     tagCountEl.textContent = tags.length ? `(${tags.length})` : '';
@@ -345,18 +617,100 @@
     tags.forEach(tag => {
       const count = recipes.filter(r => r.tags.includes(tag)).length;
       const chip = document.createElement('button');
+      chip.type = 'button';
       chip.className = 'tag-chip' + (activeTags.has(tag) ? ' active' : '');
       chip.innerHTML = `${escapeHtml(tag)}<span class="n">${count}</span>`;
-      chip.onclick = () => { activeTags.has(tag) ? activeTags.delete(tag) : activeTags.add(tag); renderTagCloud(); renderGrid(); };
+      chip.onclick = () => toggleTagFilter(tag);
       tagCloud.appendChild(chip);
     });
   }
 
+  function renderExtCloud(){
+    const counts = {};
+    recipes.forEach(r => { const k = extGroupKey(r.ext); counts[k] = (counts[k]||0) + 1; });
+    const keys = Object.keys(counts);
+    extCloud.innerHTML = '';
+    document.getElementById('extSection').style.display = keys.length > 1 ? 'block' : 'none';
+    keys.sort((a,b) => extGroupLabel(a).localeCompare(extGroupLabel(b),'de')).forEach(key => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'tag-chip' + (activeExtGroups.has(key) ? ' active' : '');
+      chip.innerHTML = `${escapeHtml(extGroupLabel(key))}<span class="n">${counts[key]}</span>`;
+      chip.onclick = () => {
+        activeExtGroups.has(key) ? activeExtGroups.delete(key) : activeExtGroups.add(key);
+        renderExtCloud(); renderGrid(); renderActiveFiltersBar();
+      };
+      extCloud.appendChild(chip);
+    });
+  }
+
+  tagModeToggle.querySelectorAll('button').forEach(btn => {
+    btn.onclick = () => {
+      tagMode = btn.dataset.mode;
+      tagModeToggle.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+      renderGrid(); renderActiveFiltersBar();
+    };
+  });
+
+  // ---------- active filters summary ----------
+  function activeFilterCount(){
+    let n = activeTags.size + activeExtGroups.size;
+    if (searchInput.value.trim()) n++;
+    if (favOnly.checked) n++;
+    if (untaggedOnly.checked) n++;
+    return n;
+  }
+
+  function renderActiveFiltersBar(){
+    const n = activeFilterCount();
+    mobileFilterCount.style.display = n ? 'inline-block' : 'none';
+    mobileFilterCount.textContent = n || '';
+    if (!n){ activeFiltersBar.style.display = 'none'; activeFiltersBar.innerHTML = ''; return; }
+    activeFiltersBar.style.display = 'flex';
+    activeFiltersBar.innerHTML = '';
+
+    function chip(label, onRemove){
+      const el = document.createElement('span');
+      el.className = 'filter-chip';
+      el.innerHTML = `${escapeHtml(label)} <button aria-label="Filter entfernen">&times;</button>`;
+      el.querySelector('button').onclick = onRemove;
+      activeFiltersBar.appendChild(el);
+    }
+
+    if (searchInput.value.trim()){
+      chip(`Suche: „${searchInput.value.trim()}“`, () => { searchInput.value=''; renderGrid(); renderActiveFiltersBar(); });
+    }
+    activeTags.forEach(tag => {
+      chip(`Tag${activeTags.size>1 ? ' ('+(tagMode==='all'?'alle':'beliebig')+')' : ''}: ${tag}`, () => { activeTags.delete(tag); renderTagCloud(); renderGrid(); renderActiveFiltersBar(); });
+    });
+    activeExtGroups.forEach(key => {
+      chip(`Typ: ${extGroupLabel(key)}`, () => { activeExtGroups.delete(key); renderExtCloud(); renderGrid(); renderActiveFiltersBar(); });
+    });
+    if (favOnly.checked) chip('Nur Favoriten', () => { favOnly.checked=false; renderGrid(); renderActiveFiltersBar(); });
+    if (untaggedOnly.checked) chip('Unverschlagwortet', () => { untaggedOnly.checked=false; renderGrid(); renderActiveFiltersBar(); });
+
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'filter-reset';
+    resetBtn.textContent = 'Alle Filter zurücksetzen';
+    resetBtn.onclick = () => {
+      searchInput.value=''; activeTags.clear(); activeExtGroups.clear(); favOnly.checked=false; untaggedOnly.checked=false;
+      renderTagCloud(); renderExtCloud(); renderGrid(); renderActiveFiltersBar();
+    };
+    activeFiltersBar.appendChild(resetBtn);
+  }
+
+  // ---------- grid ----------
   async function renderGrid(){
     const q = searchInput.value.trim().toLowerCase();
     let list = recipes.slice();
-    if (activeTags.size) list = list.filter(r => [...activeTags].every(t => r.tags.includes(t)));
+    if (activeTags.size){
+      list = tagMode === 'any'
+        ? list.filter(r => [...activeTags].some(t => r.tags.includes(t)))
+        : list.filter(r => [...activeTags].every(t => r.tags.includes(t)));
+    }
+    if (activeExtGroups.size) list = list.filter(r => activeExtGroups.has(extGroupKey(r.ext)));
     if (favOnly.checked) list = list.filter(r => r.favorite);
+    if (untaggedOnly.checked) list = list.filter(r => r.tags.length === 0);
 
     if (q){
       await Promise.all(list.map(r => ensurePreview(r)));
@@ -368,9 +722,15 @@
     }
 
     const sortMode = sortSelect.value;
-    list.sort((a,b) => sortMode === 'name-desc'
-      ? titleFromFilename(b.name).localeCompare(titleFromFilename(a.name), 'de')
-      : titleFromFilename(a.name).localeCompare(titleFromFilename(b.name), 'de'));
+    if (sortMode === 'fav-first'){
+      list.sort((a,b) => (b.favorite - a.favorite) || titleFromFilename(a.name).localeCompare(titleFromFilename(b.name),'de'));
+    } else if (sortMode === 'tags-desc'){
+      list.sort((a,b) => (b.tags.length - a.tags.length) || titleFromFilename(a.name).localeCompare(titleFromFilename(b.name),'de'));
+    } else {
+      list.sort((a,b) => sortMode === 'name-desc'
+        ? titleFromFilename(b.name).localeCompare(titleFromFilename(a.name), 'de')
+        : titleFromFilename(a.name).localeCompare(titleFromFilename(b.name), 'de'));
+    }
 
     grid.innerHTML = '';
     emptyState.style.display = (list.length || errorBanner.style.display === 'flex') ? 'none' : 'block';
@@ -385,25 +745,24 @@
       card.innerHTML = `
         <h3 class="card-title">${escapeHtml(titleFromFilename(r.name))}</h3>
         <span class="card-snippet">${escapeHtml(r._preview) || ''}</span>
-        <div class="card-tags">${r.tags.slice(0,4).map(t => `<span class="mini-tag">${escapeHtml(t)}</span>`).join('')}</div>
+        <div class="card-tags">${r.tags.slice(0,4).map(t => `<span class="mini-tag${activeTags.has(t)?' active':''}" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('')}</div>
         <span class="card-meta">.${r.ext || 'datei'}</span>
         <button class="fav-star ${r.favorite ? 'active' : ''}" aria-label="Favorit">
           <svg viewBox="0 0 24 24" fill="${r.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.63 22 9.24 16.5 14.14 18.18 21 12 17.27 5.82 21 7.5 14.14 2 9.24 8.91 8.63 12 2"/></svg>
         </button>
       `;
       card.querySelector('.fav-star').onclick = (ev) => { ev.stopPropagation(); toggleFavorite(r); };
+      card.querySelectorAll('.mini-tag').forEach(el => {
+        el.onclick = (ev) => { ev.stopPropagation(); toggleTagFilter(el.dataset.tag); };
+      });
       card.onclick = () => openModal(r);
       card.onkeydown = (ev) => { if (ev.key === 'Enter') openModal(r); };
       grid.appendChild(card);
     }
   }
 
-  function toggleFavorite(r){
-    r.favorite = !r.favorite;
-    localTags[r.id] = { tags: r.tags, favorite: r.favorite };
-    saveLocalTags(localTags);
-    updateStatPill(); renderGrid();
-  }
+  // ---------- modal ----------
+  function statusRefCleanup(){ openModalStatusRefs = openModalStatusRefs.filter(el => document.body.contains(el)); }
 
   async function openModal(recipe){
     const backdrop = document.createElement('div');
@@ -412,55 +771,81 @@
       <div class="modal" role="dialog" aria-modal="true">
         <div class="modal-head">
           <h2>${escapeHtml(titleFromFilename(recipe.name))}</h2>
-          <button class="modal-close" aria-label="Schließen">&times;</button>
+          <div class="modal-head-actions">
+            <button class="modal-fav-btn ${recipe.favorite ? 'active' : ''}" aria-label="Favorit">
+              <svg viewBox="0 0 24 24" fill="${recipe.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.63 22 9.24 16.5 14.14 18.18 21 12 17.27 5.82 21 7.5 14.14 2 9.24 8.91 8.63 12 2"/></svg>
+            </button>
+            <button class="modal-close" aria-label="Schließen">&times;</button>
+          </div>
         </div>
         <div class="modal-body">
-          <div class="modal-tags-row" id="modalTags"></div>
+          <div class="modal-tags-block" id="modalTags"></div>
           <div class="rendered-content" id="modalContent">Lade Inhalt…</div>
         </div>
       </div>`;
     document.body.appendChild(backdrop);
-    const close = () => backdrop.remove();
+    const close = () => { backdrop.remove(); statusRefCleanup(); };
     backdrop.querySelector('.modal-close').onclick = close;
     backdrop.onclick = (ev) => { if (ev.target === backdrop) close(); };
     document.addEventListener('keydown', function esc(ev){ if (ev.key === 'Escape'){ close(); document.removeEventListener('keydown', esc); } });
 
-    renderModalTags(recipe, backdrop.querySelector('#modalTags'));
+    const favBtn = backdrop.querySelector('.modal-fav-btn');
+    favBtn.onclick = () => {
+      toggleFavorite(recipe);
+      favBtn.classList.toggle('active', recipe.favorite);
+      favBtn.querySelector('svg').setAttribute('fill', recipe.favorite ? 'currentColor' : 'none');
+    };
+
+    renderTagsView(recipe, backdrop.querySelector('#modalTags'));
+    // recipe content opens immediately alongside the tags; no extra click needed
     await renderModalContent(recipe, backdrop.querySelector('#modalContent'));
   }
 
-  function addTagToRecipe(recipe, val, container){
-    val = val.trim();
-    if (!val || recipe.tags.includes(val)) return;
-    recipe.tags.push(val);
-    localTags[recipe.id] = { tags: recipe.tags, favorite: recipe.favorite };
-    saveLocalTags(localTags);
-    renderModalTags(recipe, container); renderTagCloud(); renderGrid();
+  function renderTagsView(recipe, container){
+    container.innerHTML = '';
+    const row = document.createElement('div'); row.className = 'modal-tags-row';
+    if (!recipe.tags.length){
+      const p = document.createElement('span'); p.style.cssText = 'color:var(--text-faint);font-size:13px;'; p.textContent = 'Keine Tags vergeben.';
+      row.appendChild(p);
+    } else {
+      recipe.tags.forEach(tag => {
+        const chip = document.createElement('button');
+        chip.type = 'button'; chip.className = 'tag-chip' + (activeTags.has(tag) ? ' active' : '');
+        chip.style.setProperty('--tab-color', tagColor(tag));
+        chip.textContent = tag;
+        chip.title = 'Als Filter an-/abwählen';
+        chip.onclick = () => { toggleTagFilter(tag); chip.classList.toggle('active', activeTags.has(tag)); };
+        row.appendChild(chip);
+      });
+    }
+    container.appendChild(row);
+
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button'; editBtn.className = 'btn small ghost';
+    editBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Tags bearbeiten`;
+    editBtn.onclick = () => {
+      if (!pat){ toast('Zum Bearbeiten wird ein Token benötigt.', true); openSettingsModal(); return; }
+      renderTagsEdit(recipe, container);
+    };
+    container.appendChild(editBtn);
   }
 
-  function renderModalTags(recipe, container){
+  function renderTagsEdit(recipe, container){
     container.innerHTML = '';
-    const row = document.createElement('div');
-    row.className = 'modal-tags-row';
+    const row = document.createElement('div'); row.className = 'modal-tags-row';
+    const rerender = () => renderTagsEdit(recipe, container);
+
     recipe.tags.forEach(tag => {
-      const el = document.createElement('span');
-      el.className = 'tag-editable';
+      const el = document.createElement('span'); el.className = 'tag-editable';
       el.innerHTML = `${escapeHtml(tag)} <button aria-label="Tag entfernen">&times;</button>`;
-      el.querySelector('button').onclick = () => {
-        recipe.tags = recipe.tags.filter(t => t !== tag);
-        localTags[recipe.id] = { tags: recipe.tags, favorite: recipe.favorite };
-        saveLocalTags(localTags);
-        renderModalTags(recipe, container); renderTagCloud(); renderGrid();
-      };
+      el.querySelector('button').onclick = () => removeTagFromRecipe(recipe, tag, rerender);
       row.appendChild(el);
     });
+
     const input = document.createElement('input');
-    input.className = 'tag-add-input';
-    input.placeholder = '+ Tag hinzufügen';
+    input.className = 'tag-add-input'; input.placeholder = '+ Tag hinzufügen';
     input.onkeydown = (ev) => {
-      if (ev.key === 'Enter' && input.value.trim()){
-        addTagToRecipe(recipe, input.value, container);
-      }
+      if (ev.key === 'Enter' && input.value.trim()) addTagToRecipeAndKeepEditing(recipe, input.value, container);
     };
     input.oninput = () => renderSuggestions(input.value);
     row.appendChild(input);
@@ -468,7 +853,7 @@
 
     const suggLabel = document.createElement('p');
     suggLabel.className = 'tag-suggestions-label';
-    suggLabel.textContent = 'Typische Tags';
+    suggLabel.textContent = 'Vorschläge';
     container.appendChild(suggLabel);
 
     const suggBox = document.createElement('div');
@@ -477,21 +862,101 @@
 
     function renderSuggestions(filterText){
       const q = filterText.trim().toLowerCase();
-      let pool = PRESET_TAGS.filter(t => !recipe.tags.includes(t));
+      const allSuggestable = [...new Set([...PRESET_TAGS, ...tagsData.custom_tags])];
+      let pool = allSuggestable.filter(t => !recipe.tags.includes(t));
       if (q) pool = pool.filter(t => t.toLowerCase().includes(q));
       pool = pool.slice(0, q ? 8 : 14);
       suggBox.innerHTML = '';
       pool.forEach(t => {
         const chip = document.createElement('button');
-        chip.className = 'tag-suggestion';
+        chip.type = 'button'; chip.className = 'tag-suggestion';
         chip.textContent = t;
-        chip.onclick = () => addTagToRecipe(recipe, t, container);
+        chip.onclick = () => addTagToRecipeAndKeepEditing(recipe, t, container);
         suggBox.appendChild(chip);
       });
+      const trimmed = filterText.trim();
+      if (trimmed && !allSuggestable.some(t => t.toLowerCase() === trimmed.toLowerCase()) && !recipe.tags.some(t => t.toLowerCase() === trimmed.toLowerCase())){
+        const newChip = document.createElement('button');
+        newChip.type = 'button'; newChip.className = 'tag-suggestion new';
+        newChip.textContent = `+ „${trimmed}“ als neuen Tag`;
+        newChip.onclick = () => addTagToRecipeAndKeepEditing(recipe, trimmed, container);
+        suggBox.appendChild(newChip);
+      }
     }
     renderSuggestions('');
+
+    const footer = document.createElement('div'); footer.className = 'edit-footer';
+    const status = document.createElement('span'); status.className = 'sync-status-text';
+    status.textContent = STATUS_TEXT[syncState] || '';
+    openModalStatusRefs.push(status);
+    const doneBtn = document.createElement('button');
+    doneBtn.type = 'button'; doneBtn.className = 'btn small'; doneBtn.textContent = 'Fertig';
+    doneBtn.onclick = () => renderTagsView(recipe, container);
+    footer.appendChild(status); footer.appendChild(doneBtn);
+    container.appendChild(footer);
+
+    input.focus();
   }
 
+  function addTagToRecipeAndKeepEditing(recipe, val, container){
+    addTagToRecipe(recipe, val, () => {});
+    renderTagsEdit(recipe, container);
+  }
+
+  // ---------- settings modal ----------
+  function openSettingsModal(){
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop';
+    backdrop.innerHTML = `
+      <div class="modal" role="dialog" aria-modal="true" style="max-width:520px;">
+        <div class="modal-head">
+          <h2 style="font-size:22px;">Einstellungen</h2>
+          <button class="modal-close" aria-label="Schließen">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="settings-copy">Um Tags und Favoriten zu bearbeiten, wird ein GitHub-Token mit Schreibrechten für dieses Repository benötigt. Die Daten werden dann in <code class="inline">${escapeHtml(TAGS_FILE_NAME)}</code> im Repo gespeichert und stehen automatisch auf jedem Gerät zur Verfügung, das diese Seite öffnet.</p>
+          <p class="settings-copy faint">Token erstellen: GitHub → Settings → Developer settings → Fine-grained tokens → Zugriff auf dieses Repo, Berechtigung „Contents: Read and write". Der Token wird nur in diesem Browser gespeichert.</p>
+          <label style="display:block;font-size:12.5px;color:var(--text-faint);margin:16px 0 6px;">GitHub-Token</label>
+          <input type="password" id="patInput" class="settings-input" placeholder="ghp_… oder github_pat_…">
+          <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+            <button class="btn" id="patSaveBtn">Speichern &amp; prüfen</button>
+            <button class="btn ghost" id="patClearBtn">Token entfernen</button>
+          </div>
+          <p id="patStatus" class="settings-copy faint" style="margin-top:14px;"></p>
+        </div>
+      </div>`;
+    document.body.appendChild(backdrop);
+    const close = () => backdrop.remove();
+    backdrop.querySelector('.modal-close').onclick = close;
+    backdrop.onclick = (ev) => { if (ev.target === backdrop) close(); };
+
+    const input = backdrop.querySelector('#patInput');
+    input.value = pat || '';
+    const statusEl = backdrop.querySelector('#patStatus');
+
+    backdrop.querySelector('#patSaveBtn').onclick = async () => {
+      const v = input.value.trim();
+      if (!v){ statusEl.textContent = 'Bitte einen Token eingeben.'; return; }
+      pat = v; savePat(v);
+      statusEl.textContent = 'Prüfe Zugriff…';
+      try{
+        await commitTagsFile();
+        statusEl.textContent = '✓ Zugriff bestätigt. Bearbeiten ist jetzt möglich.';
+        setSyncState('synced');
+        toast('Token gespeichert – Bearbeiten ist jetzt möglich.');
+      }catch(e){
+        statusEl.textContent = '⚠ ' + e.message;
+      }
+    };
+    backdrop.querySelector('#patClearBtn').onclick = () => {
+      pat = null; clearPat(); setSyncState('no-token');
+      statusEl.textContent = 'Token entfernt – nur noch Ansicht möglich.';
+      toast('Token entfernt.');
+    };
+  }
+  settingsBtn.onclick = openSettingsModal;
+
+  // ---------- attachment rendering (unchanged behaviour) ----------
   const MIME_BY_EXT = { pdf:'application/pdf', jpg:'image/jpeg', jpeg:'image/jpeg', png:'image/png', gif:'image/gif', webp:'image/webp' };
 
   async function blobUrlFor(recipe){
@@ -537,9 +1002,16 @@
   }
 
   rescanBtn.onclick = () => refresh({silent:false});
-  searchInput.oninput = () => renderGrid();
+  searchInput.oninput = debounce(() => { renderGrid(); renderActiveFiltersBar(); }, 150);
   sortSelect.onchange = () => renderGrid();
-  favOnly.onchange = () => renderGrid();
+  favOnly.onchange = () => { renderGrid(); renderActiveFiltersBar(); };
+  untaggedOnly.onchange = () => { renderGrid(); renderActiveFiltersBar(); };
+  mobileFilterToggle.onclick = () => sidebar.classList.toggle('open');
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === '/' && document.activeElement !== searchInput && !document.querySelector('.modal-backdrop')){
+      ev.preventDefault(); searchInput.focus();
+    }
+  });
 
   async function init(){
     const detected = detectRepo();
@@ -549,10 +1021,13 @@
         'Das passiert, wenn die Seite nicht über eine *.github.io-Adresse läuft (z.B. lokal geöffnet als Datei). Lade die Datei als index.html in dein GitHub-Repo hoch und aktiviere GitHub Pages – dann klappt die Erkennung automatisch.'
       );
       statPill.textContent = 'Nicht verbunden';
+      setSyncState('offline');
       return;
     }
     owner = detected.owner; repo = detected.repo;
-    localTags = loadLocalTags();
+    pat = loadPat();
+
+    await loadTagsData();
 
     try{
       const result = await detectBranch();
@@ -562,9 +1037,9 @@
         return;
       }
       branch = result.branch;
-      const entries = result.list.filter(e => e.type === 'file' && !IGNORE_NAMES.includes(e.name.toLowerCase()) && !e.name.startsWith('.') && !e.name.startsWith('_'));
+      const entries = filterEntries(result.list);
       recipes = entries.map(buildRecipe);
-      updateStatPill(); renderTagCloud(); renderGrid();
+      updateStatPill(); renderTagCloud(); renderExtCloud(); renderGrid(); renderActiveFiltersBar();
       startPolling();
     }catch(e){
       showError('GitHub-Rate-Limit erreicht', 'Ohne Login sind 60 Anfragen/Stunde erlaubt. Bitte kurz warten und dann auf „Aktualisieren“ klicken.');
