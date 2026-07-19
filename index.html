@@ -68,22 +68,26 @@
   .toast.err{ border-color: var(--paprika); }
   @keyframes slideIn{ from{ transform:translateY(10px); opacity:0;} to{ transform:translateY(0); opacity:1; } }
 
-  .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
+  .grid{ display:flex; flex-direction:column; gap: 8px; }
   .empty-state{ padding: 60px 20px; text-align:center; color: var(--text-dim); }
   .empty-state .big{ font-family: var(--font-display); font-size:22px; color:var(--text); margin-bottom:8px; }
 
-  .card{ background: var(--surface); border:1px solid var(--line); border-radius: var(--radius); padding: 18px 18px 16px; cursor:pointer; position:relative; overflow:hidden; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; display:flex; flex-direction:column; gap:10px; min-height:150px; }
-  .card::before{ content:""; position:absolute; top:0; left:18px; width:34px; height:8px; background: var(--tab-color, var(--mustard)); border-radius: 0 0 5px 5px; }
-  .card:hover{ transform: translateY(-3px) rotate(-0.3deg); border-color: var(--tab-color, var(--mustard)); box-shadow: var(--shadow); }
-  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-top:6px;}
-  .card-title{ font-family: var(--font-display); font-weight:600; font-size:18px; line-height:1.25; margin:0; }
-  .fav-star{ background:none; border:none; cursor:pointer; color: var(--text-faint); flex:none; padding:2px; }
+  .card{ background: var(--surface); border:1px solid var(--line); border-left:4px solid var(--tab-color, var(--mustard)); border-radius: 10px; padding: 11px 16px; cursor:pointer; display:flex; align-items:center; gap:14px; transition: border-color .15s ease, background .15s ease; }
+  .card:hover{ background: var(--surface-2); border-color: var(--tab-color, var(--mustard)); }
+  .card-title{ font-family: var(--font-display); font-weight:600; font-size:15.5px; line-height:1.25; margin:0; flex:0 1 auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:38%; }
+  .card-snippet{ font-size:12.5px; color: var(--text-faint); flex:1 1 auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+  .card-tags{ display:flex; flex-wrap:nowrap; gap:6px; flex:none; overflow:hidden; max-width:32%; }
+  .mini-tag{ font-size:10.5px; padding:3px 9px; border-radius:100px; background: var(--surface-2); color: var(--text-dim); border:1px solid var(--line); white-space:nowrap; flex:none; }
+  .card-meta{ font-size:10.5px; color: var(--text-faint); flex:none; width:34px; text-align:right; }
+  .fav-star{ background:none; border:none; cursor:pointer; color: var(--text-faint); flex:none; padding:2px; display:flex; }
   .fav-star.active{ color: var(--mustard); }
-  .fav-star svg{ width:18px; height:18px; }
-  .card-snippet{ font-size:13px; color: var(--text-dim); line-height:1.5; flex:1; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
-  .card-tags{ display:flex; flex-wrap:wrap; gap:6px; }
-  .mini-tag{ font-size:11px; padding:3px 9px; border-radius:100px; background: var(--surface-2); color: var(--text-dim); border:1px solid var(--line); }
-  .card-meta{ font-size:11px; color: var(--text-faint); }
+  .fav-star svg{ width:16px; height:16px; }
+  @media (max-width: 640px){
+    .card{ flex-wrap:wrap; }
+    .card-title{ max-width:100%; flex:1 1 100%; }
+    .card-snippet{ display:none; }
+    .card-tags{ max-width:none; }
+  }
 
   .modal-backdrop{ position:fixed; inset:0; background: rgba(15,20,17,0.72); backdrop-filter: blur(3px); display:flex; align-items:flex-start; justify-content:center; padding: 40px 20px; z-index:50; overflow-y:auto; }
   .modal{ background: var(--bg-alt); border:1px solid var(--line); border-radius: var(--radius); max-width: 720px; width:100%; box-shadow: var(--shadow); animation: pop .18s ease-out; }
@@ -97,6 +101,10 @@
   .tag-editable button{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:0 4px; font-size:14px; }
   .tag-add-input{ background:var(--surface); border:1px dashed var(--line); color:var(--text); padding:6px 12px; border-radius:100px; font-size:12.5px; width:130px; font-family:inherit; }
   .tag-add-input:focus{ outline:none; border-color:var(--mustard); }
+  .tag-suggestions-label{ font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--text-faint); font-weight:600; margin: 4px 0 8px; }
+  .tag-suggestions{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+  .tag-suggestion{ font-size:12px; padding:5px 11px; border-radius:100px; background:transparent; border:1px dashed var(--line); color:var(--text-dim); cursor:pointer; }
+  .tag-suggestion:hover{ border-color:var(--sage); border-style:solid; color:var(--text); }
   .rendered-content{ font-size:14.5px; line-height:1.7; color: var(--text); }
   .rendered-content h1,.rendered-content h2,.rendered-content h3{ font-family: var(--font-display); font-weight:600; }
   .rendered-content h1{font-size:22px;} .rendered-content h2{font-size:19px;} .rendered-content h3{font-size:16.5px;}
@@ -183,6 +191,13 @@
   const IMG_EXT = ['jpg','jpeg','png','gif','webp'];
   const TAG_COLORS = ['#E8A93B','#8FAE8B','#D1495B','#7AA6C2','#C48BD9','#D98C4A'];
   const IGNORE_NAMES = ['index.html','readme.md','license','license.md','.gitignore','.nojekyll','favicon.ico','style.css','styles.css','script.js','_config.yml','metadata.json'];
+  const PRESET_TAGS = [
+    'Deutsch','Italienisch','Französisch','Griechisch','Spanisch','Türkisch','Balkan',
+    'Asiatisch','Chinesisch','Japanisch','Thai','Vietnamesisch','Koreanisch','Indisch',
+    'Mexikanisch','Amerikanisch','Arabisch','Levantinisch','Marokkanisch','Skandinavisch',
+    'Frühstück','Hauptgericht','Vorspeise','Suppe','Salat','Dessert','Snack','Backen',
+    'Brot','Grillen','Party','Meal Prep','Vegetarisch','Vegan','Glutenfrei','Low Carb','Schnell'
+  ];
   const BRANCH_CANDIDATES = ['main','master','gh-pages'];
   const FOLDER = new URLSearchParams(location.search).get('folder') || '';
 
@@ -368,15 +383,13 @@
       card.style.setProperty('--tab-color', accent);
       card.tabIndex = 0;
       card.innerHTML = `
-        <div class="card-top">
-          <h3 class="card-title">${escapeHtml(titleFromFilename(r.name))}</h3>
-          <button class="fav-star ${r.favorite ? 'active' : ''}" aria-label="Favorit">
-            <svg viewBox="0 0 24 24" fill="${r.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.63 22 9.24 16.5 14.14 18.18 21 12 17.27 5.82 21 7.5 14.14 2 9.24 8.91 8.63 12 2"/></svg>
-          </button>
-        </div>
-        <p class="card-snippet">${escapeHtml(r._preview) || '<em style="color:var(--text-faint)">Kein Textvorschau verfügbar</em>'}</p>
-        <div class="card-tags">${r.tags.map(t => `<span class="mini-tag">${escapeHtml(t)}</span>`).join('') || '<span class="mini-tag" style="opacity:.5;">kein Tag</span>'}</div>
-        <div class="card-meta">.${r.ext || 'datei'}</div>
+        <h3 class="card-title">${escapeHtml(titleFromFilename(r.name))}</h3>
+        <span class="card-snippet">${escapeHtml(r._preview) || ''}</span>
+        <div class="card-tags">${r.tags.slice(0,4).map(t => `<span class="mini-tag">${escapeHtml(t)}</span>`).join('')}</div>
+        <span class="card-meta">.${r.ext || 'datei'}</span>
+        <button class="fav-star ${r.favorite ? 'active' : ''}" aria-label="Favorit">
+          <svg viewBox="0 0 24 24" fill="${r.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.63 22 9.24 16.5 14.14 18.18 21 12 17.27 5.82 21 7.5 14.14 2 9.24 8.91 8.63 12 2"/></svg>
+        </button>
       `;
       card.querySelector('.fav-star').onclick = (ev) => { ev.stopPropagation(); toggleFavorite(r); };
       card.onclick = () => openModal(r);
@@ -416,8 +429,19 @@
     await renderModalContent(recipe, backdrop.querySelector('#modalContent'));
   }
 
+  function addTagToRecipe(recipe, val, container){
+    val = val.trim();
+    if (!val || recipe.tags.includes(val)) return;
+    recipe.tags.push(val);
+    localTags[recipe.id] = { tags: recipe.tags, favorite: recipe.favorite };
+    saveLocalTags(localTags);
+    renderModalTags(recipe, container); renderTagCloud(); renderGrid();
+  }
+
   function renderModalTags(recipe, container){
     container.innerHTML = '';
+    const row = document.createElement('div');
+    row.className = 'modal-tags-row';
     recipe.tags.forEach(tag => {
       const el = document.createElement('span');
       el.className = 'tag-editable';
@@ -428,22 +452,56 @@
         saveLocalTags(localTags);
         renderModalTags(recipe, container); renderTagCloud(); renderGrid();
       };
-      container.appendChild(el);
+      row.appendChild(el);
     });
     const input = document.createElement('input');
     input.className = 'tag-add-input';
     input.placeholder = '+ Tag hinzufügen';
     input.onkeydown = (ev) => {
       if (ev.key === 'Enter' && input.value.trim()){
-        const val = input.value.trim();
-        if (!recipe.tags.includes(val)) recipe.tags.push(val);
-        localTags[recipe.id] = { tags: recipe.tags, favorite: recipe.favorite };
-        saveLocalTags(localTags);
-        input.value = '';
-        renderModalTags(recipe, container); renderTagCloud(); renderGrid();
+        addTagToRecipe(recipe, input.value, container);
       }
     };
-    container.appendChild(input);
+    input.oninput = () => renderSuggestions(input.value);
+    row.appendChild(input);
+    container.appendChild(row);
+
+    const suggLabel = document.createElement('p');
+    suggLabel.className = 'tag-suggestions-label';
+    suggLabel.textContent = 'Typische Tags';
+    container.appendChild(suggLabel);
+
+    const suggBox = document.createElement('div');
+    suggBox.className = 'tag-suggestions';
+    container.appendChild(suggBox);
+
+    function renderSuggestions(filterText){
+      const q = filterText.trim().toLowerCase();
+      let pool = PRESET_TAGS.filter(t => !recipe.tags.includes(t));
+      if (q) pool = pool.filter(t => t.toLowerCase().includes(q));
+      pool = pool.slice(0, q ? 8 : 14);
+      suggBox.innerHTML = '';
+      pool.forEach(t => {
+        const chip = document.createElement('button');
+        chip.className = 'tag-suggestion';
+        chip.textContent = t;
+        chip.onclick = () => addTagToRecipe(recipe, t, container);
+        suggBox.appendChild(chip);
+      });
+    }
+    renderSuggestions('');
+  }
+
+  const MIME_BY_EXT = { pdf:'application/pdf', jpg:'image/jpeg', jpeg:'image/jpeg', png:'image/png', gif:'image/gif', webp:'image/webp' };
+
+  async function blobUrlFor(recipe){
+    if (recipe._blobUrl) return recipe._blobUrl;
+    const res = await fetch(recipe.download_url);
+    if (!res.ok) throw new Error(`Datei konnte nicht geladen werden (${res.status})`);
+    const buf = await res.arrayBuffer();
+    const type = MIME_BY_EXT[recipe.ext] || 'application/octet-stream';
+    recipe._blobUrl = URL.createObjectURL(new Blob([buf], { type }));
+    return recipe._blobUrl;
   }
 
   async function renderModalContent(recipe, container){
@@ -453,11 +511,19 @@
         if (recipe.ext === 'txt') container.innerHTML = `<pre style="white-space:pre-wrap;font-family:inherit;">${escapeHtml(text)}</pre>`;
         else container.innerHTML = marked.parse(text);
       } else if (IMG_EXT.includes(recipe.ext)){
-        container.innerHTML = `<img src="${recipe.download_url}" alt="${escapeHtml(recipe.name)}">`;
+        // GitHub's raw links sometimes force a download instead of rendering, so fetch as blob first.
+        const url = await blobUrlFor(recipe);
+        container.innerHTML = `<img src="${url}" alt="${escapeHtml(recipe.name)}">`;
       } else if (recipe.ext === 'pdf'){
-        container.innerHTML = `<a class="attachment-open" href="${recipe.download_url}" target="_blank" rel="noopener">PDF in neuem Tab öffnen ↗</a>`;
+        container.innerHTML = 'Lade PDF…';
+        const url = await blobUrlFor(recipe);
+        container.innerHTML = `
+          <iframe src="${url}" style="width:100%;height:70vh;border:none;border-radius:10px;background:#fff;"></iframe>
+          <p style="margin-top:12px;"><a class="attachment-open" href="${url}" target="_blank" rel="noopener">In neuem Tab öffnen ↗</a></p>`;
       } else {
-        container.innerHTML = `<a class="attachment-open" href="${recipe.download_url}" target="_blank" rel="noopener">Datei öffnen ↗</a>`;
+        container.innerHTML = 'Lade Datei…';
+        const url = await blobUrlFor(recipe);
+        container.innerHTML = `<a class="attachment-open" href="${url}" target="_blank" rel="noopener">Datei öffnen ↗</a>`;
       }
     }catch(e){
       container.innerHTML = `<em style="color:var(--paprika)">Konnte Datei nicht laden: ${escapeHtml(e.message||String(e))}</em>`;
