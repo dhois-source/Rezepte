@@ -6,7 +6,8 @@
     "Auflauf",
     "Dip",
     "Sauce",
-    "Gnocchi"
+    "Gnocchi",
+    "Gnom"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -241,7 +242,8 @@
     },
     "Gnocchi_mit_Spinat.pdf": {
       "tags": [
-        "Gnocchi"
+        "Gnocchi",
+        "Gnom"
       ],
       "favorite": false,
       "title": null
