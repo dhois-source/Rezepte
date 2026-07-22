@@ -12,7 +12,8 @@
     "Tortellini",
     "Marinade",
     "Dressing",
-    "Israelisch"
+    "Israelisch",
+    "Hähnchen"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -39,7 +40,8 @@
     "Brokkoli_Honig_Haehnchen.pdf": {
       "tags": [
         "Asiatisch",
-        "Reis"
+        "Reis",
+        "Hähnchen"
       ],
       "favorite": false,
       "title": null
