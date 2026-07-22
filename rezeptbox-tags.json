@@ -13,7 +13,8 @@
     "Marinade",
     "Dressing",
     "Israelisch",
-    "Hähnchen"
+    "Hähnchen",
+    "Rind"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -57,7 +58,8 @@
     "chinesisch_Nudeln_mit_Rind.pdf": {
       "tags": [
         "Asiatisch",
-        "Chinesisch"
+        "Chinesisch",
+        "Rind"
       ],
       "favorite": false,
       "title": "Chinesische Nudeln mit Rind"
