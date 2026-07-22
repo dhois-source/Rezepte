@@ -16,7 +16,8 @@
     "Hähnchen",
     "Rind",
     "Hackfleisch",
-    "Brokkoli"
+    "Brokkoli",
+    "Schwein"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -433,7 +434,8 @@
     "Gulasch.pdf": {
       "tags": [
         "Deutsch",
-        "Rind"
+        "Rind",
+        "Schwein"
       ],
       "favorite": false,
       "title": null
