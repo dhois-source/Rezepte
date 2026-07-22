@@ -26,21 +26,27 @@
         "Grillen",
         "Amerikanisch"
       ],
-      "favorite": false
+      "favorite": false,
+      "cover": "3-2-1_Ribs.jpg",
+      "summary": "Amerikanische BBQ-Spareribs nach der 3-2-1-Methode: erst geräuchert, dann gedünstet und zum Schluss mit Sauce glasiert, bis das Fleisch butterzart vom Knochen fällt."
     },
     "American_Burger_Sauce.pdf": {
       "tags": [
         "Sauce"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "American_Burger_Sauce.jpg",
+      "summary": "Cremig-würzige Burgersauce nach amerikanischem Vorbild aus Mayonnaise, Ketchup und Gewürzen – der perfekte Klassiker für selbstgemachte Burger."
     },
     "Auberginen_Auflauf.pdf": {
       "tags": [
         "Italienisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Auberginen_Auflauf.jpg",
+      "summary": "Italienisch inspirierter Auflauf mit gebratenen Auberginenscheiben, Tomatensauce und überbackenem Käse."
     },
     "Brokkoli_Honig_Haehnchen.pdf": {
       "tags": [
@@ -49,7 +55,9 @@
         "Hähnchen"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Brokkoli_Honig_Haehnchen.jpg",
+      "summary": "Asiatische Pfanne mit knusprigem Hähnchen und Brokkoli in einer süß-würzigen Honigsauce, serviert mit Reis."
     },
     "Bun_Cha_vietnamesische_Fleischbaellchen.pdf": {
       "tags": [
@@ -57,7 +65,9 @@
         "Vietnamesisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Bun_Cha_vietnamesische_Fleischbaellchen.jpg",
+      "summary": "Vietnamesisches Bun Cha mit gegrillten Fleischbällchen in süß-saurer Fischsauce, serviert mit Reisnudeln und frischen Kräutern."
     },
     "chinesisch_Nudeln_mit_Rind.pdf": {
       "tags": [
@@ -66,7 +76,9 @@
         "Rind"
       ],
       "favorite": false,
-      "title": "Chinesische Nudeln mit Rind"
+      "title": "Chinesische Nudeln mit Rind",
+      "cover": "chinesisch_Nudeln_mit_Rind.jpg",
+      "summary": "Chinesische Wok-Nudeln mit zartem Rindfleisch, Gemüse und einer würzigen Sojasauce."
     },
     "Chicken_Teriyaki.pdf": {
       "tags": [
@@ -76,7 +88,9 @@
         "Hähnchen"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Chicken_Teriyaki.jpg",
+      "summary": "Japanisches Chicken Teriyaki – Hähnchen in einer glänzenden, süß-salzigen Teriyakisauce, klassisch mit Reis serviert."
     },
     "Frikadellen.pdf": {
       "tags": [
@@ -84,7 +98,9 @@
         "Hackfleisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Frikadellen.jpg",
+      "summary": "Deutsche Frikadellen aus würzig gebratenem Hackfleisch mit Zwiebeln und Semmelbröseln – ein Klassiker für Mittagstisch und Grillbuffet."
     },
     "Gefuellte_Paprika_Hackfleisch.pdf": {
       "tags": [
@@ -92,7 +108,9 @@
         "Hackfleisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Gefuellte_Paprika_Hackfleisch.jpg",
+      "summary": "Mit Hackfleisch, Reis und Gewürzen gefüllte Paprikaschoten, im Ofen gegart und mit Tomatensauce serviert."
     },
     "Gefuellte_Paprika_Reis_und_Feta.pdf": {
       "tags": [
@@ -100,14 +118,18 @@
         "Reis"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Gefuellte_Paprika_Reis_und_Feta.jpg",
+      "summary": "Vegetarisch gefüllte Paprika mit einer Füllung aus Reis und Feta, im Ofen überbacken."
     },
     "Honig_Senf_SalatDressing.pdf": {
       "tags": [
         "Dressing"
       ],
       "favorite": false,
-      "title": "Honig Senf Salatdressing"
+      "title": "Honig Senf Salatdressing",
+      "cover": "Honig_Senf_SalatDressing.jpg",
+      "summary": "Schnelles Honig-Senf-Dressing – süß-pikante Vinaigrette für Salate aus Senf, Honig, Essig und Öl."
     },
     "Huhn_mit_Hoisinsauce.pdf": {
       "tags": [
@@ -115,49 +137,63 @@
         "Hähnchen"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Huhn_mit_Hoisinsauce.jpg",
+      "summary": "Asiatische Hähnchenpfanne in würzig-süßer Hoisinsauce, schnell zubereitet und ideal zu Reis."
     },
     "Kaesespaetzle.pdf": {
       "tags": [
         "Deutsch"
       ],
       "favorite": false,
-      "title": "Käsespätzle"
+      "title": "Käsespätzle",
+      "cover": "Kaesespaetzle.jpg",
+      "summary": "Deutsche Käsespätzle – hausgemachte Spätzle mit reichlich geschmolzenem Käse und gerösteten Zwiebeln."
     },
     "Kartoffelknoedel.pdf": {
       "tags": [
         "Deutsch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Kartoffelknoedel.jpg",
+      "summary": "Klassische deutsche Kartoffelknödel, locker-lockig gekocht – die perfekte Beilage zu Braten und Soße."
     },
     "Kartoffelsalat.pdf": {
       "tags": [
         "Deutsch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Kartoffelsalat.jpg",
+      "summary": "Deutscher Kartoffelsalat mit Brühe zubereitet – warm mariniert, herzhaft und ein Klassiker zu Würstchen oder Schnitzel."
     },
     "Kohlrabigemuese.pdf": {
       "tags": [
         "Deutsch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Kohlrabigemuese.jpg",
+      "summary": "Sanft geschmortes Kohlrabigemüse in cremiger Sauce – ein einfaches deutsches Gemüsegericht als Beilage."
     },
     "Kung_Pao_Chicken.pdf": {
       "tags": [
         "Asiatisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Kung_Pao_Chicken.jpg",
+      "summary": "Scharf-pikantes Kung Pao Chicken aus der chinesischen Küche mit Hähnchen, Erdnüssen und Chili."
     },
     "Lasagne.pdf": {
       "tags": [
         "Italienisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Lasagne.jpg",
+      "summary": "Klassische italienische Lasagne mit Hackfleischsauce, Béchamel und geschichteten Nudelplatten, goldbraun überbacken."
     },
     "Pad_Kra_Pao.pdf": {
       "tags": [
@@ -166,7 +202,9 @@
         "Hackfleisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Pad_Kra_Pao.jpg",
+      "summary": "Thailändisches Pad Kra Pao – scharf angebratenes Hackfleisch mit Thai-Basilikum, traditionell mit Reis und Spiegelei serviert."
     },
     "Pasta_aglio_e_olio.pdf": {
       "tags": [
@@ -174,7 +212,9 @@
         "Pasta"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Pasta_aglio_e_olio.jpg",
+      "summary": "Italienische Pasta Aglio e Olio – schlicht und aromatisch mit Knoblauch, Olivenöl und Chili."
     },
     "Pasta_Bolognese .pdf": {
       "tags": [
@@ -182,7 +222,9 @@
         "Pasta"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Pasta_Bolognese.jpg",
+      "summary": "Klassische Spaghetti Bolognese mit langsam geschmorter Hackfleisch-Tomatensauce nach italienischer Art."
     },
     "Pasta_Cacio_e_Pepe.pdf": {
       "tags": [
@@ -190,7 +232,9 @@
         "Pasta"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Pasta_Cacio_e_Pepe.jpg",
+      "summary": "Römische Pasta Cacio e Pepe – cremig durch Pecorino und schwarzen Pfeffer, ganz ohne Sahne."
     },
     "Pasta_Carbonara.pdf": {
       "tags": [
@@ -198,7 +242,9 @@
         "Pasta"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Pasta_Carbonara.jpg",
+      "summary": "Original Spaghetti Carbonara mit Ei, Pecorino, Guanciale und viel schwarzem Pfeffer."
     },
     "Scharfer_Gurkensalat.pdf": {
       "tags": [
@@ -206,7 +252,9 @@
         "Salat"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Scharfer_Gurkensalat.jpg",
+      "summary": "Scharf-asiatischer Gurkensalat mit Chili, Essig und Sesam – erfrischend und pikant zugleich."
     },
     "tuerkisch_Cacik_Dip_Tsatsiki.pdf": {
       "tags": [
@@ -214,14 +262,18 @@
         "Dip"
       ],
       "favorite": false,
-      "title": "Türkisches Tsatsiki Cacik"
+      "title": "Türkisches Tsatsiki Cacik",
+      "cover": "tuerkisch_Cacik_Dip_Tsatsiki.jpg",
+      "summary": "Türkischer Cacik – kühler Joghurt-Gurken-Dip mit Knoblauch und frischer Minze."
     },
     "tuerkisch_Haehnchen_Joghurt_Spieße_Tavuk_Sis.pdf": {
       "tags": [
         "Türkisch"
       ],
       "favorite": false,
-      "title": "Türkische Hähnchen Spieße Tavuk Sis"
+      "title": "Türkische Hähnchen Spieße Tavuk Sis",
+      "cover": "tuerkisch_Haehnchen_Joghurt_Spieße_Tavuk_Sis.jpg",
+      "summary": "Türkische Tavuk Şiş – in Joghurt-Gewürzmarinade eingelegte Hähnchenspieße vom Grill."
     },
     "Pasta_quattro_formaggi.pdf": {
       "tags": [
@@ -229,21 +281,27 @@
         "Pasta"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Pasta_quattro_formaggi.jpg",
+      "summary": "Italienische Pasta quattro formaggi – cremige Käsesauce aus vier verschiedenen Käsesorten."
     },
     "Kaesekuchen.pdf": {
       "tags": [
         "Backen"
       ],
       "favorite": false,
-      "title": "Käsekuchen"
+      "title": "Käsekuchen",
+      "cover": "Kaesekuchen.jpg",
+      "summary": "Klassischer, cremiger Käsekuchen nach deutschem Rezept, saftig und mit knuspriger Kruste."
     },
     "Rustikales_Joghurt_Krustenbrot.pdf": {
       "tags": [
         "Backen"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Rustikales_Joghurt_Krustenbrot.jpg",
+      "summary": "Rustikales, selbstgebackenes Krustenbrot mit Joghurt im Teig für eine besonders lockere Krume."
     },
     "Brokkoli_Nudel_Auflauf.pdf": {
       "tags": [
@@ -252,7 +310,9 @@
         "Brokkoli"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Brokkoli_Nudel_Auflauf.jpg",
+      "summary": "Deutscher Nudelauflauf mit Brokkoli und Käse überbacken – unkompliziertes Familiengericht."
     },
     "Chimichurri_Sauce.pdf": {
       "tags": [
@@ -260,70 +320,90 @@
         "Sauce"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Chimichurri_Sauce.jpg",
+      "summary": "Argentinische Chimichurri-Sauce aus Kräutern, Knoblauch, Essig und Olivenöl – perfekt zu gegrilltem Fleisch."
     },
     "Gnocchi_mit_gruenem_Spargel.pdf": {
       "tags": [
         "Gnocchi"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Gnocchi_mit_gruenem_Spargel.jpg",
+      "summary": "Italienische Gnocchi-Pfanne mit grünem Spargel in einer leichten, frühlingshaften Sauce."
     },
     "Gnocchi_mit_Spinat.pdf": {
       "tags": [
         "Gnocchi"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Gnocchi_mit_Spinat.jpg",
+      "summary": "Cremige Gnocchi-Pfanne mit Spinat und Käse – schnell und einfach zubereitet."
     },
     "Nudelauflauf_mit_Schinken_Kaese.pdf": {
       "tags": [
         "Auflauf"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Nudelauflauf_mit_Schinken_Kaese.jpg",
+      "summary": "Deftiger Nudelauflauf mit Schinken und Käse überbacken – klassisches deutsches Ofengericht."
     },
     "Pizzateig.pdf": {
       "tags": [
         "Italienisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Pizzateig.jpg",
+      "summary": "Grundrezept für hausgemachten Pizzateig – knusprig-luftig für die eigene Pizza nach italienischer Art."
     },
     "Waffeln_Banane.pdf": {
       "tags": [
         "Waffeln"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Waffeln_Banane.jpg",
+      "summary": "Süße Waffeln mit Banane im Teig – fruchtig und saftig für Frühstück oder Dessert."
     },
     "Waffeln_Gemuese.pdf": {
       "tags": [
         "Waffeln"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Waffeln_Gemuese.jpg",
+      "summary": "Herzhafte Gemüsewaffeln als gesunde Alternative zum süßen Klassiker, ideal mit Dip."
     },
     "Waffeln_Grundrezept.pdf": {
       "tags": [
         "Waffeln"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Waffeln_Grundrezept.jpg",
+      "summary": "Klassisches Grundrezept für knusprige belgische Waffeln, außen kross und innen luftig."
     },
     "Spinatlasagne.pdf": {
       "tags": [
         "Auflauf"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Spinatlasagne.jpg",
+      "summary": "Vegetarische Spinatlasagne, geschichtet mit Béchamel und Käse, goldbraun überbacken."
     },
     "Wurstsalat.pdf": {
       "tags": [
         "Deutsch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Wurstsalat.jpg",
+      "summary": "Deutscher Wurstsalat mit Essig-Öl-Marinade, Zwiebeln und Gewürzgurken – ein herzhafter Klassiker."
     },
     "thai_Cashew_Chicken.pdf": {
       "tags": [
@@ -332,7 +412,9 @@
         "Hähnchen"
       ],
       "favorite": false,
-      "title": "Thai Cashew Chicken"
+      "title": "Thai Cashew Chicken",
+      "cover": "thai_Cashew_Chicken.jpg",
+      "summary": "Thailändisches Cashew Chicken – knackig gebratenes Hähnchen mit Cashewkernen in würziger Sauce."
     },
     "thai_Wokpfanne.pdf": {
       "tags": [
@@ -340,7 +422,9 @@
         "Thai"
       ],
       "favorite": false,
-      "title": "Thai Wokpfanne"
+      "title": "Thai Wokpfanne",
+      "cover": "thai_Wokpfanne.jpg",
+      "summary": "Bunte thailändische Wokpfanne mit Gemüse und aromatischen Gewürzen, schnell zubereitet."
     },
     "Tortellini_alla_Panna.pdf": {
       "tags": [
@@ -348,21 +432,27 @@
         "Italienisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Tortellini_alla_Panna.jpg",
+      "summary": "Italienische Tortellini alla Panna in einer cremigen Sahnesauce mit Schinken."
     },
     "Tortellini_Pfanne.pdf": {
       "tags": [
         "Tortellini"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Tortellini_Pfanne.jpg",
+      "summary": "Schnelle vegetarische Tortellini-Pfanne mit knackigem Gemüse."
     },
     "Tortellini_Suppe_mit_Salsiccia.pdf": {
       "tags": [
         "Tortellini"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Tortellini_Suppe_mit_Salsiccia.jpg",
+      "summary": "Herzhafte Tortellini-Suppe mit italienischer Salsiccia-Wurst in kräftiger Brühe."
     },
     "Tomatensauce.pdf": {
       "tags": [
@@ -370,7 +460,9 @@
         "Italienisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Tomatensauce.jpg",
+      "summary": "Klassische italienische Tomatensauce für Pasta – aromatisch eingekocht mit frischem Basilikum."
     },
     "Marinade_Chicken_Burger.pdf": {
       "tags": [
@@ -378,7 +470,9 @@
         "Marinade"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Marinade_Chicken_Burger.jpg",
+      "summary": "Würzige Marinade für Chicken-Burger-Patties, sorgt für saftiges und aromatisches Grillhähnchen."
     },
     "Marinade_Paprika.pdf": {
       "tags": [
@@ -386,7 +480,9 @@
         "Marinade"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Marinade_Paprika.jpg",
+      "summary": "Aromatische Paprika-Marinade für Fleisch oder Gemüse vom Grill."
     },
     "Rinder_Rouladen.pdf": {
       "tags": [
@@ -394,7 +490,9 @@
         "Rind"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Rinder_Rouladen.jpg",
+      "summary": "Klassische deutsche Rinderrouladen mit Speck, Zwiebeln und Gewürzgurke gefüllt und in kräftiger Sauce geschmort."
     },
     "Schinken_Hackroellchen.pdf": {
       "tags": [
@@ -402,7 +500,9 @@
         "Hackfleisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Schinken_Hackroellchen.jpg",
+      "summary": "Herzhafte Röllchen aus Schinken und Hackfleischfüllung, im Ofen gebacken."
     },
     "Schweinefilet_im_Speckmantel.pdf": {
       "tags": [
@@ -410,14 +510,18 @@
         "Schwein"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Schweinefilet_im_Speckmantel.jpg",
+      "summary": "Zartes Schweinefilet im knusprigen Speckmantel, im Ofen gegart."
     },
     "Schweinebraten.pdf": {
       "tags": [
         "Deutsch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Schweinebraten.jpg",
+      "summary": "Bayerischer Schweinebraten mit knuspriger Kruste, klassisch mit Kartoffelknödeln und Soße."
     },
     "Schweinefilet_mit_Zwiebel_Senf_Kruste.pdf": {
       "tags": [
@@ -425,7 +529,9 @@
         "Schwein"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Schweinefilet_mit_Zwiebel_Senf_Kruste.jpg",
+      "summary": "Schweinefilet mit würziger Zwiebel-Senf-Kruste, im Ofen überbacken."
     },
     "Zwiebel_Sahne_Haehnchen_aus_dem_Ofen.pdf": {
       "tags": [
@@ -433,14 +539,18 @@
         "Hähnchen"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Zwiebel_Sahne_Haehnchen_aus_dem_Ofen.jpg",
+      "summary": "Deutsches Ofengericht mit Hähnchen in cremiger Zwiebel-Sahne-Sauce."
     },
     "Semmelknoedel.pdf": {
       "tags": [
         "Deutsch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Semmelknoedel.jpg",
+      "summary": "Bayerische Semmelknödel aus altbackenem Brot, klassische Beilage zu Braten und Soßengerichten."
     },
     "Gulasch.pdf": {
       "tags": [
@@ -449,7 +559,9 @@
         "Schwein"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Gulasch.jpg",
+      "summary": "Deftiges deutsches Gulasch aus Rind- und Schweinefleisch, langsam geschmort in kräftiger Paprikasauce."
     },
     "Shakshuka.pdf": {
       "tags": [
@@ -457,7 +569,9 @@
         "Israelisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Shakshuka.jpg",
+      "summary": "Israelisch-türkisches Shakshuka – pochierte Eier in würziger Tomaten-Paprika-Sauce, mit Brot serviert."
     },
     "Rote_Bete_Salat.pdf": {
       "tags": [
@@ -465,21 +579,27 @@
         "Salat"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Rote_Bete_Salat.jpg",
+      "summary": "Erfrischender Rote-Bete-Salat mit Feta – herzhaft und leicht süßlich."
     },
     "Reispfanne_mit_Gemuese.pdf": {
       "tags": [
         "Reis"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Reispfanne_mit_Gemuese.jpg",
+      "summary": "Bunte Reispfanne mit frischem Gemüse, schnell und unkompliziert zubereitet."
     },
     "Flammkuchen.pdf": {
       "tags": [
         "Backen"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Flammkuchen.jpg",
+      "summary": "Elsässer Flammkuchen mit knusprigem, dünnem Boden, Crème fraîche, Zwiebeln und Speck."
     },
     "Haehnchen_Spinat_Pasta.pdf": {
       "tags": [
@@ -487,7 +607,9 @@
         "Hähnchen"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Haehnchen_Spinat_Pasta.jpg",
+      "summary": "Cremige Pasta mit Hähnchen und Spinat in einer leichten Sauce."
     },
     "Haehnchenbrust_im_Backofen.pdf": {
       "tags": [
@@ -495,7 +617,9 @@
         "Hähnchen"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Haehnchenbrust_im_Backofen.jpg",
+      "summary": "Saftige Hähnchenbrust aus dem Backofen, einfach gewürzt und gegart."
     },
     "Gurken_Hackfleisch_Pfanne.pdf": {
       "tags": [
@@ -503,7 +627,9 @@
         "Hackfleisch"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Gurken_Hackfleisch_Pfanne.jpg",
+      "summary": "Asiatisch angehauchte Pfanne mit Hackfleisch und Gurken, serviert mit Reis."
     },
     "Haehnchengeschnetzeltes_mit_Pilzen.pdf": {
       "tags": [
@@ -511,28 +637,45 @@
         "Hähnchen"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Haehnchengeschnetzeltes_mit_Pilzen.jpg",
+      "summary": "Deutsches Hähnchengeschnetzeltes mit Pilzen in cremiger Sauce."
     },
     "Pasta_mit_gruenem_Spargel_in_Zitronen_Buttersauce.pdf": {
       "tags": [
         "Pasta"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Pasta_mit_gruenem_Spargel_in_Zitronen_Buttersauce.jpg",
+      "summary": "Frühlingshafte Pasta mit grünem Spargel in einer feinen Zitronen-Buttersauce."
     },
     "Pasta_mit_Zitronen_Basilikumsauce.pdf": {
       "tags": [
         "Pasta"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Pasta_mit_Zitronen_Basilikumsauce.jpg",
+      "summary": "Leichte Pasta mit frischer Zitronen-Basilikum-Sauce."
     },
     "Zwiebelsuppe.pdf": {
       "tags": [
         "Suppe"
       ],
       "favorite": false,
-      "title": null
+      "title": null,
+      "cover": "Zwiebelsuppe.jpg",
+      "summary": "Französische Zwiebelsuppe mit karamellisierten Zwiebeln, überbackenem Käsebrot und kräftiger Brühe."
+    },
+    "Sous_Vide_Garen.pdf": {
+      "tags": [
+        "Grillen"
+      ],
+      "favorite": false,
+      "title": "Sous Vide Steak",
+      "cover": "Sous_Vide_Garen.jpg",
+      "summary": "Anleitung zum Sous-Vide-Garen von Steak – schonend im Wasserbad gegart für ein perfekt gleichmäßiges Ergebnis, zum Schluss scharf angebraten."
     }
   }
 }
