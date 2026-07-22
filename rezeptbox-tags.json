@@ -22,10 +22,9 @@
       "favorite": false
     },
     "American_Burger_Sauce.pdf": {
-      "tags": [
-        "Amerikanisch"
-      ],
-      "favorite": false
+      "tags": [],
+      "favorite": false,
+      "title": null
     },
     "Auberginen_Auflauf.pdf": {
       "tags": [
