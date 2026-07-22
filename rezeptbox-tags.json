@@ -18,7 +18,8 @@
     "Hackfleisch",
     "Brokkoli",
     "Schwein",
-    "Schwester"
+    "Schwester",
+    "schwer"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -417,7 +418,8 @@
     },
     "Schweinefilet_mit_Zwiebel_Senf_Kruste.pdf": {
       "tags": [
-        "Deutsch"
+        "Deutsch",
+        "schwer"
       ],
       "favorite": false,
       "title": null
