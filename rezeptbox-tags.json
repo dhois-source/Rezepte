@@ -15,7 +15,8 @@
     "Israelisch",
     "Hähnchen",
     "Rind",
-    "Hackfleisch"
+    "Hackfleisch",
+    "Brokkoli"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -237,7 +238,8 @@
     "Brokkoli_Nudel_Auflauf.pdf": {
       "tags": [
         "Deutsch",
-        "Auflauf"
+        "Auflauf",
+        "Brokkoli"
       ],
       "favorite": false,
       "title": null
