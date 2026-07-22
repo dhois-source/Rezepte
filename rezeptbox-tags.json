@@ -5,7 +5,8 @@
     "für",
     "Auflauf",
     "Dip",
-    "Sauce"
+    "Sauce",
+    "Gnocchi"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -227,6 +228,13 @@
       "tags": [
         "Dip",
         "Sauce"
+      ],
+      "favorite": false,
+      "title": null
+    },
+    "Gnocchi_mit_gruenem_Spargel.pdf": {
+      "tags": [
+        "Gnocchi"
       ],
       "favorite": false,
       "title": null
