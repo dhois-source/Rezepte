@@ -19,7 +19,8 @@
     "Brokkoli",
     "Schwein",
     "Schwester",
-    "schwer"
+    "schwer",
+    "Pasta"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -171,7 +172,8 @@
     },
     "Pasta_aglio_e_olio.pdf": {
       "tags": [
-        "Italienisch"
+        "Italienisch",
+        "Pasta"
       ],
       "favorite": false,
       "title": null
