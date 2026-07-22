@@ -18,7 +18,6 @@
     "Hackfleisch",
     "Brokkoli",
     "Schwein",
-    "Schwester",
     "schwer",
     "Pasta"
   ],
@@ -416,8 +415,7 @@
     },
     "Schweinebraten.pdf": {
       "tags": [
-        "Deutsch",
-        "Schwester"
+        "Deutsch"
       ],
       "favorite": false,
       "title": null
