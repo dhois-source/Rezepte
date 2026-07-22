@@ -444,7 +444,7 @@
   let recipes = [];
   let activeTags = new Set();
   let tagMode = 'all'; // 'all' = AND, 'any' = OR
-  let viewMode = (function(){ try{ return localStorage.getItem('rezeptbox_view') || 'list'; }catch(e){ return 'list'; } })();
+  let viewMode = (function(){ try{ return localStorage.getItem('rezeptbox_view') || 'shelf'; }catch(e){ return 'shelf'; } })();
   let swipeIndex = 0;
   let activeExtGroups = new Set();
   let pollTimer = null;
