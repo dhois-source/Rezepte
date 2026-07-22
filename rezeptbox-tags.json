@@ -2,7 +2,8 @@
   "version": 1,
   "custom_tags": [
     "Reis",
-    "für"
+    "für",
+    "Auflauf"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -214,7 +215,8 @@
     },
     "Brokkoli_Nudel_Auflauf.pdf": {
       "tags": [
-        "Deutsch"
+        "Deutsch",
+        "Auflauf"
       ],
       "favorite": false,
       "title": null
