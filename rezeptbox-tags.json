@@ -11,7 +11,8 @@
     "Waffeln",
     "Tortellini",
     "Marinade",
-    "Dressing"
+    "Dressing",
+    "Israelisch"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -424,7 +425,8 @@
     },
     "Shakshuka.pdf": {
       "tags": [
-        "Türkisch"
+        "Türkisch",
+        "Israelisch"
       ],
       "favorite": false,
       "title": null
