@@ -17,7 +17,8 @@
     "Rind",
     "Hackfleisch",
     "Brokkoli",
-    "Schwein"
+    "Schwein",
+    "Schwester"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -407,7 +408,8 @@
     },
     "Schweinebraten.pdf": {
       "tags": [
-        "Deutsch"
+        "Deutsch",
+        "Schwester"
       ],
       "favorite": false,
       "title": null
