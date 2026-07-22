@@ -9,7 +9,6 @@
     "Gnocchi",
     "Gnom",
     "Waffeln",
-    "Tortelli",
     "Tortellini"
   ],
   "recipes": {
@@ -333,8 +332,7 @@
     },
     "Tortellini_Suppe_mit_Salsiccia.pdf": {
       "tags": [
-        "Tortellini",
-        "Tortelli"
+        "Tortellini"
       ],
       "favorite": false,
       "title": null
