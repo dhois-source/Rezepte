@@ -347,7 +347,10 @@
       "title": null
     },
     "Marinade_Chicken_Burger.pdf": {
-      "tags": [],
+      "tags": [
+        "Sauce",
+        "Marinade"
+      ],
       "favorite": false,
       "title": null
     },
