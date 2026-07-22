@@ -10,7 +10,8 @@
     "Gnom",
     "Waffeln",
     "Tortellini",
-    "Marinade"
+    "Marinade",
+    "Dressing"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -90,7 +91,7 @@
     },
     "Honig_Senf_SalatDressing.pdf": {
       "tags": [
-        "Sauce"
+        "Dressing"
       ],
       "favorite": false,
       "title": "Honig Senf Salatdressing"
