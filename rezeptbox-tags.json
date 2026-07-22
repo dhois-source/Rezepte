@@ -278,7 +278,9 @@
       "title": null
     },
     "Waffeln_Grundrezept.pdf": {
-      "tags": [],
+      "tags": [
+        "Waffeln"
+      ],
       "favorite": false,
       "title": null
     }
