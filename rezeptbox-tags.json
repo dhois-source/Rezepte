@@ -352,7 +352,9 @@
       "title": null
     },
     "Marinade_Paprika.pdf": {
-      "tags": [],
+      "tags": [
+        "Sauce"
+      ],
       "favorite": false,
       "title": null
     }
