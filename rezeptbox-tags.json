@@ -4,7 +4,8 @@
     "Reis",
     "für",
     "Auflauf",
-    "Dip"
+    "Dip",
+    "Sauce"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -224,7 +225,8 @@
     },
     "Chimichurri_Sauce.pdf": {
       "tags": [
-        "Dip"
+        "Dip",
+        "Sauce"
       ],
       "favorite": false,
       "title": null
