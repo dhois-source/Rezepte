@@ -7,7 +7,8 @@
     "Dip",
     "Sauce",
     "Gnocchi",
-    "Gnom"
+    "Gnom",
+    "Waffeln"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -258,6 +259,13 @@
     "Pizzateig.pdf": {
       "tags": [
         "Italienisch"
+      ],
+      "favorite": false,
+      "title": null
+    },
+    "Waffeln_Banane.pdf": {
+      "tags": [
+        "Waffeln"
       ],
       "favorite": false,
       "title": null
