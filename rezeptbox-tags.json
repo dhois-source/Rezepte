@@ -3,7 +3,8 @@
   "custom_tags": [
     "Reis",
     "für",
-    "Auflauf"
+    "Auflauf",
+    "Dip"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -217,6 +218,13 @@
       "tags": [
         "Deutsch",
         "Auflauf"
+      ],
+      "favorite": false,
+      "title": null
+    },
+    "Chimichurri_Sauce.pdf": {
+      "tags": [
+        "Dip"
       ],
       "favorite": false,
       "title": null
