@@ -9,7 +9,8 @@
     "Gnocchi",
     "Gnom",
     "Waffeln",
-    "Tortellini"
+    "Tortellini",
+    "Marinade"
   ],
   "recipes": {
     "3-2-1_Ribs.pdf": {
@@ -352,7 +353,7 @@
     },
     "Marinade_Paprika.pdf": {
       "tags": [
-        "Sauce"
+        "Marinade"
       ],
       "favorite": false,
       "title": null
