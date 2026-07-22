@@ -114,6 +114,7 @@
 
   .card{ background: var(--surface); border:1px solid var(--line); border-left:4px solid var(--tab-color, var(--mustard)); border-radius: 12px; padding: 11px 16px; cursor:pointer; display:flex; align-items:center; gap:14px; transition: border-color .15s ease, background .15s ease, transform .15s ease, box-shadow .15s ease; }
   .card:hover{ background: var(--surface-2); border-color: var(--tab-color, var(--mustard)); transform: translateY(-1px); box-shadow: 0 10px 22px -14px rgba(30,32,50,0.25); }
+  .card-thumb{ width:46px; height:46px; border-radius:9px; background-size:cover; background-position:center; flex:none; }
   .card-title{ font-family: var(--font-display); font-weight:600; font-size:15.5px; line-height:1.25; margin:0; flex:0 1 auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:38%; }
   .card-snippet{ font-size:12.5px; color: var(--text-faint); flex:1 1 auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
   .card-tags{ display:flex; flex-wrap:nowrap; gap:6px; flex:none; overflow:hidden; max-width:32%; }
@@ -131,7 +132,8 @@
   .grid.view-tiles{ display:grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap:16px; }
   .tile{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:0; cursor:pointer; overflow:hidden; display:flex; flex-direction:column; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
   .tile:hover{ transform: translateY(-3px); box-shadow: 0 16px 30px -16px rgba(30,32,50,0.28); border-color: var(--tile-color, var(--mustard)); }
-  .tile-band{ height:84px; display:flex; align-items:center; justify-content:center; font-size:34px; background: linear-gradient(135deg, var(--tile-color, var(--mustard)), transparent 150%); position:relative; }
+  .tile-band{ height:140px; display:flex; align-items:center; justify-content:center; font-size:34px; background: linear-gradient(135deg, var(--tile-color, var(--mustard)), transparent 150%); position:relative; }
+  .tile-band-img{ font-size:0; background-size:cover; background-position:center; }
   .tile-body{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; flex:1; }
   .tile-title{ font-family:var(--font-display); font-weight:600; font-size:16.5px; line-height:1.28; margin:0; }
   .tile-snippet{ font-size:12px; color:var(--text-faint); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:30px; }
@@ -146,6 +148,7 @@
   .shelf-row{ display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:12px; }
   .shelf-item{ background:var(--surface); border:1px solid var(--line); border-top:3px solid var(--shelf-color, var(--mustard)); border-radius:12px; padding:12px 14px; cursor:pointer; display:flex; flex-direction:column; gap:8px; transition: transform .15s ease, border-color .15s ease; min-height:84px; }
   .shelf-item:hover{ transform: translateY(-2px); border-color: var(--shelf-color, var(--mustard)); }
+  .shelf-thumb{ width:100%; height:74px; border-radius:8px; background-size:cover; background-position:center; }
   .shelf-item-title{ font-family:var(--font-display); font-weight:600; font-size:13.5px; line-height:1.25; margin:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 
   .modal-backdrop{ position:fixed; inset:0; background: rgba(30,32,45,0.4); backdrop-filter: blur(3px); display:flex; align-items:flex-start; justify-content:center; padding: 40px 20px; z-index:50; overflow-y:auto; }
@@ -192,6 +195,8 @@
   .attachment-open{ display:inline-flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--line); padding:12px 16px; border-radius:var(--radius-sm); color:var(--mustard); font-weight:600; font-size:13.5px; text-decoration:none; }
   .pdf-actions{ margin: 0 0 12px; }
   .pdf-frame{ height: 70vh; display:block; }
+  .modal-cover-img{ width:100%; max-height:380px; object-fit:cover; border-radius:14px; margin:0 0 18px; display:block; }
+  .modal-summary{ font-size:15.5px; line-height:1.65; color:var(--text); margin:0 0 20px; }
 
   .settings-copy{ color:var(--text-dim); font-size:13.5px; line-height:1.6; margin: 0 0 12px; }
   .settings-copy.faint{ color:var(--text-faint); font-size:12.5px; }
@@ -527,15 +532,17 @@
   }
 
   function getRecipeMeta(id){
-    if (!tagsData.recipes[id]) tagsData.recipes[id] = { tags:[], favorite:false, title:null };
+    if (!tagsData.recipes[id]) tagsData.recipes[id] = { tags:[], favorite:false, title:null, cover:null, summary:null };
     return tagsData.recipes[id];
   }
   function syncRecipeMirrors(){
     recipes.forEach(r => {
-      const meta = tagsData.recipes[r.id] || { tags:[], favorite:false, title:null };
+      const meta = tagsData.recipes[r.id] || { tags:[], favorite:false, title:null, cover:null, summary:null };
       r.tags = meta.tags || []; r.favorite = !!meta.favorite; r.title = meta.title || null;
+      r.cover = meta.cover || null; r.summary = meta.summary || null;
     });
   }
+  function coverUrl(recipe){ return recipe.cover ? 'covers/' + encodeURIComponent(recipe.cover) : null; }
 
   function markDirty(recipeId){
     if (recipeId) dirty.recipeIds.add(recipeId);
@@ -693,11 +700,12 @@
   }
 
   function buildRecipe(entry){
-    const meta = tagsData.recipes[entry.name] || { tags:[], favorite:false, title:null };
+    const meta = tagsData.recipes[entry.name] || { tags:[], favorite:false, title:null, cover:null, summary:null };
     return {
       id: entry.name, name: entry.name, ext: extOf(entry.name),
       sha: entry.sha, download_url: entry.download_url,
       tags: meta.tags || [], favorite: !!meta.favorite, title: meta.title || null,
+      cover: meta.cover || null, summary: meta.summary || null,
       _content: null, _preview: null,
     };
   }
@@ -755,8 +763,8 @@
         const text = await fetchRawText(recipe);
         recipe._content = text;
         recipe._preview = text.replace(/[#*_>`-]/g,' ').replace(/\s+/g,' ').trim().slice(0, 220);
-      }catch(e){ recipe._preview = ''; }
-    } else { recipe._preview = ''; }
+      }catch(e){ recipe._preview = recipe.summary || ''; }
+    } else { recipe._preview = recipe.summary || ''; }
     return recipe._preview;
   }
 
@@ -924,9 +932,13 @@
       const accent = r.tags.length ? tagColor(r.tags[0]) : 'var(--mustard)';
       card.style.setProperty('--tab-color', accent);
       card.tabIndex = 0;
+      const cu = coverUrl(r);
+      const thumbHtml = cu ? `<div class="card-thumb" style="background-image:url('${cu}')"></div>` : '';
+      const snippet = r.summary || r._preview || '';
       card.innerHTML = `
+        ${thumbHtml}
         <h3 class="card-title">${escapeHtml(recipeTitle(r))}</h3>
-        <span class="card-snippet">${escapeHtml(r._preview) || ''}</span>
+        <span class="card-snippet">${escapeHtml(snippet)}</span>
         <div class="card-tags">${tagChipsHtml(r, 4)}</div>
       `;
       card.tabIndex = 0;
@@ -943,11 +955,16 @@
       tile.className = 'tile';
       tile.tabIndex = 0;
       tile.style.setProperty('--tile-color', accent);
+      const cu = coverUrl(r);
+      const bandHtml = cu
+        ? `<div class="tile-band tile-band-img" style="background-image:url('${cu}')"></div>`
+        : `<div class="tile-band">${emoji}</div>`;
+      const snippet = r.summary || r._preview || '';
       tile.innerHTML = `
-        <div class="tile-band">${emoji}</div>
+        ${bandHtml}
         <div class="tile-body">
           <h3 class="tile-title">${escapeHtml(recipeTitle(r))}</h3>
-          <span class="tile-snippet">${escapeHtml(r._preview) || ''}</span>
+          <span class="tile-snippet">${escapeHtml(snippet)}</span>
           <div class="tile-tags">${tagChipsHtml(r, 3)}</div>
         </div>
       `;
@@ -989,7 +1006,9 @@
         item.className = 'shelf-item';
         item.tabIndex = 0;
         item.style.setProperty('--shelf-color', accent);
-        item.innerHTML = `<h4 class="shelf-item-title">${escapeHtml(recipeTitle(r))}</h4>`;
+        const cu = coverUrl(r);
+        const thumbHtml = cu ? `<div class="shelf-thumb" style="background-image:url('${cu}')"></div>` : '';
+        item.innerHTML = `${thumbHtml}<h4 class="shelf-item-title">${escapeHtml(recipeTitle(r))}</h4>`;
         attachCommonEvents(item, r);
         row.appendChild(item);
       });
@@ -1306,11 +1325,16 @@
         const url = await blobUrlFor(recipe);
         container.innerHTML = `<img src="${url}" alt="${escapeHtml(recipe.name)}">`;
       } else if (recipe.ext === 'pdf'){
-        container.innerHTML = 'Lade PDF…';
-        const url = await blobUrlFor(recipe);
+        const cu = coverUrl(recipe);
+        const coverHtml = cu ? `<img class="modal-cover-img" src="${cu}" alt="${escapeHtml(recipeTitle(recipe))}">` : '';
+        const summaryHtml = recipe.summary ? `<p class="modal-summary">${escapeHtml(recipe.summary)}</p>` : '';
         container.innerHTML = `
-          <p class="pdf-actions"><a class="attachment-open" href="${url}" target="_blank" rel="noopener">In neuem Tab öffnen ↗</a></p>
-          <iframe src="${url}" class="pdf-frame" style="width:100%;border:none;border-radius:10px;background:#fff;"></iframe>`;
+          ${coverHtml}
+          ${summaryHtml}
+          <p class="pdf-actions"><a class="attachment-open" href="#" id="pdfOpenLink" target="_blank" rel="noopener">Rezept als PDF öffnen ↗</a></p>`;
+        const url = await blobUrlFor(recipe);
+        const link = container.querySelector('#pdfOpenLink');
+        if (link) link.href = url;
       } else {
         container.innerHTML = 'Lade Datei…';
         const url = await blobUrlFor(recipe);
