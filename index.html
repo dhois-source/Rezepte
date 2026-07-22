@@ -281,6 +281,10 @@
 </header>
 
 <div class="layout">
+  <button class="btn ghost" id="mobileFilterToggle">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+    Filter <span class="filter-count-badge" id="mobileFilterCount" style="display:none;"></span>
+  </button>
   <aside class="sidebar" id="sidebar">
     <div class="search-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
@@ -313,10 +317,6 @@
   </aside>
 
   <main>
-    <button class="btn ghost" id="mobileFilterToggle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
-      Filter <span class="filter-count-badge" id="mobileFilterCount" style="display:none;"></span>
-    </button>
     <div class="info-banner" id="errorBanner" style="display:none;"></div>
     <div class="active-filters-bar" id="activeFiltersBar" style="display:none;"></div>
     <div class="view-switch" id="viewSwitch">
