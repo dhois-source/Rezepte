@@ -22,7 +22,9 @@
       "favorite": false
     },
     "American_Burger_Sauce.pdf": {
-      "tags": [],
+      "tags": [
+        "Sauce"
+      ],
       "favorite": false,
       "title": null
     },
