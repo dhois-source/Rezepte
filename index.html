@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rezeptebox</title>
+<title>RezepteBox</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
@@ -74,7 +74,14 @@
   .mode-toggle button.active{ background:var(--sage); color:#182119; }
 
   main{ padding: 28px 32px 60px; min-width:0; }
-  #mobileFilterToggle{ display:none; margin-bottom:18px; }
+  #mobileFilterToggle{
+    display:none; margin-bottom:18px; position:sticky; top:0; z-index:30;
+    padding: 14px 22px; font-size:15px; font-weight:700;
+    border-width: 1.5px; border-color: var(--mustard); background: var(--surface);
+    box-shadow: 0 6px 16px -10px rgba(30,32,50,0.3);
+  }
+  #mobileFilterToggle svg{ width:20px; height:20px; }
+  #mobileFilterToggle.active{ background: var(--mustard); color:#fff; border-color: var(--mustard); }
   @media (max-width:880px){ #mobileFilterToggle{ display:inline-flex; } }
   .filter-count-badge{ background:var(--mustard); color:#20281f; font-size:10.5px; font-weight:700; border-radius:100px; padding:1px 7px; margin-left:4px; }
 
@@ -201,6 +208,8 @@
   .tag-manager-empty{ font-size:12.5px; color:var(--text-faint); }
 
   footer.hint{ padding: 18px 32px 40px; color: var(--text-faint); font-size:12px; border-top:1px solid var(--line); margin-top: 10px; }
+  .bottom-sync-bar{ display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; padding: 0 32px 48px; }
+  @media (max-width:640px){ .bottom-sync-bar{ padding: 0 16px 40px; } }
   code.inline{ background:var(--surface-2); padding:1px 6px; border-radius:4px; }
   :focus-visible{ outline: 2px solid var(--mustard); outline-offset:2px; }
 
@@ -261,18 +270,12 @@
 
 <header class="top">
   <div>
-    <p class="brand-eyebrow">Deine Sammlung</p>
-    <h1 class="brand-title">Rezept<em>box</em></h1>
+    <h1 class="brand-title">Rezepte<em>Box</em></h1>
   </div>
   <div class="header-actions">
-    <span class="stat-pill" id="statPill">Lade…</span>
-    <span class="stat-pill" id="syncPill">–</span>
+    <span class="stat-pill" id="statPill" style="display:none;">Lade…</span>
     <button class="btn ghost icon-only" id="settingsBtn" aria-label="Einstellungen" title="Einstellungen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
-    <button class="btn ghost" id="rescanBtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
-      Aktualisieren
     </button>
   </div>
 </header>
@@ -339,8 +342,16 @@
 </div>
 
 <footer class="hint">
-  Rezeptbox erkennt Besitzer und Repo automatisch aus der Adresse, unter der diese Seite läuft, und liest die Rezeptdateien direkt aus dem Repo über die GitHub-API – öffentlich, ohne Login. Tags werden zentral im Repo gespeichert und stehen auf jedem Gerät zur Verfügung, das diese Seite öffnet. Zum Bearbeiten wird ein GitHub-Token benötigt (Einstellungen ⚙).
+  RezepteBox erkennt Besitzer und Repo automatisch aus der Adresse, unter der diese Seite läuft, und liest die Rezeptdateien direkt aus dem Repo über die GitHub-API – öffentlich, ohne Login. Tags werden zentral im Repo gespeichert und stehen auf jedem Gerät zur Verfügung, das diese Seite öffnet. Zum Bearbeiten wird ein GitHub-Token benötigt (Einstellungen ⚙).
 </footer>
+
+<div class="bottom-sync-bar">
+  <span class="stat-pill" id="syncPill">–</span>
+  <button class="btn ghost" id="rescanBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
+    Aktualisieren
+  </button>
+</div>
 
 <div class="toast-stack" id="toastStack"></div>
 
@@ -1331,7 +1342,10 @@
   searchInput.oninput = debounce(() => { renderGrid(); renderActiveFiltersBar(); }, 150);
   sortSelect.onchange = () => renderGrid();
   untaggedOnly.onchange = () => { renderGrid(); renderActiveFiltersBar(); };
-  mobileFilterToggle.onclick = () => sidebar.classList.toggle('open');
+  mobileFilterToggle.onclick = () => {
+    sidebar.classList.toggle('open');
+    mobileFilterToggle.classList.toggle('active', sidebar.classList.contains('open'));
+  };
   document.addEventListener('keydown', (ev) => {
     if (ev.key === '/' && document.activeElement !== searchInput && !document.querySelector('.modal-backdrop')){
       ev.preventDefault(); searchInput.focus();
