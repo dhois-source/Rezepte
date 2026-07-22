@@ -9,20 +9,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
 <style>
   :root{
-    --bg: #0D0F14; --bg-alt: #12151C; --surface: #171B24; --surface-2: #1F2430;
-    --line: #2B3140; --text: #F3F4F8; --text-dim: #9BA2B4; --text-faint: #666D80;
-    --mustard: #7C6FF2; --paprika: #FF5C77; --sage: #23C99C;
-    --radius: 16px; --radius-sm: 10px; --shadow: 0 16px 36px -14px rgba(0,0,0,0.6);
+    --bg: #EEF0F5; --bg-alt: #FFFFFF; --surface: #FFFFFF; --surface-2: #F1F2F8;
+    --line: #E2E4ED; --text: #1E2028; --text-dim: #62677A; --text-faint: #9398AA;
+    --mustard: #6E5FEF; --paprika: #F0415C; --sage: #14B588;
+    --radius: 16px; --radius-sm: 10px; --shadow: 0 16px 32px -16px rgba(30,32,50,0.18);
     --font-display: "Fraunces", serif; --font-body: "Work Sans", sans-serif;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background: radial-gradient(circle at 12% -10%, rgba(124,111,242,0.12), transparent 45%),
-      radial-gradient(circle at 100% 0%, rgba(35,201,156,0.08), transparent 40%), var(--bg);
+    background: radial-gradient(circle at 12% -10%, rgba(110,95,239,0.08), transparent 45%),
+      radial-gradient(circle at 100% 0%, rgba(20,181,136,0.06), transparent 40%), var(--bg);
     color: var(--text); font-family: var(--font-body); min-height: 100vh; -webkit-font-smoothing: antialiased;
   }
-  a{color:inherit;} button{font-family:inherit;} ::selection{background:var(--mustard); color:#20281f;}
+  a{color:inherit;} button{font-family:inherit;} ::selection{background:var(--mustard); color:#fff;}
 
   header.top{ padding: 20px 32px 18px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
   .brand-eyebrow{ font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color: var(--mustard); font-weight:600; margin:0 0 6px; }
@@ -105,17 +105,13 @@
   .empty-state .big{ font-family: var(--font-display); font-size:22px; color:var(--text); margin-bottom:8px; }
 
   .card{ background: var(--surface); border:1px solid var(--line); border-left:4px solid var(--tab-color, var(--mustard)); border-radius: 12px; padding: 11px 16px; cursor:pointer; display:flex; align-items:center; gap:14px; transition: border-color .15s ease, background .15s ease, transform .15s ease, box-shadow .15s ease; }
-  .card:hover{ background: var(--surface-2); border-color: var(--tab-color, var(--mustard)); transform: translateY(-1px); box-shadow: 0 10px 24px -14px rgba(0,0,0,0.6); }
+  .card:hover{ background: var(--surface-2); border-color: var(--tab-color, var(--mustard)); transform: translateY(-1px); box-shadow: 0 10px 22px -14px rgba(30,32,50,0.25); }
   .card-title{ font-family: var(--font-display); font-weight:600; font-size:15.5px; line-height:1.25; margin:0; flex:0 1 auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:38%; }
   .card-snippet{ font-size:12.5px; color: var(--text-faint); flex:1 1 auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
   .card-tags{ display:flex; flex-wrap:nowrap; gap:6px; flex:none; overflow:hidden; max-width:32%; }
   .mini-tag{ font-size:10.5px; padding:3px 9px; border-radius:100px; background: var(--surface-2); color: var(--text-dim); border:1px solid var(--line); white-space:nowrap; flex:none; cursor:pointer; }
   .mini-tag:hover{ border-color:var(--sage); color:var(--text); }
   .mini-tag.active{ background:var(--sage); color:#182119; border-color:var(--sage); font-weight:600; }
-  .card-meta{ font-size:10.5px; color: var(--text-faint); flex:none; width:34px; text-align:right; }
-  .fav-star{ background:none; border:none; cursor:pointer; color: var(--text-faint); flex:none; padding:2px; display:flex; }
-  .fav-star.active{ color: var(--mustard); }
-  .fav-star svg{ width:16px; height:16px; }
   @media (max-width: 640px){
     .card{ flex-wrap:wrap; }
     .card-title{ max-width:100%; flex:1 1 100%; }
@@ -126,11 +122,8 @@
   /* ---------- tiles view ---------- */
   .grid.view-tiles{ display:grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap:16px; }
   .tile{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:0; cursor:pointer; overflow:hidden; display:flex; flex-direction:column; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
-  .tile:hover{ transform: translateY(-3px); box-shadow: 0 18px 32px -16px rgba(0,0,0,0.65); border-color: var(--tile-color, var(--mustard)); }
+  .tile:hover{ transform: translateY(-3px); box-shadow: 0 16px 30px -16px rgba(30,32,50,0.28); border-color: var(--tile-color, var(--mustard)); }
   .tile-band{ height:84px; display:flex; align-items:center; justify-content:center; font-size:34px; background: linear-gradient(135deg, var(--tile-color, var(--mustard)), transparent 150%); position:relative; }
-  .tile-fav{ position:absolute; top:10px; right:10px; background:rgba(13,15,20,0.35); border:none; border-radius:100%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; backdrop-filter: blur(2px); }
-  .tile-fav.active{ color:#ffd35c; }
-  .tile-fav svg{ width:15px; height:15px; }
   .tile-body{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; flex:1; }
   .tile-title{ font-family:var(--font-display); font-weight:600; font-size:16.5px; line-height:1.28; margin:0; }
   .tile-snippet{ font-size:12px; color:var(--text-faint); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:30px; }
@@ -149,7 +142,6 @@
   .swipe-title{ font-family:var(--font-display); font-weight:600; font-size:22px; margin:0; line-height:1.25; }
   .swipe-snippet{ font-size:13px; color:var(--text-dim); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
   .swipe-tags{ display:flex; flex-wrap:wrap; gap:6px; }
-  .swipe-meta{ display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--text-faint); }
   .swipe-counter{ font-size:12.5px; color:var(--text-faint); }
   .swipe-hint{ font-size:11px; color:var(--text-faint); }
 
@@ -163,9 +155,8 @@
   .shelf-item{ background:var(--surface); border:1px solid var(--line); border-top:3px solid var(--shelf-color, var(--mustard)); border-radius:12px; padding:12px 14px; cursor:pointer; display:flex; flex-direction:column; gap:8px; transition: transform .15s ease, border-color .15s ease; min-height:84px; }
   .shelf-item:hover{ transform: translateY(-2px); border-color: var(--shelf-color, var(--mustard)); }
   .shelf-item-title{ font-family:var(--font-display); font-weight:600; font-size:13.5px; line-height:1.25; margin:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  .shelf-item-foot{ display:flex; align-items:center; justify-content:space-between; margin-top:auto; }
 
-  .modal-backdrop{ position:fixed; inset:0; background: rgba(9,11,15,0.72); backdrop-filter: blur(3px); display:flex; align-items:flex-start; justify-content:center; padding: 40px 20px; z-index:50; overflow-y:auto; }
+  .modal-backdrop{ position:fixed; inset:0; background: rgba(30,32,45,0.4); backdrop-filter: blur(3px); display:flex; align-items:flex-start; justify-content:center; padding: 40px 20px; z-index:50; overflow-y:auto; }
   .modal{ background: var(--bg-alt); border:1px solid var(--line); border-radius: var(--radius); max-width: 720px; width:100%; box-shadow: var(--shadow); animation: pop .18s ease-out; }
   @keyframes pop{ from{ transform: scale(0.97); opacity:0;} to{ transform:scale(1); opacity:1; } }
   .modal-head{ padding: 26px 28px 16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }
@@ -180,14 +171,10 @@
   .icon-btn:hover{ color:var(--text); background:var(--surface); }
   .icon-btn.active{ color:var(--mustard); }
   .icon-btn svg{ width:18px; height:18px; }
-  .modal-fav-btn{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:5px; display:flex; border-radius:6px; }
-  .modal-fav-btn:hover{ background:var(--surface); }
-  .modal-fav-btn.active{ color:var(--mustard); }
-  .modal-fav-btn svg{ width:18px; height:18px; }
   .modal-body{ padding: 22px 28px 30px; }
-  .modal-tags-edit{ margin-bottom:22px; padding:16px; background:var(--surface); border:1px solid var(--line); border-radius:10px; }
+  .modal-tags-edit{ margin-bottom:22px; padding:16px; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; }
   .title-edit-label{ font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--text-faint); font-weight:600; margin: 0 0 8px; }
-  .title-edit-input{ width:100%; background:var(--surface-2); border:1px solid var(--line); color:var(--text); padding:10px 14px; border-radius:8px; font-family:var(--font-display); font-weight:600; font-size:17px; margin-bottom:18px; }
+  .title-edit-input{ width:100%; background:var(--surface); border:1px solid var(--line); color:var(--text); padding:10px 14px; border-radius:8px; font-family:var(--font-display); font-weight:600; font-size:17px; margin-bottom:18px; }
   .title-edit-input:focus{ outline:none; border-color:var(--mustard); }
   .modal-tags-row{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px; }
   .tag-editable{ display:flex; align-items:center; gap:6px; font-size:12.5px; padding:5px 6px 5px 11px; border-radius:100px; background: var(--surface); border:1px solid var(--line); color:var(--text-dim); }
@@ -208,7 +195,7 @@
   .rendered-content h1{font-size:22px;} .rendered-content h2{font-size:19px;} .rendered-content h3{font-size:16.5px;}
   .rendered-content ul,.rendered-content ol{ padding-left:22px; }
   .rendered-content li{ margin-bottom:5px; }
-  .rendered-content code{ background:var(--surface); padding:1px 6px; border-radius:4px; font-size:13px; }
+  .rendered-content code{ background:var(--surface-2); padding:1px 6px; border-radius:4px; font-size:13px; }
   .rendered-content img{ max-width:100%; border-radius:10px; margin: 8px 0; }
   .attachment-open{ display:inline-flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--line); padding:12px 16px; border-radius:var(--radius-sm); color:var(--mustard); font-weight:600; font-size:13.5px; text-decoration:none; }
   .pdf-actions{ margin: 0 0 12px; }
@@ -220,7 +207,7 @@
   .settings-input:focus{ outline:none; border-color:var(--mustard); }
 
   footer.hint{ padding: 18px 32px 40px; color: var(--text-faint); font-size:12px; border-top:1px solid var(--line); margin-top: 10px; }
-  code.inline{ background:var(--surface); padding:1px 6px; border-radius:4px; }
+  code.inline{ background:var(--surface-2); padding:1px 6px; border-radius:4px; }
   :focus-visible{ outline: 2px solid var(--mustard); outline-offset:2px; }
 
   /* ---------- mobile optimization ---------- */
@@ -246,7 +233,7 @@
     .modal-head h2{ font-size:20px; }
     .modal-body{ padding: 16px 16px 32px; }
     .modal-tags-edit{ padding:14px; }
-    .icon-btn, .modal-fav-btn{ padding:8px; }
+    .icon-btn{ padding:8px; }
     .modal-close{ width:40px; height:40px; font-size:26px; }
 
     .title-edit-input{ font-size:16px; }
@@ -259,7 +246,6 @@
     .edit-footer{ flex-direction:column; align-items:stretch; }
     .edit-footer .btn{ width:100%; justify-content:center; }
 
-    .fav-star{ padding:6px; }
     .mode-toggle button{ padding:7px 12px; }
     .card{ padding: 12px 14px; gap:10px; }
 
@@ -305,12 +291,10 @@
       <select class="sort-select" id="sortSelect">
         <option value="name-asc">Titel A–Z</option>
         <option value="name-desc">Titel Z–A</option>
-        <option value="fav-first">Favoriten zuerst</option>
         <option value="tags-desc">Meiste Tags zuerst</option>
       </select>
     </div>
     <div class="side-section">
-      <label class="fav-toggle"><input type="checkbox" id="favOnly"> Nur Favoriten</label>
       <label class="fav-toggle"><input type="checkbox" id="untaggedOnly"> Nur unverschlagwortet</label>
     </div>
     <div class="side-section">
@@ -362,7 +346,7 @@
 </div>
 
 <footer class="hint">
-  Rezeptbox erkennt Besitzer und Repo automatisch aus der Adresse, unter der diese Seite läuft, und liest die Rezeptdateien direkt aus dem Repo über die GitHub-API – öffentlich, ohne Login. Tags und Favoriten werden zentral im Repo gespeichert und stehen auf jedem Gerät zur Verfügung, das diese Seite öffnet. Zum Bearbeiten wird ein GitHub-Token benötigt (Einstellungen ⚙).
+  Rezeptbox erkennt Besitzer und Repo automatisch aus der Adresse, unter der diese Seite läuft, und liest die Rezeptdateien direkt aus dem Repo über die GitHub-API – öffentlich, ohne Login. Tags werden zentral im Repo gespeichert und stehen auf jedem Gerät zur Verfügung, das diese Seite öffnet. Zum Bearbeiten wird ein GitHub-Token benötigt (Einstellungen ⚙).
 </footer>
 
 <div class="toast-stack" id="toastStack"></div>
@@ -381,7 +365,6 @@
   const settingsBtn = document.getElementById('settingsBtn');
   const searchInput = document.getElementById('searchInput');
   const sortSelect = document.getElementById('sortSelect');
-  const favOnly = document.getElementById('favOnly');
   const untaggedOnly = document.getElementById('untaggedOnly');
   const sidebar = document.getElementById('sidebar');
   const mobileFilterToggle = document.getElementById('mobileFilterToggle');
@@ -640,16 +623,7 @@
     openModalStatusRefs.forEach(el => { if (document.body.contains(el)) el.textContent = text; });
   }
 
-  // ---------- tag / favorite mutations ----------
-  function toggleFavorite(r){
-    const meta = getRecipeMeta(r.id);
-    meta.favorite = !meta.favorite;
-    r.favorite = meta.favorite;
-    if (!pat){ toast('Zum dauerhaften Speichern wird ein Token benötigt (⚙ Einstellungen).', true); }
-    markDirty(r.id);
-    updateStatPill(); renderGrid();
-  }
-
+  // ---------- tag mutations ----------
   function setRecipeTitle(recipe, newTitle){
     const meta = getRecipeMeta(recipe.id);
     const trimmed = (newTitle || '').trim();
@@ -836,7 +810,6 @@
   function activeFilterCount(){
     let n = activeTags.size + activeExtGroups.size;
     if (searchInput.value.trim()) n++;
-    if (favOnly.checked) n++;
     if (untaggedOnly.checked) n++;
     return n;
   }
@@ -866,14 +839,13 @@
     activeExtGroups.forEach(key => {
       chip(`Typ: ${extGroupLabel(key)}`, () => { activeExtGroups.delete(key); renderExtCloud(); renderGrid(); renderActiveFiltersBar(); });
     });
-    if (favOnly.checked) chip('Nur Favoriten', () => { favOnly.checked=false; renderGrid(); renderActiveFiltersBar(); });
     if (untaggedOnly.checked) chip('Unverschlagwortet', () => { untaggedOnly.checked=false; renderGrid(); renderActiveFiltersBar(); });
 
     const resetBtn = document.createElement('button');
     resetBtn.className = 'filter-reset';
     resetBtn.textContent = 'Alle Filter zurücksetzen';
     resetBtn.onclick = () => {
-      searchInput.value=''; activeTags.clear(); activeExtGroups.clear(); favOnly.checked=false; untaggedOnly.checked=false;
+      searchInput.value=''; activeTags.clear(); activeExtGroups.clear(); untaggedOnly.checked=false;
       renderTagCloud(); renderExtCloud(); renderGrid(); renderActiveFiltersBar();
     };
     activeFiltersBar.appendChild(resetBtn);
@@ -893,15 +865,10 @@
   });
   grid.className = 'grid view-' + viewMode;
 
-  function favSvg(active){
-    return `<svg viewBox="0 0 24 24" fill="${active ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.63 22 9.24 16.5 14.14 18.18 21 12 17.27 5.82 21 7.5 14.14 2 9.24 8.91 8.63 12 2"/></svg>`;
-  }
   function tagChipsHtml(r, max){
     return r.tags.slice(0, max).map(t => `<span class="mini-tag${activeTags.has(t)?' active':''}" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('');
   }
-  function attachCommonEvents(el, r, favSelector){
-    const favEl = el.querySelector(favSelector);
-    if (favEl) favEl.onclick = (ev) => { ev.stopPropagation(); toggleFavorite(r); };
+  function attachCommonEvents(el, r){
     el.querySelectorAll('.mini-tag').forEach(t => { t.onclick = (ev) => { ev.stopPropagation(); toggleTagFilter(t.dataset.tag); }; });
     el.onclick = () => openModal(r);
     el.onkeydown = (ev) => { if (ev.key === 'Enter') openModal(r); };
@@ -916,7 +883,6 @@
         : list.filter(r => [...activeTags].every(t => r.tags.includes(t)));
     }
     if (activeExtGroups.size) list = list.filter(r => activeExtGroups.has(extGroupKey(r.ext)));
-    if (favOnly.checked) list = list.filter(r => r.favorite);
     if (untaggedOnly.checked) list = list.filter(r => r.tags.length === 0);
 
     if (q){
@@ -929,9 +895,7 @@
     }
 
     const sortMode = sortSelect.value;
-    if (sortMode === 'fav-first'){
-      list.sort((a,b) => (b.favorite - a.favorite) || recipeTitle(a).localeCompare(recipeTitle(b),'de'));
-    } else if (sortMode === 'tags-desc'){
+    if (sortMode === 'tags-desc'){
       list.sort((a,b) => (b.tags.length - a.tags.length) || recipeTitle(a).localeCompare(recipeTitle(b),'de'));
     } else {
       list.sort((a,b) => sortMode === 'name-desc'
@@ -962,11 +926,9 @@
         <h3 class="card-title">${escapeHtml(recipeTitle(r))}</h3>
         <span class="card-snippet">${escapeHtml(r._preview) || ''}</span>
         <div class="card-tags">${tagChipsHtml(r, 4)}</div>
-        <span class="card-meta">.${r.ext || 'datei'}</span>
-        <button class="fav-star ${r.favorite ? 'active' : ''}" aria-label="Favorit">${favSvg(r.favorite)}</button>
       `;
       card.tabIndex = 0;
-      attachCommonEvents(card, r, '.fav-star');
+      attachCommonEvents(card, r);
       grid.appendChild(card);
     }
   }
@@ -980,16 +942,14 @@
       tile.tabIndex = 0;
       tile.style.setProperty('--tile-color', accent);
       tile.innerHTML = `
-        <div class="tile-band">${emoji}
-          <button class="tile-fav ${r.favorite ? 'active' : ''}" aria-label="Favorit">${favSvg(r.favorite)}</button>
-        </div>
+        <div class="tile-band">${emoji}</div>
         <div class="tile-body">
           <h3 class="tile-title">${escapeHtml(recipeTitle(r))}</h3>
           <span class="tile-snippet">${escapeHtml(r._preview) || ''}</span>
           <div class="tile-tags">${tagChipsHtml(r, 3)}</div>
         </div>
       `;
-      attachCommonEvents(tile, r, '.tile-fav');
+      attachCommonEvents(tile, r);
       grid.appendChild(tile);
     }
   }
@@ -1027,14 +987,8 @@
         item.className = 'shelf-item';
         item.tabIndex = 0;
         item.style.setProperty('--shelf-color', accent);
-        item.innerHTML = `
-          <h4 class="shelf-item-title">${escapeHtml(recipeTitle(r))}</h4>
-          <div class="shelf-item-foot">
-            <span class="card-meta">.${r.ext || 'datei'}</span>
-            <button class="fav-star ${r.favorite ? 'active' : ''}" aria-label="Favorit">${favSvg(r.favorite)}</button>
-          </div>
-        `;
-        attachCommonEvents(item, r, '.fav-star');
+        item.innerHTML = `<h4 class="shelf-item-title">${escapeHtml(recipeTitle(r))}</h4>`;
+        attachCommonEvents(item, r);
         row.appendChild(item);
       });
       grid.appendChild(section);
@@ -1061,10 +1015,6 @@
             <h3 class="swipe-title">${escapeHtml(recipeTitle(r))}</h3>
             <span class="swipe-snippet">${escapeHtml(r._preview) || ''}</span>
             <div class="swipe-tags">${tagChipsHtml(r, 6)}</div>
-            <div class="swipe-meta">
-              <span>.${r.ext || 'datei'}</span>
-              <button class="fav-star ${r.favorite ? 'active' : ''}" aria-label="Favorit">${favSvg(r.favorite)}</button>
-            </div>
           </div>
         </article>
         <button class="swipe-arrow" id="swipeNext" aria-label="Nächstes Rezept" ${swipeIndex===list.length-1?'disabled':''}>
@@ -1078,7 +1028,7 @@
     wrap.querySelector('#swipePrev').onclick = () => { if (swipeIndex>0) goTo(swipeIndex-1); };
     wrap.querySelector('#swipeNext').onclick = () => { if (swipeIndex<list.length-1) goTo(swipeIndex+1); };
     const swipeCard = wrap.querySelector('.swipe-card');
-    attachCommonEvents(swipeCard, r, '.fav-star');
+    attachCommonEvents(swipeCard, r);
     let touchStartX = null;
     swipeCard.addEventListener('touchstart', (ev) => { touchStartX = ev.touches[0].clientX; }, {passive:true});
     swipeCard.addEventListener('touchend', (ev) => {
@@ -1117,9 +1067,6 @@
             <button class="icon-btn" id="modalEditToggle" aria-label="Bearbeiten" title="Titel &amp; Tags bearbeiten">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
             </button>
-            <button class="modal-fav-btn ${recipe.favorite ? 'active' : ''}" aria-label="Favorit" title="Favorit">
-              <svg viewBox="0 0 24 24" fill="${recipe.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.63 22 9.24 16.5 14.14 18.18 21 12 17.27 5.82 21 7.5 14.14 2 9.24 8.91 8.63 12 2"/></svg>
-            </button>
             <button class="modal-close" aria-label="Schließen">&times;</button>
           </div>
         </div>
@@ -1133,13 +1080,6 @@
     backdrop.querySelector('.modal-close').onclick = close;
     backdrop.onclick = (ev) => { if (ev.target === backdrop) close(); };
     document.addEventListener('keydown', function esc(ev){ if (ev.key === 'Escape'){ close(); document.removeEventListener('keydown', esc); } });
-
-    const favBtn = backdrop.querySelector('.modal-fav-btn');
-    favBtn.onclick = () => {
-      toggleFavorite(recipe);
-      favBtn.classList.toggle('active', recipe.favorite);
-      favBtn.querySelector('svg').setAttribute('fill', recipe.favorite ? 'currentColor' : 'none');
-    };
 
     const tagsLine = backdrop.querySelector('#modalTagsLine');
     const editPanel = backdrop.querySelector('#modalTagsEdit');
@@ -1298,7 +1238,7 @@
           <button class="modal-close" aria-label="Schließen">&times;</button>
         </div>
         <div class="modal-body">
-          <p class="settings-copy">Um Tags und Favoriten zu bearbeiten, wird ein GitHub-Token mit Schreibrechten für dieses Repository benötigt. Die Daten werden dann in <code class="inline">${escapeHtml(TAGS_FILE_NAME)}</code> im Repo gespeichert und stehen automatisch auf jedem Gerät zur Verfügung, das diese Seite öffnet.</p>
+          <p class="settings-copy">Um Tags zu bearbeiten, wird ein GitHub-Token mit Schreibrechten für dieses Repository benötigt. Die Daten werden dann in <code class="inline">${escapeHtml(TAGS_FILE_NAME)}</code> im Repo gespeichert und stehen automatisch auf jedem Gerät zur Verfügung, das diese Seite öffnet.</p>
           <p class="settings-copy faint">Token erstellen: GitHub → Settings → Developer settings → Fine-grained tokens → Zugriff auf dieses Repo, Berechtigung „Contents: Read and write". Der Token wird nur in diesem Browser gespeichert.</p>
           <label style="display:block;font-size:12.5px;color:var(--text-faint);margin:16px 0 6px;">GitHub-Token</label>
           <input type="password" id="patInput" class="settings-input" placeholder="ghp_… oder github_pat_…">
@@ -1399,7 +1339,6 @@
   rescanBtn.onclick = () => refresh({silent:false});
   searchInput.oninput = debounce(() => { renderGrid(); renderActiveFiltersBar(); }, 150);
   sortSelect.onchange = () => renderGrid();
-  favOnly.onchange = () => { renderGrid(); renderActiveFiltersBar(); };
   untaggedOnly.onchange = () => { renderGrid(); renderActiveFiltersBar(); };
   mobileFilterToggle.onclick = () => sidebar.classList.toggle('open');
   document.addEventListener('keydown', (ev) => {
