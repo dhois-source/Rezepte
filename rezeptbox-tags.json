@@ -7,7 +7,6 @@
     "Dip",
     "Sauce",
     "Gnocchi",
-    "Gnom",
     "Waffeln",
     "Tortellini",
     "Marinade",
@@ -271,8 +270,7 @@
     },
     "Gnocchi_mit_Spinat.pdf": {
       "tags": [
-        "Gnocchi",
-        "Gnom"
+        "Gnocchi"
       ],
       "favorite": false,
       "title": null
