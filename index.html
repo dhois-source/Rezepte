@@ -21,10 +21,11 @@
     background: radial-gradient(circle at 12% -10%, rgba(110,95,239,0.08), transparent 45%),
       radial-gradient(circle at 100% 0%, rgba(20,181,136,0.06), transparent 40%), var(--bg);
     color: var(--text); font-family: var(--font-body); min-height: 100vh; -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
   a{color:inherit;} button{font-family:inherit;} ::selection{background:var(--mustard); color:#fff;}
 
-  header.top{ padding: 20px 32px 18px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  header.top{ padding: 20px 32px 18px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; border-bottom: 1px solid var(--line); flex-wrap: wrap; width:100%; min-width:0; }
   .brand-eyebrow{ font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color: var(--mustard); font-weight:600; margin:0 0 6px; }
   .brand-title{ font-family: var(--font-display); font-weight:600; font-size: clamp(28px,4vw,42px); margin:0; line-height:1; letter-spacing:-0.01em; }
   .brand-title em{ font-style:italic; color: var(--sage); font-weight:500;}
@@ -42,7 +43,7 @@
   .btn svg{ width:15px; height:15px; flex:none; }
   .btn.icon-only{ padding:10px; }
 
-  .layout{ display:grid; grid-template-columns: 280px 1fr; }
+  .layout{ display:grid; grid-template-columns: 280px 1fr; width:100%; min-width:0; }
   @media (max-width: 880px){ .layout{ grid-template-columns: 1fr; } }
   aside.sidebar{ padding: 24px 24px 40px; border-right: 1px solid var(--line); position: sticky; top:0; min-height: calc(100vh - 96px); }
   @media (max-width: 880px){
@@ -72,7 +73,7 @@
   .mode-toggle button{ border:none; background:none; color:var(--text-faint); font-size:11px; font-weight:600; padding:5px 10px; border-radius:100px; cursor:pointer; }
   .mode-toggle button.active{ background:var(--sage); color:#182119; }
 
-  main{ padding: 28px 32px 60px; }
+  main{ padding: 28px 32px 60px; min-width:0; }
   #mobileFilterToggle{ display:none; margin-bottom:18px; }
   @media (max-width:880px){ #mobileFilterToggle{ display:inline-flex; } }
   .filter-count-badge{ background:var(--mustard); color:#20281f; font-size:10.5px; font-weight:700; border-radius:100px; padding:1px 7px; margin-left:4px; }
@@ -206,6 +207,15 @@
   .settings-input{ width:100%; background:var(--surface); border:1px solid var(--line); color:var(--text); padding:10px 14px; border-radius:8px; font-family:inherit; font-size:13.5px; }
   .settings-input:focus{ outline:none; border-color:var(--mustard); }
 
+  /* tag manager */
+  .tag-manager-section{ margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .tag-manager-label{ font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--text-faint); font-weight:600; margin: 0 0 10px; }
+  .tag-manager-list{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px; }
+  .tag-manager-chip{ display:flex; align-items:center; gap:4px; font-size:12.5px; padding:5px 8px 5px 11px; border-radius:100px; background:var(--surface); border:1px solid var(--line); color:var(--text-dim); cursor:default; }
+  .tag-manager-chip button{ background:none; border:none; color:var(--text-faint); cursor:pointer; padding:0 2px; font-size:15px; line-height:1; }
+  .tag-manager-chip button:hover{ color:var(--paprika); }
+  .tag-manager-empty{ font-size:12.5px; color:var(--text-faint); }
+
   footer.hint{ padding: 18px 32px 40px; color: var(--text-faint); font-size:12px; border-top:1px solid var(--line); margin-top: 10px; }
   code.inline{ background:var(--surface-2); padding:1px 6px; border-radius:4px; }
   :focus-visible{ outline: 2px solid var(--mustard); outline-offset:2px; }
@@ -249,13 +259,23 @@
     .mode-toggle button{ padding:7px 12px; }
     .card{ padding: 12px 14px; gap:10px; }
 
-    .grid.view-tiles{ grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:12px; }
+    /* view-switch buttons can scroll horizontally on very narrow screens */
+    .view-switch{ width:100%; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .view-switch::-webkit-scrollbar{ display:none; }
+    .view-switch button{ flex:none; scroll-snap-align:start; }
+
+    .grid.view-tiles{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:12px; }
+    .tile{ word-break:break-word; overflow-wrap:break-word; }
     .tile-band{ height:64px; font-size:26px; }
-    .swipe-stage{ max-width:none; }
+    .swipe-stage{ max-width:none; width:100%; }
     .swipe-arrow{ width:34px; height:34px; }
     .swipe-band{ height:90px; font-size:38px; }
-    .swipe-title{ font-size:19px; }
-    .shelf-row{ grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+    .swipe-body{ padding:16px 16px 20px; min-width:0; }
+    .swipe-card{ max-width:100%; }
+    .swipe-title{ font-size:19px; word-break:break-word; overflow-wrap:break-word; }
+    .swipe-snippet{ word-break:break-word; overflow-wrap:break-word; }
+    .shelf-row{ grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap:10px; }
+    .shelf-item{ min-width:0; word-break:break-word; overflow-wrap:break-word; }
   }
   @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
 </style>
@@ -1131,6 +1151,16 @@
     container.innerHTML = '';
     const rerender = () => renderTagsEdit(recipe, container, onDone, titleHeading);
 
+    // commit pending title from the DOM input back to the data model
+    const commitTitle = () => {
+      const titleInput = container.querySelector('.title-edit-input');
+      if (titleInput){
+        setRecipeTitle(recipe, titleInput.value);
+        titleInput.value = recipeTitle(recipe);
+        if (titleHeading) titleHeading.textContent = recipeTitle(recipe);
+      }
+    };
+
     if (titleHeading){
       const titleLabel = document.createElement('p');
       titleLabel.className = 'title-edit-label';
@@ -1144,12 +1174,6 @@
       titleInput.placeholder = titleFromFilename(recipe.name);
       container.appendChild(titleInput);
 
-      const commitTitle = () => {
-        setRecipeTitle(recipe, titleInput.value);
-        titleInput.value = recipeTitle(recipe);
-        titleHeading.textContent = recipeTitle(recipe);
-        renderGrid();
-      };
       titleInput.oninput = () => { titleHeading.textContent = titleInput.value.trim() || titleFromFilename(recipe.name); };
       titleInput.addEventListener('blur', commitTitle);
       titleInput.onkeydown = (ev) => { if (ev.key === 'Enter'){ ev.preventDefault(); commitTitle(); } };
@@ -1160,14 +1184,14 @@
     recipe.tags.forEach(tag => {
       const el = document.createElement('span'); el.className = 'tag-editable';
       el.innerHTML = `${escapeHtml(tag)} <button aria-label="Tag entfernen">&times;</button>`;
-      el.querySelector('button').onclick = () => removeTagFromRecipe(recipe, tag, rerender);
+      el.querySelector('button').onclick = () => { commitTitle(); removeTagFromRecipe(recipe, tag, rerender); };
       row.appendChild(el);
     });
 
     const input = document.createElement('input');
     input.className = 'tag-add-input'; input.placeholder = '+ Tag hinzufügen';
     input.onkeydown = (ev) => {
-      if (ev.key === 'Enter' && input.value.trim()) addTagToRecipeAndKeepEditing(recipe, input.value, container, onDone, titleHeading);
+      if (ev.key === 'Enter' && input.value.trim()){ commitTitle(); addTagToRecipeAndKeepEditing(recipe, input.value, container, onDone, titleHeading); }
     };
     input.oninput = () => renderSuggestions(input.value);
     row.appendChild(input);
@@ -1193,7 +1217,7 @@
         const chip = document.createElement('button');
         chip.type = 'button'; chip.className = 'tag-suggestion';
         chip.textContent = t;
-        chip.onclick = () => addTagToRecipeAndKeepEditing(recipe, t, container, onDone, titleHeading);
+        chip.onclick = () => { commitTitle(); addTagToRecipeAndKeepEditing(recipe, t, container, onDone, titleHeading); };
         suggBox.appendChild(chip);
       });
       const trimmed = filterText.trim();
@@ -1201,7 +1225,7 @@
         const newChip = document.createElement('button');
         newChip.type = 'button'; newChip.className = 'tag-suggestion new';
         newChip.textContent = `+ „${trimmed}“ als neuen Tag`;
-        newChip.onclick = () => addTagToRecipeAndKeepEditing(recipe, trimmed, container, onDone, titleHeading);
+        newChip.onclick = () => { commitTitle(); addTagToRecipeAndKeepEditing(recipe, trimmed, container, onDone, titleHeading); };
         suggBox.appendChild(newChip);
       }
     }
@@ -1213,11 +1237,7 @@
     openModalStatusRefs.push(status);
     const doneBtn = document.createElement('button');
     doneBtn.type = 'button'; doneBtn.className = 'btn small'; doneBtn.textContent = 'Fertig';
-    doneBtn.onclick = () => {
-      const titleField = container.querySelector('.title-edit-input');
-      if (titleField && titleHeading){ setRecipeTitle(recipe, titleField.value); renderGrid(); }
-      onDone();
-    };
+    doneBtn.onclick = () => { commitTitle(); onDone(); };
     footer.appendChild(status); footer.appendChild(doneBtn);
     container.appendChild(footer);
   }
@@ -1225,6 +1245,55 @@
   function addTagToRecipeAndKeepEditing(recipe, val, container, onDone, titleHeading){
     addTagToRecipe(recipe, val, () => {});
     renderTagsEdit(recipe, container, onDone, titleHeading);
+  }
+
+  function removeTagGlobally(tagName){
+    if (!pat){ toast('Zum Löschen von Tags wird ein Token benötigt.', true); return; }
+    let usedCount = 0;
+    recipes.forEach(r => {
+      const meta = tagsData.recipes[r.id];
+      if (meta && meta.tags && meta.tags.includes(tagName)){
+        meta.tags = meta.tags.filter(t => t !== tagName);
+        r.tags = meta.tags;
+        dirty.recipeIds.add(r.id);
+        usedCount++;
+      }
+    });
+    if (usedCount > 0) setSyncState('pending');
+
+    // remove from custom_tags
+    tagsData.custom_tags = (tagsData.custom_tags || []).filter(t => t !== tagName);
+    dirty.customTags = true;
+
+    if (usedCount > 0 || (tagsData.custom_tags || []).indexOf(tagName) === -1){
+      const msg = usedCount > 0
+        ? `„${tagName}" aus ${usedCount} Rezept${usedCount===1?'':'en'} entfernt.`
+        : `„${tagName}" gelöscht.`;
+      toast(msg);
+      scheduleSave();
+      renderTagCloud(); renderGrid(); renderActiveFiltersBar();
+    }
+  }
+
+  function buildTagManagerList(container){
+    container.innerHTML = '';
+    const tags = allTags();
+    if (!tags.length){
+      const p = document.createElement('p'); p.className = 'tag-manager-empty';
+      p.textContent = 'Noch keine Tags vorhanden.';
+      container.appendChild(p); return;
+    }
+    tags.forEach(tag => {
+      const chip = document.createElement('span'); chip.className = 'tag-manager-chip';
+      chip.innerHTML = `${escapeHtml(tag)} <button aria-label="Tag löschen" title="Tag aus allen Rezepten entfernen">&times;</button>`;
+      chip.querySelector('button').onclick = () => {
+        if (confirm(`Tag „${tag}" aus allen Rezepten entfernen?`)){
+          removeTagGlobally(tag);
+          buildTagManagerList(container);
+        }
+      };
+      container.appendChild(chip);
+    });
   }
 
   // ---------- settings modal ----------
@@ -1247,16 +1316,21 @@
             <button class="btn ghost" id="patClearBtn">Token entfernen</button>
           </div>
           <p id="patStatus" class="settings-copy faint" style="margin-top:14px;"></p>
+          <div class="tag-manager-section">
+            <p class="tag-manager-label">Alle Tags verwalten <span style="color:var(--text-faint);font-weight:400;text-transform:none;">– zum Löschen auf × klicken</span></p>
+            <div class="tag-manager-list" id="tagManagerList"></div>
+          </div>
         </div>
       </div>`;
     document.body.appendChild(backdrop);
-    const close = () => backdrop.remove();
+    const close = () => { flushSave(); backdrop.remove(); };
     backdrop.querySelector('.modal-close').onclick = close;
     backdrop.onclick = (ev) => { if (ev.target === backdrop) close(); };
 
     const input = backdrop.querySelector('#patInput');
     input.value = pat || '';
     const statusEl = backdrop.querySelector('#patStatus');
+    buildTagManagerList(backdrop.querySelector('#tagManagerList'));
 
     backdrop.querySelector('#patSaveBtn').onclick = async () => {
       const v = input.value.trim();
