@@ -89,7 +89,9 @@
       "title": null
     },
     "Honig_Senf_SalatDressing.pdf": {
-      "tags": [],
+      "tags": [
+        "Sauce"
+      ],
       "favorite": false,
       "title": "Honig Senf Salatdressing"
     },
