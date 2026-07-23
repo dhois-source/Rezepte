@@ -417,8 +417,9 @@
     { key:'pdf', label:'PDF', exts:['pdf'] },
   ];
   const BRANCH_CANDIDATES = ['main','master','gh-pages'];
-  const FOLDER = new URLSearchParams(location.search).get('folder') || '';
-  const TAGS_FILE_NAME = 'rezeptbox-tags' + (FOLDER ? '-' + FOLDER.replace(/[^a-z0-9_-]/gi,'_') : '') + '.json';
+  const DEFAULT_FOLDER = 'PDF';
+  const FOLDER = new URLSearchParams(location.search).get('folder') || DEFAULT_FOLDER;
+  const TAGS_FILE_NAME = 'rezeptbox-tags' + (FOLDER && FOLDER !== DEFAULT_FOLDER ? '-' + FOLDER.replace(/[^a-z0-9_-]/gi,'_') : '') + '.json';
 
   const STATUS_TEXT = {
     'no-token': '🔒 Nur Ansicht (kein Token)',
