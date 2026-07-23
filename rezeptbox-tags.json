@@ -685,6 +685,16 @@
       "title": null,
       "cover": "Oklahoma_Onion_Burger.jpg",
       "summary": null
+    },
+    "Joghurt_Dressing.pdf": {
+      "tags": [
+        "Salat",
+        "Dressing"
+      ],
+      "favorite": false,
+      "title": "Joghurt Dressing",
+      "cover": "Joghurt_Dressing.jpg",
+      "summary": "Joghurt-Dressing mit Naturjoghurt, Balsamico Bianco, Olivenöl und Zitronensaft, gewürzt mit Salz und Pfeffer. Zubereitung in ca. 5 Minuten."
     }
   }
 }
