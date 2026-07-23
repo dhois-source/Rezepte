@@ -45,10 +45,10 @@
   textarea{ resize: vertical; min-height: 90px; line-height:1.55; }
   input[type=file]{ font-size:13.5px; font-family:inherit; color:var(--text-dim); }
 
-  .file-drop{ border:1.5px dashed var(--line); border-radius: var(--radius-sm); padding: 18px; text-align:center; background: var(--surface-2); cursor:pointer; transition: border-color .15s, background .15s; }
+  .file-drop{ display:block; position:relative; border:1.5px dashed var(--line); border-radius: var(--radius-sm); padding: 18px; text-align:center; background: var(--surface-2); cursor:pointer; transition: border-color .15s, background .15s; }
   .file-drop:hover{ border-color: var(--mustard); }
   .file-drop.has-file{ border-style:solid; border-color: var(--sage); }
-  .file-drop input{ display:none; }
+  .file-drop input[type=file]{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
   .file-drop .fd-label{ font-size:13.5px; font-weight:600; color:var(--text-dim); }
   .file-drop .fd-name{ font-size:12.5px; color:var(--sage); margin-top:4px; word-break:break-all; }
 
@@ -159,6 +159,7 @@
         <label class="field-label">Zusammenfassung</label>
         <div class="ai-row">
           <button class="btn" id="aiBtn" type="button" disabled>✨ Automatisch erstellen (KI)</button>
+          <button class="btn ghost" id="fallbackBtn" type="button" disabled>Einfacher Vorschlag (ohne KI)</button>
           <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
         </div>
         <p class="status-text" id="aiStatus"></p>
@@ -178,7 +179,12 @@
 </footer>
 
 <script type="module">
-import { pipeline } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2";
+import { pipeline, env } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2";
+
+// GitHub Pages sendet keine Cross-Origin-Isolation-Header, daher ist SharedArrayBuffer
+// nicht verfügbar. Multi-Threading im WASM-Backend kann dadurch hängen bleiben oder
+// abstürzen – deshalb hier fest auf einen Thread stellen.
+env.backends.onnx.wasm.numThreads = 1;
 
 const PRESET_TAGS = [
   'Deutsch','Italienisch','Französisch','Griechisch','Spanisch','Türkisch','Balkan',
@@ -305,13 +311,25 @@ async function extractPdfText(file){
 }
 
 // ---------- local AI summarization ----------
+function withTimeout(promise, ms, label){
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`${label}: Zeitüberschreitung nach ${Math.round(ms/1000)}s.`)), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
 let generatorPromise = null;
 async function getGenerator(onProgress){
   if (!generatorPromise){
+    // WebGPU (falls verfügbar) ist schneller und speicherschonender; ohne WebGPU laufen
+    // wir auf der wasm-CPU-Backend – dort ist q8 deutlich stabiler als q4.
+    const hasWebGPU = !!(navigator.gpu);
     generatorPromise = pipeline('text-generation', 'onnx-community/Qwen2.5-0.5B-Instruct', {
-      dtype: 'q4',
+      device: hasWebGPU ? 'webgpu' : 'wasm',
+      dtype: hasWebGPU ? 'q4' : 'q8',
       progress_callback: onProgress
-    });
+    }).catch(err => { generatorPromise = null; throw err; });
   }
   return generatorPromise;
 }
@@ -320,24 +338,32 @@ async function aiSummarize(recipeText, titleGuess){
   const progressWrap = $('progressWrap'), progressBar = $('progressBar'), aiStatus = $('aiStatus');
   progressWrap.style.display = 'block'; aiStatus.className = 'status-text'; aiStatus.textContent = 'Lade KI-Modell (einmalig, ca. 300–500 MB)…';
   const seenFiles = {};
-  const generator = await getGenerator((p) => {
-    if (p.status === 'progress' && p.file){
-      seenFiles[p.file] = p.progress || 0;
-      const vals = Object.values(seenFiles);
-      const avg = vals.reduce((a,b)=>a+b,0) / vals.length;
-      progressBar.style.width = Math.min(100, avg) + '%';
-      aiStatus.textContent = `Lade KI-Modell… ${Math.round(avg)}%`;
-    } else if (p.status === 'ready' || p.status === 'done'){
-      progressBar.style.width = '100%';
-    }
-  });
-  aiStatus.textContent = 'Erstelle Zusammenfassung…';
+  const generator = await withTimeout(
+    getGenerator((p) => {
+      if (p.status === 'progress' && p.file){
+        seenFiles[p.file] = p.progress || 0;
+        const vals = Object.values(seenFiles);
+        const avg = vals.reduce((a,b)=>a+b,0) / vals.length;
+        progressBar.style.width = Math.min(100, avg) + '%';
+        aiStatus.textContent = `Lade KI-Modell… ${Math.round(avg)}%`;
+      } else if (p.status === 'ready' || p.status === 'done'){
+        progressBar.style.width = '100%';
+      }
+    }),
+    6 * 60 * 1000,
+    'Modell-Download'
+  );
+  progressWrap.style.display = 'none';
+  aiStatus.textContent = 'Modell antwortet … das kann beim ersten Mal 20–90 Sekunden dauern. Bitte Tab offen lassen.';
   const messages = [
     { role: 'system', content: 'Du schreibst kurze, appetitliche Zusammenfassungen von Kochrezepten auf Deutsch. Antworte ausschließlich mit der Zusammenfassung in 1–2 Sätzen, ohne Einleitung, ohne Anführungszeichen.' },
-    { role: 'user', content: `Rezepttitel: ${titleGuess || 'unbekannt'}\n\nRezepttext:\n${recipeText.slice(0, 2500)}\n\nSchreibe eine kurze Zusammenfassung (1-2 Sätze) für dieses Gericht.` }
+    { role: 'user', content: `Rezepttitel: ${titleGuess || 'unbekannt'}\n\nRezepttext:\n${recipeText.slice(0, 1500)}\n\nSchreibe eine kurze Zusammenfassung (1-2 Sätze) für dieses Gericht.` }
   ];
-  const output = await generator(messages, { max_new_tokens: 90, temperature: 0.4, do_sample: false });
-  progressWrap.style.display = 'none';
+  const output = await withTimeout(
+    generator(messages, { max_new_tokens: 70, temperature: 0.4, do_sample: false }),
+    3 * 60 * 1000,
+    'Zusammenfassung erstellen'
+  );
   let result = '';
   try{
     const gen = output[0].generated_text;
@@ -346,6 +372,11 @@ async function aiSummarize(recipeText, titleGuess){
   result = result.replace(/^["„“]|["“”]$/g, '').trim();
   aiStatus.className = 'status-text ok'; aiStatus.textContent = '✓ Zusammenfassung erstellt';
   return result;
+}
+
+function simpleFallbackSummary(recipeText){
+  const clean = recipeText.replace(/\s+/g,' ').trim();
+  return clean.slice(0, 220) + (clean.length > 220 ? '…' : '');
 }
 
 // ---------- UI wiring ----------
@@ -363,10 +394,12 @@ $('pdfInput').addEventListener('change', async (ev) => {
   $('pdfDrop').classList.add('has-file');
   $('pdfName').textContent = f.name;
   if (!$('titleInput').value.trim()) $('titleInput').value = titleFromFilename(f.name);
-  $('aiBtn').disabled = false;
+  saveDraft();
   refreshSaveEnabled();
   try{
     extractedText = await extractPdfText(f);
+    $('aiBtn').disabled = false;
+    $('fallbackBtn').disabled = false;
   }catch(e){
     extractedText = '';
     $('aiStatus').className = 'status-text err';
@@ -394,12 +427,25 @@ $('aiBtn').addEventListener('click', async () => {
   $('aiBtn').disabled = true;
   try{
     const summary = await aiSummarize(extractedText, $('titleInput').value.trim());
-    if (summary) $('summaryInput').value = summary;
+    if (summary){ $('summaryInput').value = summary; saveDraft(); }
   }catch(e){
+    $('progressWrap').style.display = 'none';
     $('aiStatus').className = 'status-text err';
-    $('aiStatus').textContent = 'KI-Zusammenfassung fehlgeschlagen: ' + (e.message || e);
+    $('aiStatus').textContent = 'KI-Zusammenfassung fehlgeschlagen (' + (e.message || e) + '). Nutze stattdessen „Einfacher Vorschlag" oder trage die Zusammenfassung manuell ein.';
   }
   $('aiBtn').disabled = false;
+});
+
+$('fallbackBtn').addEventListener('click', () => {
+  if (!extractedText){
+    $('aiStatus').className = 'status-text err';
+    $('aiStatus').textContent = 'Kein PDF-Text vorhanden. Bitte Zusammenfassung manuell eintragen.';
+    return;
+  }
+  $('summaryInput').value = simpleFallbackSummary(extractedText);
+  saveDraft();
+  $('aiStatus').className = 'status-text ok';
+  $('aiStatus').textContent = '✓ Einfacher Textvorschlag eingefügt (ohne KI) – bei Bedarf anpassen.';
 });
 
 // preset tag chips
@@ -419,6 +465,35 @@ function syncTagsInput(){
   const manual = $('tagsInput').value.split(',').map(s=>s.trim()).filter(Boolean).filter(t => !PRESET_TAGS.includes(t));
   $('tagsInput').value = [...activeTagSet, ...manual].join(', ');
 }
+
+// Entwurf zwischenspeichern (Text bleibt bei einem Reload/Absturz erhalten;
+// die ausgewählten Dateien selbst müssen dann erneut ausgewählt werden)
+const DRAFT_KEY = 'rezeptbox_add_draft';
+function saveDraft(){
+  try{
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify({
+      title: $('titleInput').value,
+      tags: $('tagsInput').value,
+      summary: $('summaryInput').value
+    }));
+  }catch(e){}
+}
+function restoreDraft(){
+  try{
+    const raw = sessionStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.title) $('titleInput').value = d.title;
+    if (d.tags) $('tagsInput').value = d.tags;
+    if (d.summary) $('summaryInput').value = d.summary;
+    if (d.title || d.tags || d.summary){
+      $('saveStatus').className = 'status-text';
+      $('saveStatus').textContent = 'Entwurf wiederhergestellt – bitte PDF und Bild erneut auswählen.';
+    }
+  }catch(e){}
+}
+function clearDraft(){ try{ sessionStorage.removeItem(DRAFT_KEY); }catch(e){} }
+['titleInput','tagsInput','summaryInput'].forEach(id => $(id).addEventListener('input', saveDraft));
 
 // token banner
 function initTokenUi(){
@@ -473,6 +548,7 @@ $('recipeForm').addEventListener('submit', async (ev) => {
     });
 
     saveStatus.className = 'status-text ok'; saveStatus.textContent = '✓ Gespeichert';
+    clearDraft();
     $('successText').textContent = `„${title || titleFromFilename(pdfFile.name)}" wurde hinzugefügt.`;
     $('successBox').style.display = 'block';
     $('recipeForm').style.display = 'none';
@@ -489,9 +565,10 @@ $('addAnotherBtn').addEventListener('click', () => {
   $('pdfDrop').classList.remove('has-file'); $('pdfName').textContent = '';
   $('coverDrop').classList.remove('has-file'); $('coverName').textContent = '';
   $('coverPreview').style.display = 'none';
-  $('aiBtn').disabled = true; $('aiStatus').textContent = '';
+  $('aiBtn').disabled = true; $('fallbackBtn').disabled = true; $('aiStatus').textContent = '';
   activeTagSet.clear();
   presetRow.querySelectorAll('.tag-preset').forEach(c => c.classList.remove('active'));
+  clearDraft();
   $('successBox').style.display = 'none';
   $('recipeForm').style.display = 'block';
   refreshSaveEnabled();
@@ -504,6 +581,7 @@ $('addAnotherBtn').addEventListener('click', () => {
     $('saveStatus').textContent = 'Repo konnte nicht automatisch erkannt werden (Seite läuft nicht über eine *.github.io-Adresse).';
     return;
   }
+  restoreDraft();
   branch = await detectBranch();
   initTokenUi();
   refreshSaveEnabled();
