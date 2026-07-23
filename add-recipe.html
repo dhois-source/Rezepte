@@ -6,7 +6,6 @@
 <title>Neues Rezept – RezepteBox</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
   :root{
     --bg: #EEF0F5; --bg-alt: #FFFFFF; --surface: #FFFFFF; --surface-2: #F1F2F8;
@@ -42,7 +41,7 @@
     padding: 11px 14px; border-radius: var(--radius-sm); font-size:14.5px; font-family:inherit;
   }
   input[type=text]:focus, input[type=password]:focus, textarea:focus{ outline:none; border-color: var(--mustard); }
-  textarea{ resize: vertical; min-height: 90px; line-height:1.55; }
+  textarea{ resize: vertical; min-height: 110px; line-height:1.55; }
   input[type=file]{ font-size:13.5px; font-family:inherit; color:var(--text-dim); }
 
   .file-drop{ display:block; position:relative; border:1.5px dashed var(--line); border-radius: var(--radius-sm); padding: 18px; text-align:center; background: var(--surface-2); cursor:pointer; transition: border-color .15s, background .15s; }
@@ -64,9 +63,6 @@
   .btn:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
   .btn svg{ width:16px; height:16px; }
 
-  .ai-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom: 12px; }
-  .progress-wrap{ flex:1 1 160px; height:8px; background:var(--surface-2); border-radius:100px; overflow:hidden; display:none; border:1px solid var(--line); }
-  .progress-bar{ height:100%; width:0%; background: var(--sage); transition: width .2s; }
   .status-text{ font-size:12.5px; color:var(--text-dim); }
   .status-text.err{ color:var(--paprika); }
   .status-text.ok{ color:var(--sage); font-weight:600; }
@@ -99,7 +95,7 @@
 
 <main>
   <h2>Neues Rezept hinzufügen</h2>
-  <p class="sub">PDF hochladen, Vorschaubild selbst auswählen, Zusammenfassung wird automatisch von einer kleinen KI direkt in deinem Browser erstellt (kein Server, keine Kosten).</p>
+  <p class="sub">PDF hochladen, Vorschaubild selbst auswählen, Zusammenfassung selbst eintragen.</p>
 
   <div class="token-banner" id="restoreBanner" style="display:none; border-color:var(--mustard);">
     <h3>Entwurf gefunden</h3>
@@ -165,14 +161,8 @@
 
     <div class="card">
       <div class="field">
-        <label class="field-label">Zusammenfassung</label>
-        <div class="ai-row">
-          <button class="btn" id="aiBtn" type="button" disabled>✨ Automatisch erstellen (KI)</button>
-          <button class="btn ghost" id="fallbackBtn" type="button" disabled>Einfacher Vorschlag (ohne KI)</button>
-          <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
-        </div>
-        <p class="status-text" id="aiStatus"></p>
-        <textarea id="summaryInput" placeholder="Wird nach dem PDF-Upload automatisch von der KI vorgeschlagen – hier bei Bedarf anpassen."></textarea>
+        <label class="field-label">Zusammenfassung (optional)</label>
+        <textarea id="summaryInput" placeholder="Kurze Zusammenfassung des Rezepts…"></textarea>
       </div>
     </div>
 
@@ -183,18 +173,7 @@
   </form>
 </main>
 
-<footer class="hint">
-  Die KI (ein kleines, quantisiertes Sprachmodell) läuft komplett lokal im Browser über WebAssembly/WebGPU. Beim ersten Klick auf „Automatisch erstellen" wird sie einmalig heruntergeladen (ca. 300–500&nbsp;MB) und danach vom Browser zwischengespeichert – spätere Zusammenfassungen sind sofort verfügbar, ganz ohne Internetverbindung zu einem KI-Anbieter.
-</footer>
-
 <script type="module">
-import { pipeline, env } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2";
-
-// GitHub Pages sendet keine Cross-Origin-Isolation-Header, daher ist SharedArrayBuffer
-// nicht verfügbar. Multi-Threading im WASM-Backend kann dadurch hängen bleiben oder
-// abstürzen – deshalb hier fest auf einen Thread stellen.
-env.backends.onnx.wasm.numThreads = 1;
-
 const PRESET_TAGS = [
   'Deutsch','Italienisch','Französisch','Griechisch','Spanisch','Türkisch','Balkan',
   'Asiatisch','Chinesisch','Japanisch','Thai','Vietnamesisch','Koreanisch','Indisch',
@@ -207,10 +186,7 @@ const DEFAULT_FOLDER = 'PDF';
 const FOLDER = new URLSearchParams(location.search).get('folder') || DEFAULT_FOLDER;
 const TAGS_FILE_NAME = 'rezeptbox-tags' + (FOLDER && FOLDER !== DEFAULT_FOLDER ? '-' + FOLDER.replace(/[^a-z0-9_-]/gi,'_') : '') + '.json';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
 function $(id){ return document.getElementById(id); }
-function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function titleFromFilename(name){ return name.replace(/\.[^.]+$/, '').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim(); }
 function b64EncodeUnicode(str){ return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m,p) => String.fromCharCode('0x'+p))); }
 function b64DecodeUnicode(str){ return decodeURIComponent(atob(str).split('').map(c => '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')); }
@@ -305,131 +281,14 @@ async function commitTagsUpdate(mutateFn){
   throw new Error('Konflikt beim Speichern der Tags – bitte Seite neu laden und erneut versuchen.');
 }
 
-// ---------- PDF text extraction ----------
-// Fasst Textfragmente anhand ihrer y-Koordinate zu Zeilen zusammen (statt sie einfach
-// aneinanderzuhängen), damit Titel/Zutatenliste/Zubereitung nicht durcheinandergeraten
-// und die KI einen sinnvoll strukturierten Text zum Lesen bekommt.
-async function extractPdfText(file){
-  const buf = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
-  let fullText = '';
-  const maxPages = Math.min(pdf.numPages, 3);
-  for (let i=1; i<=maxPages; i++){
-    const page = await pdf.getPage(i);
-    const content = await page.getTextContent();
-    const items = content.items
-      .filter(it => it.str && it.str.trim())
-      .map(it => ({ str: it.str, x: it.transform[4], y: it.transform[5] }));
-    items.sort((a,b) => b.y - a.y || a.x - b.x);
-    const lines = [];
-    let currentLine = [];
-    let lastY = null;
-    const LINE_TOLERANCE = 3;
-    for (const it of items){
-      if (lastY !== null && Math.abs(it.y - lastY) > LINE_TOLERANCE){
-        lines.push(currentLine.join(' '));
-        currentLine = [];
-      }
-      currentLine.push(it.str);
-      lastY = it.y;
-    }
-    if (currentLine.length) lines.push(currentLine.join(' '));
-    fullText += lines.join('\n') + '\n';
-  }
-  return fullText.replace(/[ \t]+/g,' ').replace(/ *\n */g,'\n').replace(/\n{3,}/g,'\n\n').trim();
-}
-
-// ---------- local AI summarization ----------
-function withTimeout(promise, ms, label){
-  let timer;
-  const timeout = new Promise((_, reject) => {
-    timer = setTimeout(() => reject(new Error(`${label}: Zeitüberschreitung nach ${Math.round(ms/1000)}s.`)), ms);
-  });
-  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
-}
-
-let generatorPromise = null;
-async function getGenerator(onProgress){
-  if (!generatorPromise){
-    // WebGPU (falls verfügbar) ist schneller und speicherschonender; ohne WebGPU laufen
-    // wir auf der wasm-CPU-Backend – dort ist q8 deutlich stabiler als q4.
-    const hasWebGPU = !!(navigator.gpu);
-    generatorPromise = pipeline('text-generation', 'onnx-community/Qwen2.5-1.5B-Instruct', {
-      device: hasWebGPU ? 'webgpu' : 'wasm',
-      dtype: hasWebGPU ? 'q4' : 'q8',
-      progress_callback: onProgress
-    }).catch(err => { generatorPromise = null; throw err; });
-  }
-  return generatorPromise;
-}
-
-async function aiSummarize(recipeText, titleGuess){
-  const progressWrap = $('progressWrap'), progressBar = $('progressBar'), aiStatus = $('aiStatus');
-  progressWrap.style.display = 'block'; aiStatus.className = 'status-text'; aiStatus.textContent = 'Lade KI-Modell (einmalig, ca. 300–500 MB)…';
-  const seenFiles = {};
-  const generator = await withTimeout(
-    getGenerator((p) => {
-      if (p.status === 'progress' && p.file){
-        seenFiles[p.file] = p.progress || 0;
-        const vals = Object.values(seenFiles);
-        const avg = vals.reduce((a,b)=>a+b,0) / vals.length;
-        progressBar.style.width = Math.min(100, avg) + '%';
-        aiStatus.textContent = `Lade KI-Modell… ${Math.round(avg)}%`;
-      } else if (p.status === 'ready' || p.status === 'done'){
-        progressBar.style.width = '100%';
-      }
-    }),
-    6 * 60 * 1000,
-    'Modell-Download'
-  );
-  progressWrap.style.display = 'none';
-  aiStatus.textContent = 'Modell antwortet … das kann beim ersten Mal 20–90 Sekunden dauern. Bitte Tab offen lassen.';
-  // Kleine Modelle (0.5B) folgen Anweisungen ohne Beispiel oft schlecht und neigen zu
-  // Halluzinationen/Wiederholungen. Ein Few-Shot-Beispiel + strikte "nur Fakten aus dem
-  // Text"-Anweisung + repetition_penalty verbessern die Ergebnisse spürbar.
-  const messages = [
-    { role: 'system', content: 'Du bist ein präziser Assistent, der Kochrezepte auf Deutsch in GENAU EINEM Satz zusammenfasst. Nutze ausschließlich Informationen, die wörtlich im gegebenen Rezepttext stehen (Gerichtname, Herkunft/Küche falls erkennbar, wichtigste Zutaten, Zubereitungsart). Erfinde nichts hinzu. Kein Smalltalk, keine Einleitung, keine Anführungszeichen, kein zweiter Satz.' },
-    { role: 'user', content: 'Rezepttext:\nSpaghetti Carbonara\nZutaten: Spaghetti, Eigelb, Pecorino, Guanciale, schwarzer Pfeffer\nZubereitung: Nudeln kochen, Guanciale auslassen, mit Eigelb-Käse-Mischung und Pfeffer vermengen.' },
-    { role: 'assistant', content: 'Klassische italienische Spaghetti Carbonara mit Guanciale, Eigelb und Pecorino, verfeinert mit reichlich schwarzem Pfeffer.' },
-    { role: 'user', content: `Rezepttext:\n${(titleGuess ? titleGuess + '\n' : '') + recipeText.slice(0, 1200)}` }
-  ];
-  const output = await withTimeout(
-    generator(messages, {
-      max_new_tokens: 55,
-      do_sample: false,
-      repetition_penalty: 1.3,
-      no_repeat_ngram_size: 3
-    }),
-    3 * 60 * 1000,
-    'Zusammenfassung erstellen'
-  );
-  let result = '';
-  try{
-    const gen = output[0].generated_text;
-    result = Array.isArray(gen) ? gen[gen.length-1].content : String(gen);
-  }catch(e){ result = ''; }
-  // Nur den ersten Satz behalten, falls das Modell doch weiterschreibt.
-  result = result.replace(/^["„“]|["“”]$/g, '').trim();
-  const firstSentence = result.match(/^[^.!?]*[.!?]/);
-  if (firstSentence) result = firstSentence[0].trim();
-  aiStatus.className = 'status-text ok'; aiStatus.textContent = '✓ Zusammenfassung erstellt (KI-generiert – bitte kurz prüfen, kleine Modelle machen gelegentlich Fehler).';
-  return result;
-}
-
-function simpleFallbackSummary(recipeText){
-  const clean = recipeText.replace(/\s+/g,' ').trim();
-  return clean.slice(0, 220) + (clean.length > 220 ? '…' : '');
-}
-
 // ---------- UI wiring ----------
-let extractedText = '';
 let pdfFile = null, coverFile = null;
 
 function refreshSaveEnabled(){
   $('saveBtn').disabled = !(pdfFile && pat && owner && repo && branch);
 }
 
-$('pdfInput').addEventListener('change', async (ev) => {
+$('pdfInput').addEventListener('change', (ev) => {
   const f = ev.target.files[0];
   if (!f) return;
   pdfFile = f;
@@ -438,15 +297,6 @@ $('pdfInput').addEventListener('change', async (ev) => {
   if (!$('titleInput').value.trim()) $('titleInput').value = titleFromFilename(f.name);
   saveDraft();
   refreshSaveEnabled();
-  try{
-    extractedText = await extractPdfText(f);
-    $('aiBtn').disabled = false;
-    $('fallbackBtn').disabled = false;
-  }catch(e){
-    extractedText = '';
-    $('aiStatus').className = 'status-text err';
-    $('aiStatus').textContent = 'PDF-Text konnte nicht gelesen werden (Bild-PDF?). Zusammenfassung bitte manuell eintragen.';
-  }
 });
 
 $('coverInput').addEventListener('change', (ev) => {
@@ -459,36 +309,6 @@ $('coverInput').addEventListener('change', (ev) => {
   $('coverPreviewImg').src = url;
   $('coverPreview').style.display = 'block';
   saveDraft();
-});
-
-$('aiBtn').addEventListener('click', async () => {
-  if (!extractedText){
-    $('aiStatus').className = 'status-text err';
-    $('aiStatus').textContent = 'Kein PDF-Text vorhanden. Bitte Zusammenfassung manuell eintragen.';
-    return;
-  }
-  $('aiBtn').disabled = true;
-  try{
-    const summary = await aiSummarize(extractedText, $('titleInput').value.trim());
-    if (summary){ $('summaryInput').value = summary; saveDraft(); }
-  }catch(e){
-    $('progressWrap').style.display = 'none';
-    $('aiStatus').className = 'status-text err';
-    $('aiStatus').textContent = 'KI-Zusammenfassung fehlgeschlagen (' + (e.message || e) + '). Nutze stattdessen „Einfacher Vorschlag" oder trage die Zusammenfassung manuell ein.';
-  }
-  $('aiBtn').disabled = false;
-});
-
-$('fallbackBtn').addEventListener('click', () => {
-  if (!extractedText){
-    $('aiStatus').className = 'status-text err';
-    $('aiStatus').textContent = 'Kein PDF-Text vorhanden. Bitte Zusammenfassung manuell eintragen.';
-    return;
-  }
-  $('summaryInput').value = simpleFallbackSummary(extractedText);
-  saveDraft();
-  $('aiStatus').className = 'status-text ok';
-  $('aiStatus').textContent = '✓ Einfacher Textvorschlag eingefügt (ohne KI) – bei Bedarf anpassen.';
 });
 
 // preset tag chips
@@ -571,7 +391,7 @@ async function initDraftUi(){
     $('restoreBanner').style.display = 'block';
   }
 }
-$('restoreBtn').addEventListener('click', async () => {
+$('restoreBtn').addEventListener('click', () => {
   if (!pendingDraft) return;
   const d = pendingDraft;
   if (d.title) $('titleInput').value = d.title;
@@ -581,11 +401,6 @@ $('restoreBtn').addEventListener('click', async () => {
     pdfFile = new File([d.pdfBlob], d.pdfName || 'rezept.pdf', { type: d.pdfBlob.type || 'application/pdf' });
     $('pdfDrop').classList.add('has-file');
     $('pdfName').textContent = pdfFile.name;
-    try{
-      extractedText = await extractPdfText(pdfFile);
-      $('aiBtn').disabled = false;
-      $('fallbackBtn').disabled = false;
-    }catch(e){}
   }
   if (d.coverBlob){
     coverFile = new File([d.coverBlob], d.coverName || 'cover.jpg', { type: d.coverBlob.type || 'image/jpeg' });
@@ -669,11 +484,10 @@ $('recipeForm').addEventListener('submit', async (ev) => {
 
 $('addAnotherBtn').addEventListener('click', async () => {
   $('recipeForm').reset();
-  pdfFile = null; coverFile = null; extractedText = '';
+  pdfFile = null; coverFile = null;
   $('pdfDrop').classList.remove('has-file'); $('pdfName').textContent = '';
   $('coverDrop').classList.remove('has-file'); $('coverName').textContent = '';
   $('coverPreview').style.display = 'none';
-  $('aiBtn').disabled = true; $('fallbackBtn').disabled = true; $('aiStatus').textContent = '';
   activeTagSet.clear();
   presetRow.querySelectorAll('.tag-preset').forEach(c => c.classList.remove('active'));
   await clearDraft();

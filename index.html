@@ -169,6 +169,7 @@
   .icon-btn:hover{ color:var(--text); background:var(--surface); }
   .icon-btn.active{ color:var(--mustard); }
   .icon-btn svg{ width:18px; height:18px; }
+  .icon-btn-danger:hover{ color:#fff; background:var(--paprika); }
   .modal-body{ padding: 22px 28px 30px; }
   .modal-tags-edit{ margin-bottom:22px; padding:16px; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; }
   .title-edit-label{ font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--text-faint); font-weight:600; margin: 0 0 8px; }
@@ -629,6 +630,61 @@
     throw new Error('Konflikt beim Speichern konnte nicht aufgelöst werden. Seite neu laden.');
   }
 
+  // ---------- delete recipe (PDF + cover + tags entry) ----------
+  async function getFileSha(path){
+    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path.split('/').map(encodeURIComponent).join('/')}?ref=${branch}`;
+    const res = await fetch(url, { headers: { 'Accept':'application/vnd.github+json' } });
+    if (!res.ok) return null;
+    const j = await res.json();
+    return j.sha || null;
+  }
+
+  async function deleteFileFromRepo(path, sha, message){
+    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path.split('/').map(encodeURIComponent).join('/')}`;
+    const res = await fetch(url, {
+      method: 'DELETE',
+      headers: { 'Accept':'application/vnd.github+json', 'Authorization': `token ${pat}` },
+      body: JSON.stringify({ message, sha, branch })
+    });
+    if (!res.ok){
+      const t = await res.text().catch(()=> '');
+      throw new Error(`GitHub-Fehler ${res.status}${t ? ': ' + t.slice(0,200) : ''}`);
+    }
+  }
+
+  async function deleteRecipe(recipe){
+    if (!pat){ toast('Zum Löschen wird ein Token benötigt (⚙ Einstellungen).', true); openSettingsModal(); return false; }
+    const confirmed = confirm(`„${recipeTitle(recipe)}" wirklich löschen?\n\nPDF${recipe.cover ? ' und Vorschaubild werden' : ' wird'} dauerhaft aus dem Repo entfernt. Das kann nicht rückgängig gemacht werden.`);
+    if (!confirmed) return false;
+
+    try{
+      const pdfPath = (FOLDER ? FOLDER + '/' : '') + recipe.name;
+      await deleteFileFromRepo(pdfPath, recipe.sha, `Rezeptbox: „${recipe.name}" gelöscht`);
+
+      if (recipe.cover){
+        try{
+          const coverPath = 'covers/' + recipe.cover;
+          const coverSha = await getFileSha(coverPath);
+          if (coverSha) await deleteFileFromRepo(coverPath, coverSha, `Rezeptbox: Vorschaubild für „${recipe.name}" gelöscht`);
+        }catch(e){
+          toast('PDF gelöscht, Vorschaubild konnte aber nicht entfernt werden: ' + e.message, true);
+        }
+      }
+
+      delete tagsData.recipes[recipe.id];
+      markDirty(recipe.id);
+      flushSave();
+
+      recipes = recipes.filter(r => r.id !== recipe.id);
+      renderTagCloud(); renderExtCloud(); renderGrid(); renderActiveFiltersBar(); updateStatPill();
+      toast('Rezept gelöscht.');
+      return true;
+    }catch(e){
+      toast('Löschen fehlgeschlagen: ' + e.message, true);
+      return false;
+    }
+  }
+
   function setSyncState(state, msg){
     syncState = state;
     const text = STATUS_TEXT[state] || STATUS_TEXT['no-token'];
@@ -1039,6 +1095,9 @@
             <button class="icon-btn" id="modalEditToggle" aria-label="Bearbeiten" title="Titel &amp; Tags bearbeiten">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
             </button>
+            <button class="icon-btn icon-btn-danger" id="modalDeleteBtn" aria-label="Rezept löschen" title="Rezept löschen">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+            </button>
             <button class="modal-close" aria-label="Schließen">&times;</button>
           </div>
         </div>
@@ -1056,8 +1115,15 @@
     const tagsLine = backdrop.querySelector('#modalTagsLine');
     const editPanel = backdrop.querySelector('#modalTagsEdit');
     const editToggle = backdrop.querySelector('#modalEditToggle');
+    const deleteBtn = backdrop.querySelector('#modalDeleteBtn');
     const titleHeading = backdrop.querySelector('#modalTitle');
     renderTagsLine(recipe, tagsLine);
+    deleteBtn.onclick = async () => {
+      deleteBtn.disabled = true;
+      const ok = await deleteRecipe(recipe);
+      if (ok){ backdrop.remove(); statusRefCleanup(); }
+      else { deleteBtn.disabled = false; }
+    };
     editToggle.onclick = () => {
       if (!pat){ toast('Zum Bearbeiten wird ein Token benötigt.', true); openSettingsModal(); return; }
       const opening = editPanel.style.display === 'none';
