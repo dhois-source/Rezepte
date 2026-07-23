@@ -37,6 +37,9 @@
   .stat-pill.sync-error, .stat-pill.sync-offline{ color: var(--paprika); border-color: var(--paprika); }
   .btn{ border:1px solid var(--line); background:var(--surface); color:var(--text); padding:10px 16px; border-radius:100px; font-size:13.5px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition: border-color .15s, background .15s, transform .1s; }
   .btn:hover{ border-color: var(--mustard); background:var(--surface-2); }
+  a.btn{ text-decoration:none; }
+  .btn.primary{ background: var(--mustard); border-color: var(--mustard); color:#fff; }
+  .btn.primary:hover{ background:#5c4fe0; border-color:#5c4fe0; }
   .btn:active{ transform: scale(0.97); }
   .btn.ghost{ background:transparent; }
   .btn.small{ padding:7px 12px; font-size:12.5px; }
@@ -279,6 +282,7 @@
   </div>
   <div class="header-actions">
     <span class="stat-pill" id="statPill" style="display:none;">Lade…</span>
+    <a class="btn primary" href="add-recipe.html" id="addRecipeLink">+ Neues Rezept</a>
     <button class="btn ghost icon-only" id="settingsBtn" aria-label="Einstellungen" title="Einstellungen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neues Rezept – RezepteBox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  :root{
+    --bg: #EEF0F5; --bg-alt: #FFFFFF; --surface: #FFFFFF; --surface-2: #F1F2F8;
+    --line: #E2E4ED; --text: #1E2028; --text-dim: #62677A; --text-faint: #9398AA;
+    --mustard: #6E5FEF; --paprika: #F0415C; --sage: #14B588;
+    --radius: 16px; --radius-sm: 10px; --shadow: 0 16px 32px -16px rgba(30,32,50,0.18);
+    --font-display: "Fraunces", serif; --font-body: "Work Sans", sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: radial-gradient(circle at 12% -10%, rgba(110,95,239,0.08), transparent 45%),
+      radial-gradient(circle at 100% 0%, rgba(20,181,136,0.06), transparent 40%), var(--bg);
+    color: var(--text); font-family: var(--font-body); min-height: 100vh; -webkit-font-smoothing: antialiased;
+  }
+  a{color:var(--mustard); text-decoration:none;} a:hover{text-decoration:underline;}
+  header.top{ padding: 20px 32px; display:flex; align-items:center; justify-content:space-between; gap:20px; border-bottom: 1px solid var(--line); flex-wrap:wrap; }
+  .brand-title{ font-family: var(--font-display); font-weight:600; font-size: clamp(22px,3.4vw,32px); margin:0; line-height:1; letter-spacing:-0.01em; }
+  .brand-title em{ font-style:italic; color: var(--sage); font-weight:500;}
+  .back-link{ font-size:13.5px; font-weight:600; }
+
+  main{ max-width: 640px; margin: 0 auto; padding: 32px 24px 80px; }
+  h2{ font-family: var(--font-display); font-weight:600; font-size:24px; margin: 0 0 6px; }
+  .sub{ color:var(--text-dim); font-size:13.5px; margin: 0 0 28px; line-height:1.6; }
+
+  .card{ background: var(--surface); border:1px solid var(--line); border-radius: var(--radius); padding: 24px; margin-bottom:20px; }
+  .field{ margin-bottom: 20px; }
+  .field:last-child{ margin-bottom:0; }
+  label.field-label{ display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.09em; color:var(--text-faint); font-weight:700; margin: 0 0 8px; }
+  .hint{ font-size:12px; color:var(--text-faint); margin: 6px 0 0; line-height:1.5; }
+  input[type=text], input[type=password], textarea{
+    width:100%; background: var(--surface-2); border:1px solid var(--line); color: var(--text);
+    padding: 11px 14px; border-radius: var(--radius-sm); font-size:14.5px; font-family:inherit;
+  }
+  input[type=text]:focus, input[type=password]:focus, textarea:focus{ outline:none; border-color: var(--mustard); }
+  textarea{ resize: vertical; min-height: 90px; line-height:1.55; }
+  input[type=file]{ font-size:13.5px; font-family:inherit; color:var(--text-dim); }
+
+  .file-drop{ border:1.5px dashed var(--line); border-radius: var(--radius-sm); padding: 18px; text-align:center; background: var(--surface-2); cursor:pointer; transition: border-color .15s, background .15s; }
+  .file-drop:hover{ border-color: var(--mustard); }
+  .file-drop.has-file{ border-style:solid; border-color: var(--sage); }
+  .file-drop input{ display:none; }
+  .file-drop .fd-label{ font-size:13.5px; font-weight:600; color:var(--text-dim); }
+  .file-drop .fd-name{ font-size:12.5px; color:var(--sage); margin-top:4px; word-break:break-all; }
+
+  .cover-preview{ margin-top:12px; max-width: 220px; border-radius: 12px; overflow:hidden; border:1px solid var(--line); display:none; }
+  .cover-preview img{ display:block; width:100%; }
+
+  .btn{ border:1px solid var(--line); background:var(--surface); color:var(--text); padding:11px 18px; border-radius:100px; font-size:14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition: border-color .15s, background .15s, transform .1s, opacity .15s; }
+  .btn:hover{ border-color: var(--mustard); background:var(--surface-2); }
+  .btn:active{ transform: scale(0.98); }
+  .btn.primary{ background: var(--mustard); border-color: var(--mustard); color:#fff; }
+  .btn.primary:hover{ background:#5c4fe0; }
+  .btn.ghost{ background:transparent; }
+  .btn:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
+  .btn svg{ width:16px; height:16px; }
+
+  .ai-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom: 12px; }
+  .progress-wrap{ flex:1 1 160px; height:8px; background:var(--surface-2); border-radius:100px; overflow:hidden; display:none; border:1px solid var(--line); }
+  .progress-bar{ height:100%; width:0%; background: var(--sage); transition: width .2s; }
+  .status-text{ font-size:12.5px; color:var(--text-dim); }
+  .status-text.err{ color:var(--paprika); }
+  .status-text.ok{ color:var(--sage); font-weight:600; }
+
+  .tag-row{ display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+  .tag-preset{ font-size:12px; padding:5px 11px; border-radius:100px; background:var(--surface-2); border:1px solid var(--line); color:var(--text-dim); cursor:pointer; user-select:none; }
+  .tag-preset:hover{ border-color:var(--sage); color:var(--text); }
+  .tag-preset.active{ background:var(--sage); color:#182119; border-color:var(--sage); font-weight:600; }
+
+  .token-banner{ border:1px dashed var(--paprika); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 20px; background: var(--surface); }
+  .token-banner h3{ font-family:var(--font-display); font-size:16px; margin:0 0 8px; }
+  .token-banner p{ font-size:13px; color:var(--text-dim); margin:0 0 12px; line-height:1.6; }
+  .token-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .token-row input{ flex:1 1 240px; }
+
+  .success-box{ display:none; border:1px solid var(--sage); background: rgba(20,181,136,0.08); border-radius: var(--radius); padding: 20px; text-align:center; margin-bottom:20px; }
+  .success-box h3{ font-family:var(--font-display); margin:0 0 8px; color:var(--sage); font-size:18px; }
+  .success-box p{ margin:0 0 14px; color:var(--text-dim); font-size:13.5px; }
+
+  footer.hint{ max-width:640px; margin: 0 auto; padding: 0 24px 60px; color: var(--text-faint); font-size:12px; line-height:1.6; }
+  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1 class="brand-title">Rezepte<em>Box</em></h1>
+  <a class="back-link" href="index.html">← Zurück zur Übersicht</a>
+</header>
+
+<main>
+  <h2>Neues Rezept hinzufügen</h2>
+  <p class="sub">PDF hochladen, Vorschaubild selbst auswählen, Zusammenfassung wird automatisch von einer kleinen KI direkt in deinem Browser erstellt (kein Server, keine Kosten).</p>
+
+  <div class="token-banner" id="tokenBanner" style="display:none;">
+    <h3>GitHub-Token benötigt</h3>
+    <p>Zum Hochladen wird ein GitHub-Token mit Schreibrechten für dieses Repo benötigt (derselbe Token wie in der RezepteBox-Einstellungen ⚙). Er wird nur lokal in diesem Browser gespeichert.</p>
+    <div class="token-row">
+      <input type="password" id="patInput" placeholder="ghp_… oder github_pat_…">
+      <button class="btn primary" id="patSaveBtn" type="button">Speichern</button>
+    </div>
+    <p class="status-text" id="patStatus"></p>
+  </div>
+
+  <div class="success-box" id="successBox">
+    <h3>✓ Rezept gespeichert</h3>
+    <p id="successText"></p>
+    <button class="btn" id="addAnotherBtn" type="button">Weiteres Rezept hinzufügen</button>
+    <a class="btn primary" href="index.html">Zur Übersicht</a>
+  </div>
+
+  <form id="recipeForm">
+    <div class="card">
+      <div class="field">
+        <label class="field-label">PDF-Datei</label>
+        <label class="file-drop" id="pdfDrop">
+          <input type="file" id="pdfInput" accept="application/pdf">
+          <div class="fd-label">Rezept-PDF auswählen…</div>
+          <div class="fd-name" id="pdfName"></div>
+        </label>
+        <p class="hint">Der Dateiname bleibt unverändert und wird als Dateiname im PDF-Ordner verwendet.</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Titel</label>
+        <input type="text" id="titleInput" placeholder="Wird automatisch aus dem Dateinamen vorgeschlagen">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Tags (optional)</label>
+        <input type="text" id="tagsInput" placeholder="z.B. Deutsch, Hauptgericht, Backen">
+        <div class="tag-row" id="presetTagRow"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label class="field-label">Vorschaubild</label>
+        <label class="file-drop" id="coverDrop">
+          <input type="file" id="coverInput" accept="image/*">
+          <div class="fd-label">Bild auswählen…</div>
+          <div class="fd-name" id="coverName"></div>
+        </label>
+        <div class="cover-preview" id="coverPreview"><img id="coverPreviewImg" alt=""></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label class="field-label">Zusammenfassung</label>
+        <div class="ai-row">
+          <button class="btn" id="aiBtn" type="button" disabled>✨ Automatisch erstellen (KI)</button>
+          <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
+        </div>
+        <p class="status-text" id="aiStatus"></p>
+        <textarea id="summaryInput" placeholder="Wird nach dem PDF-Upload automatisch von der KI vorgeschlagen – hier bei Bedarf anpassen."></textarea>
+      </div>
+    </div>
+
+    <div class="field" style="display:flex; align-items:center; gap:14px;">
+      <button class="btn primary" id="saveBtn" type="submit" disabled>Rezept speichern</button>
+      <span class="status-text" id="saveStatus"></span>
+    </div>
+  </form>
+</main>
+
+<footer class="hint">
+  Die KI (ein kleines, quantisiertes Sprachmodell) läuft komplett lokal im Browser über WebAssembly/WebGPU. Beim ersten Klick auf „Automatisch erstellen" wird sie einmalig heruntergeladen (ca. 300–500&nbsp;MB) und danach vom Browser zwischengespeichert – spätere Zusammenfassungen sind sofort verfügbar, ganz ohne Internetverbindung zu einem KI-Anbieter.
+</footer>
+
+<script type="module">
+import { pipeline } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2";
+
+const PRESET_TAGS = [
+  'Deutsch','Italienisch','Französisch','Griechisch','Spanisch','Türkisch','Balkan',
+  'Asiatisch','Chinesisch','Japanisch','Thai','Vietnamesisch','Koreanisch','Indisch',
+  'Mexikanisch','Amerikanisch','Arabisch','Levantinisch','Marokkanisch','Skandinavisch',
+  'Frühstück','Hauptgericht','Vorspeise','Suppe','Salat','Dessert','Snack','Backen',
+  'Brot','Grillen','Party','Meal Prep','Vegetarisch','Vegan','Glutenfrei','Low Carb','Schnell'
+];
+const BRANCH_CANDIDATES = ['main','master','gh-pages'];
+const DEFAULT_FOLDER = 'PDF';
+const FOLDER = new URLSearchParams(location.search).get('folder') || DEFAULT_FOLDER;
+const TAGS_FILE_NAME = 'rezeptbox-tags' + (FOLDER && FOLDER !== DEFAULT_FOLDER ? '-' + FOLDER.replace(/[^a-z0-9_-]/gi,'_') : '') + '.json';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+function $(id){ return document.getElementById(id); }
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function titleFromFilename(name){ return name.replace(/\.[^.]+$/, '').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim(); }
+function b64EncodeUnicode(str){ return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m,p) => String.fromCharCode('0x'+p))); }
+function b64DecodeUnicode(str){ return decodeURIComponent(atob(str).split('').map(c => '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')); }
+function arrayBufferToBase64(buffer){
+  let binary = ''; const bytes = new Uint8Array(buffer); const chunk = 0x8000;
+  for (let i=0; i<bytes.length; i+=chunk){ binary += String.fromCharCode.apply(null, bytes.subarray(i, i+chunk)); }
+  return btoa(binary);
+}
+
+function detectRepo(){
+  const host = location.hostname;
+  const parts = location.pathname.split('/').filter(Boolean);
+  if (host.endsWith('.github.io')){
+    const o = host.split('.')[0];
+    const r = parts.length > 0 ? parts[0] : host;
+    return { owner: o, repo: r };
+  }
+  return null;
+}
+
+const detected = detectRepo();
+let owner = detected ? detected.owner : null;
+let repo = detected ? detected.repo : null;
+let branch = null;
+let pat = null;
+
+function patKey(){ return `rezeptbox_pat_${owner}_${repo}`; }
+function loadPat(){ try{ return localStorage.getItem(patKey()) || null; }catch(e){ return null; } }
+function savePat(v){ try{ localStorage.setItem(patKey(), v); }catch(e){} }
+
+async function detectBranch(){
+  for (const b of BRANCH_CANDIDATES){
+    try{
+      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents?ref=${b}`, { headers: { 'Accept':'application/vnd.github+json' } });
+      if (res.ok) return b;
+    }catch(e){}
+  }
+  return 'main';
+}
+
+async function fetchTagsFile(){
+  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(TAGS_FILE_NAME)}`, { headers: { 'Accept':'application/vnd.github+json' } });
+  if (res.status === 404) return { data: { version:1, custom_tags:[], recipes:{} }, sha: null };
+  if (!res.ok) throw new Error(`GitHub-Fehler ${res.status}`);
+  const j = await res.json();
+  let data;
+  try{ data = JSON.parse(b64DecodeUnicode(j.content.replace(/\n/g,''))); }
+  catch(e){ data = { version:1, custom_tags:[], recipes:{} }; }
+  if (!data.recipes) data.recipes = {};
+  if (!data.custom_tags) data.custom_tags = [];
+  return { data, sha: j.sha };
+}
+
+async function fileExists(path){
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path.split('/').map(encodeURIComponent).join('/')}?ref=${branch}`;
+  const res = await fetch(url, { headers: { 'Accept':'application/vnd.github+json' } });
+  return res.ok;
+}
+
+async function putBinaryFile(path, base64Content, message){
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path.split('/').map(encodeURIComponent).join('/')}`;
+  const body = { message, content: base64Content, branch };
+  const res = await fetch(url, {
+    method:'PUT',
+    headers: { 'Accept':'application/vnd.github+json', 'Authorization': `token ${pat}` },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok){
+    const t = await res.text().catch(()=> '');
+    throw new Error(`GitHub-Fehler ${res.status}${t ? ': ' + t.slice(0,200) : ''}`);
+  }
+  return res.json();
+}
+
+async function commitTagsUpdate(mutateFn){
+  let attempt = 0;
+  while (attempt < 3){
+    attempt++;
+    const { data, sha } = await fetchTagsFile();
+    mutateFn(data);
+    const body = { message: 'Rezeptbox: neues Rezept hinzugefügt', content: b64EncodeUnicode(JSON.stringify(data, null, 2)), branch };
+    if (sha) body.sha = sha;
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(TAGS_FILE_NAME)}`, {
+      method:'PUT',
+      headers: { 'Accept':'application/vnd.github+json', 'Authorization': `token ${pat}` },
+      body: JSON.stringify(body)
+    });
+    if (res.ok) return;
+    if (res.status === 409 || res.status === 422) continue;
+    throw new Error(`GitHub-Fehler beim Speichern der Tags (${res.status})`);
+  }
+  throw new Error('Konflikt beim Speichern der Tags – bitte Seite neu laden und erneut versuchen.');
+}
+
+// ---------- PDF text extraction ----------
+async function extractPdfText(file){
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  let text = '';
+  const maxPages = Math.min(pdf.numPages, 3);
+  for (let i=1; i<=maxPages; i++){
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map(it => it.str).join(' ') + '\n';
+  }
+  return text.replace(/\s+/g,' ').trim();
+}
+
+// ---------- local AI summarization ----------
+let generatorPromise = null;
+async function getGenerator(onProgress){
+  if (!generatorPromise){
+    generatorPromise = pipeline('text-generation', 'onnx-community/Qwen2.5-0.5B-Instruct', {
+      dtype: 'q4',
+      progress_callback: onProgress
+    });
+  }
+  return generatorPromise;
+}
+
+async function aiSummarize(recipeText, titleGuess){
+  const progressWrap = $('progressWrap'), progressBar = $('progressBar'), aiStatus = $('aiStatus');
+  progressWrap.style.display = 'block'; aiStatus.className = 'status-text'; aiStatus.textContent = 'Lade KI-Modell (einmalig, ca. 300–500 MB)…';
+  const seenFiles = {};
+  const generator = await getGenerator((p) => {
+    if (p.status === 'progress' && p.file){
+      seenFiles[p.file] = p.progress || 0;
+      const vals = Object.values(seenFiles);
+      const avg = vals.reduce((a,b)=>a+b,0) / vals.length;
+      progressBar.style.width = Math.min(100, avg) + '%';
+      aiStatus.textContent = `Lade KI-Modell… ${Math.round(avg)}%`;
+    } else if (p.status === 'ready' || p.status === 'done'){
+      progressBar.style.width = '100%';
+    }
+  });
+  aiStatus.textContent = 'Erstelle Zusammenfassung…';
+  const messages = [
+    { role: 'system', content: 'Du schreibst kurze, appetitliche Zusammenfassungen von Kochrezepten auf Deutsch. Antworte ausschließlich mit der Zusammenfassung in 1–2 Sätzen, ohne Einleitung, ohne Anführungszeichen.' },
+    { role: 'user', content: `Rezepttitel: ${titleGuess || 'unbekannt'}\n\nRezepttext:\n${recipeText.slice(0, 2500)}\n\nSchreibe eine kurze Zusammenfassung (1-2 Sätze) für dieses Gericht.` }
+  ];
+  const output = await generator(messages, { max_new_tokens: 90, temperature: 0.4, do_sample: false });
+  progressWrap.style.display = 'none';
+  let result = '';
+  try{
+    const gen = output[0].generated_text;
+    result = Array.isArray(gen) ? gen[gen.length-1].content : String(gen);
+  }catch(e){ result = ''; }
+  result = result.replace(/^["„“]|["“”]$/g, '').trim();
+  aiStatus.className = 'status-text ok'; aiStatus.textContent = '✓ Zusammenfassung erstellt';
+  return result;
+}
+
+// ---------- UI wiring ----------
+let extractedText = '';
+let pdfFile = null, coverFile = null;
+
+function refreshSaveEnabled(){
+  $('saveBtn').disabled = !(pdfFile && pat && owner && repo && branch);
+}
+
+$('pdfInput').addEventListener('change', async (ev) => {
+  const f = ev.target.files[0];
+  if (!f) return;
+  pdfFile = f;
+  $('pdfDrop').classList.add('has-file');
+  $('pdfName').textContent = f.name;
+  if (!$('titleInput').value.trim()) $('titleInput').value = titleFromFilename(f.name);
+  $('aiBtn').disabled = false;
+  refreshSaveEnabled();
+  try{
+    extractedText = await extractPdfText(f);
+  }catch(e){
+    extractedText = '';
+    $('aiStatus').className = 'status-text err';
+    $('aiStatus').textContent = 'PDF-Text konnte nicht gelesen werden (Bild-PDF?). Zusammenfassung bitte manuell eintragen.';
+  }
+});
+
+$('coverInput').addEventListener('change', (ev) => {
+  const f = ev.target.files[0];
+  if (!f) return;
+  coverFile = f;
+  $('coverDrop').classList.add('has-file');
+  $('coverName').textContent = f.name;
+  const url = URL.createObjectURL(f);
+  $('coverPreviewImg').src = url;
+  $('coverPreview').style.display = 'block';
+});
+
+$('aiBtn').addEventListener('click', async () => {
+  if (!extractedText){
+    $('aiStatus').className = 'status-text err';
+    $('aiStatus').textContent = 'Kein PDF-Text vorhanden. Bitte Zusammenfassung manuell eintragen.';
+    return;
+  }
+  $('aiBtn').disabled = true;
+  try{
+    const summary = await aiSummarize(extractedText, $('titleInput').value.trim());
+    if (summary) $('summaryInput').value = summary;
+  }catch(e){
+    $('aiStatus').className = 'status-text err';
+    $('aiStatus').textContent = 'KI-Zusammenfassung fehlgeschlagen: ' + (e.message || e);
+  }
+  $('aiBtn').disabled = false;
+});
+
+// preset tag chips
+const presetRow = $('presetTagRow');
+const activeTagSet = new Set();
+PRESET_TAGS.forEach(t => {
+  const chip = document.createElement('button');
+  chip.type = 'button'; chip.className = 'tag-preset'; chip.textContent = t;
+  chip.onclick = () => {
+    if (activeTagSet.has(t)){ activeTagSet.delete(t); chip.classList.remove('active'); }
+    else { activeTagSet.add(t); chip.classList.add('active'); }
+    syncTagsInput();
+  };
+  presetRow.appendChild(chip);
+});
+function syncTagsInput(){
+  const manual = $('tagsInput').value.split(',').map(s=>s.trim()).filter(Boolean).filter(t => !PRESET_TAGS.includes(t));
+  $('tagsInput').value = [...activeTagSet, ...manual].join(', ');
+}
+
+// token banner
+function initTokenUi(){
+  pat = loadPat();
+  $('tokenBanner').style.display = pat ? 'none' : 'block';
+  refreshSaveEnabled();
+}
+$('patSaveBtn').addEventListener('click', () => {
+  const v = $('patInput').value.trim();
+  if (!v){ $('patStatus').textContent = 'Bitte Token eingeben.'; return; }
+  pat = v; savePat(v);
+  $('patStatus').className = 'status-text ok';
+  $('patStatus').textContent = '✓ Gespeichert.';
+  $('tokenBanner').style.display = 'none';
+  refreshSaveEnabled();
+});
+
+$('recipeForm').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const saveBtn = $('saveBtn'), saveStatus = $('saveStatus');
+  if (!pdfFile){ return; }
+  if (!pat){ $('tokenBanner').style.display = 'block'; return; }
+  saveBtn.disabled = true;
+  saveStatus.className = 'status-text'; saveStatus.textContent = 'Prüfe Dateiname…';
+  try{
+    const pdfPath = `${FOLDER}/${pdfFile.name}`;
+    if (await fileExists(pdfPath)){
+      throw new Error(`Es gibt bereits ein Rezept mit dem Namen „${pdfFile.name}". Bitte die PDF-Datei umbenennen und erneut versuchen.`);
+    }
+
+    saveStatus.textContent = 'Lade PDF hoch…';
+    const pdfBuf = await pdfFile.arrayBuffer();
+    await putBinaryFile(pdfPath, arrayBufferToBase64(pdfBuf), `Rezeptbox: Rezept „${pdfFile.name}" hinzugefügt`);
+
+    let coverName = null;
+    if (coverFile){
+      saveStatus.textContent = 'Lade Vorschaubild hoch…';
+      const ext = (coverFile.name.split('.').pop() || 'jpg').toLowerCase();
+      const base = pdfFile.name.replace(/\.pdf$/i, '').trim();
+      coverName = `${base}.${ext}`;
+      const coverBuf = await coverFile.arrayBuffer();
+      await putBinaryFile(`covers/${coverName}`, arrayBufferToBase64(coverBuf), `Rezeptbox: Vorschaubild für „${pdfFile.name}" hinzugefügt`);
+    }
+
+    saveStatus.textContent = 'Aktualisiere Tags…';
+    const title = $('titleInput').value.trim() || null;
+    const tags = $('tagsInput').value.split(',').map(s=>s.trim()).filter(Boolean);
+    const summary = $('summaryInput').value.trim() || null;
+    await commitTagsUpdate((data) => {
+      data.recipes[pdfFile.name] = { tags, favorite:false, title, cover: coverName, summary };
+      tags.forEach(t => { if (!PRESET_TAGS.includes(t) && !data.custom_tags.includes(t)) data.custom_tags.push(t); });
+    });
+
+    saveStatus.className = 'status-text ok'; saveStatus.textContent = '✓ Gespeichert';
+    $('successText').textContent = `„${title || titleFromFilename(pdfFile.name)}" wurde hinzugefügt.`;
+    $('successBox').style.display = 'block';
+    $('recipeForm').style.display = 'none';
+  }catch(e){
+    saveStatus.className = 'status-text err';
+    saveStatus.textContent = '⚠ ' + (e.message || String(e));
+    saveBtn.disabled = false;
+  }
+});
+
+$('addAnotherBtn').addEventListener('click', () => {
+  $('recipeForm').reset();
+  pdfFile = null; coverFile = null; extractedText = '';
+  $('pdfDrop').classList.remove('has-file'); $('pdfName').textContent = '';
+  $('coverDrop').classList.remove('has-file'); $('coverName').textContent = '';
+  $('coverPreview').style.display = 'none';
+  $('aiBtn').disabled = true; $('aiStatus').textContent = '';
+  activeTagSet.clear();
+  presetRow.querySelectorAll('.tag-preset').forEach(c => c.classList.remove('active'));
+  $('successBox').style.display = 'none';
+  $('recipeForm').style.display = 'block';
+  refreshSaveEnabled();
+});
+
+// ---------- init ----------
+(async function init(){
+  if (!owner || !repo){
+    $('saveStatus').className = 'status-text err';
+    $('saveStatus').textContent = 'Repo konnte nicht automatisch erkannt werden (Seite läuft nicht über eine *.github.io-Adresse).';
+    return;
+  }
+  branch = await detectBranch();
+  initTokenUi();
+  refreshSaveEnabled();
+})();
+</script>
+</body>
+</html>
