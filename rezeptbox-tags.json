@@ -100,7 +100,7 @@
       "favorite": false,
       "title": null,
       "cover": "Frikadellen.jpg",
-      "summary": "Deutsche Frikadellen aus würzig gebratenem Hackfleisch mit Zwiebeln und Semmelbröseln – ein Klassiker für Mittagstisch und Grillbuffet."
+      "summary": "Frikadellen aus würzig gebratenem Hackfleisch mit Zwiebeln und Semmelbröseln – ein Klassiker für Mittagstisch und Grillbuffet."
     },
     "Gefuellte_Paprika_Hackfleisch.pdf": {
       "tags": [
@@ -148,7 +148,7 @@
       "favorite": false,
       "title": "Käsespätzle",
       "cover": "Kaesespaetzle.jpg",
-      "summary": "Deutsche Käsespätzle – hausgemachte Spätzle mit reichlich geschmolzenem Käse und gerösteten Zwiebeln."
+      "summary": "Schwäbische Käsespätzle – hausgemachte Spätzle mit reichlich geschmolzenem Käse und gerösteten Zwiebeln."
     },
     "Kartoffelknoedel.pdf": {
       "tags": [
@@ -157,7 +157,7 @@
       "favorite": false,
       "title": null,
       "cover": "Kartoffelknoedel.jpg",
-      "summary": "Klassische deutsche Kartoffelknödel, locker-lockig gekocht – die perfekte Beilage zu Braten und Soße."
+      "summary": "Klassische Kartoffelknödel, locker-lockig gekocht – die perfekte Beilage zu Braten und Soße."
     },
     "Kartoffelsalat.pdf": {
       "tags": [
@@ -166,7 +166,7 @@
       "favorite": false,
       "title": null,
       "cover": "Kartoffelsalat.jpg",
-      "summary": "Deutscher Kartoffelsalat mit Brühe zubereitet – warm mariniert, herzhaft und ein Klassiker zu Würstchen oder Schnitzel."
+      "summary": "Kartoffelsalat mit Brühe zubereitet – warm mariniert, herzhaft und ein Klassiker zu Würstchen oder Schnitzel."
     },
     "Kohlrabigemuese.pdf": {
       "tags": [
@@ -175,7 +175,7 @@
       "favorite": false,
       "title": null,
       "cover": "Kohlrabigemuese.jpg",
-      "summary": "Sanft geschmortes Kohlrabigemüse in cremiger Sauce – ein einfaches deutsches Gemüsegericht als Beilage."
+      "summary": "Sanft geschmortes Kohlrabigemüse in cremiger Sauce – ein einfaches Gemüsegericht als Beilage."
     },
     "Kung_Pao_Chicken.pdf": {
       "tags": [
@@ -292,7 +292,7 @@
       "favorite": false,
       "title": "Käsekuchen",
       "cover": "Kaesekuchen.jpg",
-      "summary": "Klassischer, cremiger Käsekuchen nach deutschem Rezept, saftig und mit knuspriger Kruste."
+      "summary": "Klassischer, cremiger Käsekuchen, saftig und mit knuspriger Kruste."
     },
     "Rustikales_Joghurt_Krustenbrot.pdf": {
       "tags": [
@@ -312,7 +312,7 @@
       "favorite": false,
       "title": null,
       "cover": "Brokkoli_Nudel_Auflauf.jpg",
-      "summary": "Deutscher Nudelauflauf mit Brokkoli und Käse überbacken – unkompliziertes Familiengericht."
+      "summary": "Nudelauflauf mit Brokkoli und Käse überbacken – unkompliziertes Familiengericht."
     },
     "Chimichurri_Sauce.pdf": {
       "tags": [
@@ -349,7 +349,7 @@
       "favorite": false,
       "title": null,
       "cover": "Nudelauflauf_mit_Schinken_Kaese.jpg",
-      "summary": "Deftiger Nudelauflauf mit Schinken und Käse überbacken – klassisches deutsches Ofengericht."
+      "summary": "Deftiger Nudelauflauf mit Schinken und Käse überbacken – klassisches Ofengericht."
     },
     "Pizzateig.pdf": {
       "tags": [
@@ -401,9 +401,9 @@
         "Deutsch"
       ],
       "favorite": false,
-      "title": null,
+      "title": "Schweizer Wurstsalat",
       "cover": "Wurstsalat.jpg",
-      "summary": "Deutscher Wurstsalat mit Essig-Öl-Marinade, Zwiebeln und Gewürzgurken – ein herzhafter Klassiker."
+      "summary": "Schweizer Wurstsalat mit Essig-Öl-Marinade, Zwiebeln und Gewürzgurken – ein herzhafter Klassiker."
     },
     "thai_Cashew_Chicken.pdf": {
       "tags": [
@@ -492,7 +492,7 @@
       "favorite": false,
       "title": null,
       "cover": "Rinder_Rouladen.jpg",
-      "summary": "Klassische deutsche Rinderrouladen mit Speck, Zwiebeln und Gewürzgurke gefüllt und in kräftiger Sauce geschmort."
+      "summary": "Klassische Rinderrouladen mit Speck, Zwiebeln und Gewürzgurke gefüllt und in kräftiger Sauce geschmort."
     },
     "Schinken_Hackroellchen.pdf": {
       "tags": [
@@ -541,7 +541,7 @@
       "favorite": false,
       "title": null,
       "cover": "Zwiebel_Sahne_Haehnchen_aus_dem_Ofen.jpg",
-      "summary": "Deutsches Ofengericht mit Hähnchen in cremiger Zwiebel-Sahne-Sauce."
+      "summary": "Ofengericht mit Hähnchen in cremiger Zwiebel-Sahne-Sauce."
     },
     "Semmelknoedel.pdf": {
       "tags": [
@@ -561,7 +561,7 @@
       "favorite": false,
       "title": null,
       "cover": "Gulasch.jpg",
-      "summary": "Deftiges deutsches Gulasch aus Rind- und Schweinefleisch, langsam geschmort in kräftiger Paprikasauce."
+      "summary": "Deftiges ungarisches Gulasch aus Rind- und Schweinefleisch, langsam geschmort in kräftiger Paprikasauce."
     },
     "Shakshuka.pdf": {
       "tags": [
@@ -639,7 +639,7 @@
       "favorite": false,
       "title": null,
       "cover": "Haehnchengeschnetzeltes_mit_Pilzen.jpg",
-      "summary": "Deutsches Hähnchengeschnetzeltes mit Pilzen in cremiger Sauce."
+      "summary": "Hähnchengeschnetzeltes mit Pilzen in cremiger Sauce."
     },
     "Pasta_mit_gruenem_Spargel_in_Zitronen_Buttersauce.pdf": {
       "tags": [
