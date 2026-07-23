@@ -676,6 +676,13 @@
       "title": "Sous Vide Steak",
       "cover": "Sous_Vide_Garen.jpg",
       "summary": "Anleitung zum Sous-Vide-Garen von Steak – schonend im Wasserbad gegart für ein perfekt gleichmäßiges Ergebnis, zum Schluss scharf angebraten."
+    },
+    "Oklahoma_Onion_Burger.pdf": {
+      "tags": [],
+      "favorite": false,
+      "title": "Oklahoma Onion Burger",
+      "cover": "Oklahoma_Onion_Burger.jpg",
+      "summary": null
     }
   }
 }
