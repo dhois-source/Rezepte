@@ -354,7 +354,7 @@ async function getGenerator(onProgress){
     // WebGPU (falls verfügbar) ist schneller und speicherschonender; ohne WebGPU laufen
     // wir auf der wasm-CPU-Backend – dort ist q8 deutlich stabiler als q4.
     const hasWebGPU = !!(navigator.gpu);
-    generatorPromise = pipeline('text-generation', 'onnx-community/Qwen2.5-0.5B-Instruct', {
+    generatorPromise = pipeline('text-generation', 'onnx-community/Qwen2.5-1.5B-Instruct', {
       device: hasWebGPU ? 'webgpu' : 'wasm',
       dtype: hasWebGPU ? 'q4' : 'q8',
       progress_callback: onProgress
