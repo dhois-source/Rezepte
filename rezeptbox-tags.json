@@ -695,6 +695,16 @@
       "title": null,
       "cover": "Joghurt_Dressing.jpg",
       "summary": "Joghurt-Dressing mit Naturjoghurt, Balsamico Bianco, Olivenöl und Zitronensaft, gewürzt mit Salz und Pfeffer. Zubereitung in ca. 5 Minuten."
+    },
+    "Rigatoni_al_forno.pdf": {
+      "tags": [
+        "Italienisch",
+        "Auflauf"
+      ],
+      "favorite": false,
+      "title": "Rigatoni al forno",
+      "cover": "Rigatoni_al_forno.jpeg",
+      "summary": null
     }
   }
 }
