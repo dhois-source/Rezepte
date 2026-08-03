@@ -705,6 +705,16 @@
       "title": null,
       "cover": "Rigatoni_al_forno.jpeg",
       "summary": "Italienisches Rigatoni al forno mit Rinderhackfleisch, Zwiebeln, Knoblauch, Gemüsebrühe, Sahne und Parmesan in einer Auflaufform backen. Kochschinken und Erbsen werden hinzugefügt und der Ganzen wird mit Käse bestreut bevor er im Ofen gebacken wird."
+    },
+    "Vitello Tonnato.pdf": {
+      "tags": [
+        "Italienisch",
+        "Vorspeise"
+      ],
+      "favorite": false,
+      "title": "Vitello Tonnato",
+      "cover": "Vitello Tonnato.jpeg",
+      "summary": null
     }
   }
 }
