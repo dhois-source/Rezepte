@@ -715,6 +715,15 @@
       "title": "Vitello Tonnato",
       "cover": "Vitello Tonnato.jpeg",
       "summary": null
+    },
+    "Thunfisch_Wraps.pdf": {
+      "tags": [
+        "Schnell"
+      ],
+      "favorite": false,
+      "title": "Thunfisch Wraps",
+      "cover": "Thunfisch_Wraps.jpeg",
+      "summary": "Thunfisch-Wraps mit Thunfischcreme aus Dose und Kräuterfrischkäse als Füllung zu Weizenwraps gerollt, begleitet vom gewürzten Gemüsesalat."
     }
   }
 }
