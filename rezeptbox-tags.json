@@ -724,6 +724,16 @@
       "title": "Thunfisch Wraps",
       "cover": "Thunfisch_Wraps.jpeg",
       "summary": "Thunfisch-Wraps mit Thunfischcreme aus Dose und Kräuterfrischkäse als Füllung zu Weizenwraps gerollt, begleitet vom gewürzten Gemüsesalat."
+    },
+    "Zwiebelkuchen.pdf": {
+      "tags": [
+        "Backen",
+        "Deutsch"
+      ],
+      "favorite": false,
+      "title": "Zwiebelkuchen",
+      "cover": "Zwiebelkuchen.jpeg",
+      "summary": null
     }
   }
 }
