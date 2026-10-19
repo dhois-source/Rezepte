@@ -734,6 +734,16 @@
       "title": "Zwiebelkuchen",
       "cover": "Zwiebelkuchen.jpeg",
       "summary": null
+    },
+    "Pulled_Pork.pdf": {
+      "tags": [
+        "Grillen",
+        "Amerikanisch"
+      ],
+      "favorite": false,
+      "title": "Pulled Pork",
+      "cover": "Pulled_Pork.jpeg",
+      "summary": null
     }
   }
 }
