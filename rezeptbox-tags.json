@@ -744,6 +744,17 @@
       "title": "Pulled Pork",
       "cover": "Pulled_Pork.jpeg",
       "summary": null
+    },
+    "Tomaten_Feta_Suppe.pdf": {
+      "tags": [
+        "Griechisch",
+        "Suppe",
+        "Vegetarisch"
+      ],
+      "favorite": false,
+      "title": "Tomaten Feta Suppe",
+      "cover": "Tomaten_Feta_Suppe.webp",
+      "summary": null
     }
   }
 }
